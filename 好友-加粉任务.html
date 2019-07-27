@@ -1,0 +1,527 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="layui/css/layui.css"  media="all">
+<link rel="stylesheet" href="css/style.css">
+<title>好友-加粉任务</title>
+</head>
+
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">
+            <img src="images/logo.png" alt="" class="img"/>
+        </div>
+        <div class="head_right clearfix">
+            <div class="top_notice fl">
+                <span class="fz">加粉任务</span>
+                <div class="txt">
+                    <li>这里是全站公告这里是全站公告这里是全站公告</li>
+                </div>
+            </div>
+            <div class="fr">
+                <a href="#" class="r_fz c_blue">查看登陆日志</a>
+                <span class="r_fz">xdqy</span>
+                <a href="#" class="r_fz c_blue">修改密码</a>
+                <span class="quit quits">退出</span>
+            </div>
+        </div>
+        
+    </div> 
+    <div class="layui-side left_menu_side">
+        <div class="layui-side-scroll">
+            <ul class="left_menu">
+                <li class="item index">
+                    <a href="#">首页</a>
+                </li>
+                <li class="item account haschild">
+                    <a href="#">账号</a>
+                    <div class="drop">
+                        <a href="账号-会员管理.html">会员管理</a>
+                        <a href="账号-账号管理.html">账号管理</a>
+                        <a href="账号-账号设置.html">账号设置</a>
+                    </div>
+                </li>
+                <li class="item friend haschild cur">
+                    <a href="#">好友</a>
+                    <div class="drop">
+                        <a href="好友管理.html">好友管理</a>
+                        <a href="好友-加粉任务.html" class="this">加粉任务</a>
+                        <a href="好友分析.html">好友分析</a>
+                    </div>
+                </li>
+                <li class="item group haschild">
+                    <a href="#">群</a>
+                    <div class="drop">
+                        <a href="#">批量拉群</a>
+                        <a href="#">自动群聊</a>
+                    </div>
+                </li>
+                <li class="item function haschild">
+                    <a href="#">功能</a>
+                    <div class="drop">
+                        <a href="功能-群发消息.html">群发消息</a>
+                        <a href="功能-发朋友圈.html">群发朋友圈</a>
+                        <a href="功能-朋友圈评论.html">朋友圈评论</a>
+                        <a href="功能-素材管理.html">素材管理</a>
+                    </div>
+                </li>
+                <li class="item customer haschild">
+                    <a href="#">客服系统</a>
+                    <div class="drop">
+                        <a href="客服-客服管理.html">客服管理</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="layui-body">
+        <div class="jf_bar clearfix friend_bar">
+            <div class="lbox fl">
+                <li class="item item_1">
+                    <img src="images/icon_43.png" alt="" class="icon"/>
+                    <div class="txt">
+                        <p class="font">生成订单数</p>
+                        <p class="num">18538</p>
+                    </div>
+                </li>
+                <li class="item item_2">
+                    <img src="images/icon_44.png" alt="" class="icon"/>
+                    <div class="txt">
+                        <p class="font">加粉人数</p>
+                        <p class="num">18538</p>
+                    </div>
+                </li>
+                <li class="item item_3">
+                    <img src="images/icon_45.png" alt="" class="icon"/>
+                    <div class="txt">
+                        <p class="font">成功人数</p>
+                        <p class="num">18538</p>
+                    </div>
+                </li>
+                <li class="item item_4">
+                    <img src="images/icon_46.png" alt="" class="icon"/>
+                    <div class="txt">
+                        <p class="font">昨日成功人数</p>
+                        <p class="num">18538</p>
+                    </div>
+                </li>
+                <li class="item item_5">
+                    <img src="images/icon_47.png" alt="" class="icon"/>
+                    <div class="txt">
+                        <p class="font">今日成功人数</p>
+                        <p class="num">18538</p>
+                    </div>
+                </li>
+                <li class="item item_6">
+                    <img src="images/icon_48.png" alt="" class="icon"/>
+                    <div class="txt">
+                        <p class="font">待分配加粉数</p>
+                        <p class="num">18538</p>
+                    </div>
+                </li>
+            </div>
+            <div class="rbox fr">
+                <button class="button_ico backlist addjiafen">发起加粉任务</button>
+                <button class="button_ico backlist jfnumBtn">设置加粉数量</button>
+            </div>
+        </div>
+        <div class="bd_wrap bg_white">
+            <div class="qg_tit">订单详情</div>
+            <div class="qg_main bg_white">
+                <div class="friend_bar clearfix layui-form friend_bar2">
+                    <div class="selectbox fl">
+                        <select  name="category" lay-filter="category" aria-invalid="false" id="">
+                            <option value="">全部会员</option>
+                            <option value="1">全部会员</option>
+                            <option value="2">全部会员</option>
+                        </select>
+                    </div>
+                    <div class="datebox">
+                        <input type="text" class="layui-input" id="datecope" placeholder="2019-06-12 至   2019-07-12" readonly>
+                    </div>
+                </div>
+    
+                <div class="friend_tablewrap">
+                    <div class="qg_topbar">
+                        <span class="fz">批量操作（已选<em class="c_blue">0</em>）</span>
+                        <span class="button">删除</span>
+                        <span class="button">全部删除</span>
+                        <span class="button">导出加粉表</span>
+                    </div>
+                    
+                    <table class="friend_table layui-form friend_table1 p0">
+                        <thead>
+                            <th width="3%">
+                                <input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose">
+                            </th>
+                            <th width="4%">&nbsp;&nbsp;序号</th>
+                            <th width="13%">订单编号</th>
+                            <th width="10%">当前状态</th>
+                            <th width="10%">发起时间</th>
+                            <th width="10%">结束时间</th>
+                            <th width="10%">加粉账号</th>
+                            <th width="10%">手机号</th>
+                            <th width="15%">通过好友/提交申请</th>
+                            <th width="15%">操作</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="" lay-skin="primary" lay-filter="itemChoose">
+                                </td>
+                                <td>&nbsp;&nbsp;01</td>
+                                <td>2019071218151277161292639</td>
+                                <td><em class="c_blue">计划中</em></td>
+                                <td>2019-07-12<br>18:15:13</td>
+                                <td>2019-07-12<br>18:15:13</td>
+                                <td>小猪佩奇</td>
+                                <td>13997467472</td>
+                                <td>0人/16人</td>
+                                <td>
+                                    <a href="javascript:;" class="lk c_blue jfdetBtn">查看详情</a>
+                                    <a href="javascript:;" class="lk">取消订单</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="" lay-skin="primary" lay-filter="itemChoose">
+                                </td>
+                                <td>&nbsp;&nbsp;01</td>
+                                <td>2019071218151277161292639</td>
+                                <td><em class="c_blue">计划中</em></td>
+                                <td>2019-07-12<br>18:15:13</td>
+                                <td>2019-07-12<br>18:15:13</td>
+                                <td>小猪佩奇</td>
+                                <td>13997467472</td>
+                                <td>0人/16人</td>
+                                <td>
+                                    <a href="javascript:;" class="lk c_blue jfdetBtn">查看详情</a>
+                                    <a href="javascript:;" class="lk">取消订单</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="" lay-skin="primary" lay-filter="itemChoose">
+                                </td>
+                                <td>&nbsp;&nbsp;01</td>
+                                <td>2019071218151277161292639</td>
+                                <td><em class="c_blue">计划中</em></td>
+                                <td>2019-07-12<br>18:15:13</td>
+                                <td>2019-07-12<br>18:15:13</td>
+                                <td>小猪佩奇</td>
+                                <td>13997467472</td>
+                                <td>0人/16人</td>
+                                <td>
+                                    <a href="javascript:;" class="lk c_blue jfdetBtn">查看详情</a>
+                                    <a href="javascript:;" class="lk">取消订单</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="" lay-skin="primary" lay-filter="itemChoose">
+                                </td>
+                                <td>&nbsp;&nbsp;01</td>
+                                <td>2019071218151277161292639</td>
+                                <td><em class="c_blue">计划中</em></td>
+                                <td>2019-07-12<br>18:15:13</td>
+                                <td>2019-07-12<br>18:15:13</td>
+                                <td>小猪佩奇</td>
+                                <td>13997467472</td>
+                                <td>0人/16人</td>
+                                <td>
+                                    <a href="javascript:;" class="lk c_blue jfdetBtn">查看详情</a>
+                                    <a href="javascript:;" class="lk">取消订单</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="" lay-skin="primary" lay-filter="itemChoose">
+                                </td>
+                                <td>&nbsp;&nbsp;01</td>
+                                <td>2019071218151277161292639</td>
+                                <td><em class="c_blue">计划中</em></td>
+                                <td>2019-07-12<br>18:15:13</td>
+                                <td>2019-07-12<br>18:15:13</td>
+                                <td>小猪佩奇</td>
+                                <td>13997467472</td>
+                                <td>0人/16人</td>
+                                <td>
+                                    <a href="javascript:;" class="lk c_blue jfdetBtn">查看详情</a>
+                                    <a href="javascript:;" class="lk">取消订单</a>
+                                </td>
+                            </tr>
+                        </tbody>    
+                    </table>        
+                    
+                    <!--<div class="pagelist">
+                        <a href="#" class="active">01</a>
+                        <a href="#">02</a>
+                        <a href="#">03</a>
+                        <a href="#">04</a>
+                        <a href="#">05</a>
+                        <a href="#">...</a>
+                        <a href="#">14</a>
+                        <a href="#">15</a>
+                        <a href="#">16</a>
+                        <span class="next">下一页&gt;</span>
+                    </div>-->
+                    <div class="pagelist_wrap">
+                        <span class="fz">共144条记录，每页显示</span>
+                        <select name="" id="" class="num_box">
+                            <option value="">10</option>
+                            <option value="">20</option>
+                            <option value="">30</option>
+                            <option value="">40</option>
+                        </select>
+                        <div class="pagelist" id="Page">
+    
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+    </div>
+</div>
+<!--设置加粉数量-->
+<div class="pop_bg"></div>
+<div class="pop pop_zh pop_jf_num">
+    <em class="close">&times;</em>
+    <div class="t_tit">设置加粉数量</div>
+    <div class="detail layui-form">
+        <div class="box">
+            <li>
+               <input type="text" class="ipt ipt_txt"/>
+            </li>
+        </div>
+        <div class="btns clearfix">
+            <button class="button this fl">确定</button>
+            <button class="button fr cancel">取消</button>
+        </div>
+    </div>
+</div>
+<!--加粉详情-->
+<div class="pop pop_zh pop_jf_det">
+    <em class="close">&times;</em>
+    <div class="t_tit">加粉详情</div>
+    <div class="detail">
+        <div class="tablewrap">
+            <table class="table">
+                <thead>
+                    <th>粉丝信息</th>
+                    <th>手机/QQ</th>
+                    <th>状态</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <img src="images/icon_34.png" alt="" class="hdimg"/>暂无
+                        </td>
+                        <td>+8618531631838</td>
+                        <td>等待执行</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="images/icon_34.png" alt="" class="hdimg"/>暂无
+                        </td>
+                        <td>+8618531631838</td>
+                        <td>等待执行</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="images/icon_34.png" alt="" class="hdimg"/>暂无
+                        </td>
+                        <td>+8618531631838</td>
+                        <td>等待执行</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="images/icon_34.png" alt="" class="hdimg"/>暂无
+                        </td>
+                        <td>+8618531631838</td>
+                        <td>等待执行</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="images/icon_34.png" alt="" class="hdimg"/>暂无
+                        </td>
+                        <td>+8618531631838</td>
+                        <td>等待执行</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="images/icon_34.png" alt="" class="hdimg"/>暂无
+                        </td>
+                        <td>+8618531631838</td>
+                        <td>等待执行</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="images/icon_34.png" alt="" class="hdimg"/>暂无
+                        </td>
+                        <td>+8618531631838</td>
+                        <td>等待执行</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="images/icon_34.png" alt="" class="hdimg"/>暂无
+                        </td>
+                        <td>+8618531631838</td>
+                        <td>等待执行</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="images/icon_34.png" alt="" class="hdimg"/>暂无
+                        </td>
+                        <td>+8618531631838</td>
+                        <td>等待执行</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="images/icon_34.png" alt="" class="hdimg"/>暂无
+                        </td>
+                        <td>+8618531631838</td>
+                        <td>等待执行</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="images/icon_34.png" alt="" class="hdimg"/>暂无
+                        </td>
+                        <td>+8618531631838</td>
+                        <td>等待执行</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="images/icon_34.png" alt="" class="hdimg"/>暂无
+                        </td>
+                        <td>+8618531631838</td>
+                        <td>等待执行</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="images/icon_34.png" alt="" class="hdimg"/>暂无
+                        </td>
+                        <td>+8618531631838</td>
+                        <td>等待执行</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="btns clearfix">
+            <button class="button this">确定</button>
+            <button class="button cancel">取消</button>
+        </div>
+    </div>
+</div>
+
+
+<script src="js/jquery-1.8.3.min.js"></script>
+<script src="layui/layui.js" charset="utf-8"></script>
+<script src="js/common.js" charset="utf-8"></script>
+<script src="js/loginout.js"></script>
+<script>
+layui.use(['form', 'upload', 'laydate'], function(){
+var form = layui.form
+,layer = layui.layer
+,layedit = layui.layedit
+,laydate = layui.laydate
+,upload = layui.upload;
+ 
+ //日期范围
+  laydate.render({
+    elem: '#datecope'
+    ,range: true
+    ,change: function(value, date){ //监听日期被切换
+        //获取时间
+        console.log(value)
+    }
+  });
+
+  //点击下拉框选择
+  form.on('select(category)', function (data) {
+          category = data.value;
+          categoryName = data.elem[data.elem.selectedIndex].text;
+          //获取到下拉选项
+          console.log(categoryName)
+          form.render('select');
+})
+  
+  //全选
+  var count = 0;
+  form.on('checkbox(allChoose)', function(data){
+
+    //点击全选后的所有的tr元素
+    var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
+    //console.log(child)
+    var imgArr = []
+    //所有的子元素数量
+    var total = $(data.elem).parents('table').find('tbody input[type="checkbox"]').length;
+    //console.log(total)
+
+    count++;
+    if(count%2 !== 0){
+        console.log("全选")
+        $(".qg_topbar span:first-child").find("em").text(total)
+
+    }else{
+        console.log("全不选")
+        $(".qg_topbar span:first-child").find("em").text(0)
+    }
+
+    child.each(function(index, item){
+        item.checked = data.elem.checked;
+        console.log(item)
+    });
+    form.render('checkbox');
+});
+
+
+//单选
+form.on('checkbox(itemChoose)',function(data){
+    var sib = $(data.elem).parents('table').find('tbody input[type="checkbox"]:checked').length;
+    var total = $(data.elem).parents('table').find('tbody input[type="checkbox"]').length;
+    //console.log(sib,total)
+    $(".qg_topbar span:first-child").find("em").text(sib)
+    if(sib == total){
+        $(data.elem).parents('table').find('thead input[type="checkbox"]').prop("checked",true);
+        form.render();
+    }else{
+        $(data.elem).parents('table').find('thead input[type="checkbox"]').prop("checked",false);
+        form.render();
+    }
+});
+
+$('.jfnumBtn').click(function(){
+    $('.pop_jf_num').show();
+    $('.pop_bg').show();
+});
+$('.jfdetBtn').click(function(){
+    $('.pop_jf_det').show();
+    $('.pop_bg').show();
+});
+$(".addjiafen").click(function(){
+    location.href="好友-发起加粉任务.html"
+})
+
+});
+
+</script>
+<script type="text/javascript" src="js/mypage.js"></script>
+<script type="text/javascript">
+    P.initMathod({
+        params: {elemId: '#Page',total:'123'},
+        requestFunction: function () {
+           // P.config.total = parseInt(Math.random() * 10 + 85);//此处模拟总记录变化
+
+            //TODO ajax异步请求过程,异步获取到的数据总条数赋值给 P.config.total
+            
+            //列表渲染自行处理
+            
+            console.log(JSON.stringify(P.config));
+        }
+    });
+</script>
+</body>
+</html>

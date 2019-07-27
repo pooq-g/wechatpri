@@ -1,0 +1,57 @@
+.layui-layedit {
+    position: relative;
+    border: none;
+  }
+  .layui-layedit-tool {
+    position: absolute;
+    left: 5px;
+    top: 294px;
+    height: 36px;
+    width: 36px;
+    border-bottom: none;
+    opacity: 0;
+    filter: Alpha(opacity=0);
+    -webkit-filter: Alpha(opacity=0); 
+  }
+/* 
+.chooseface{
+  position: relative;
+}  
+.face{
+  position: absolute;
+  left: 15px;
+  top:-88px;
+  background: #f00
+}
+.face .facelist{
+  width:25px;
+  height:5px;
+  z-index: 1000;
+  float: left;
+  position: absolute;
+  left:30px;
+  bottom: 5px
+} */
+/* .layui-tab{
+  margin: 0;
+  position: relative;
+}
+.layui-tab-title{
+  white-space: wrap;
+  font-size: 0;
+  border-bottom:none
+}
+.layui-tab-title li{
+  position: relative;
+  line-height: 0;
+  min-width: 0;
+  padding: 0;
+  text-align: center;
+  cursor: pointer;
+}
+.layui-tab-content{
+  position: absolute;
+  top:-100px;
+  height: 10px
+} */
+

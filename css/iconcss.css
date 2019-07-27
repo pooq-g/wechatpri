@@ -1,0 +1,51 @@
+.layui-layedit {
+  position: relative;
+  border: none;
+}
+.layui-layedit-tool {
+  position: absolute;
+  left: -7px;
+  top: -38px;
+  border-bottom: none;
+  height: 30px;
+  width: 30px;
+  opacity: 0;
+  filter: Alpha(opacity=0);
+  -webkit-filter: Alpha(opacity=0);
+}
+/* .layui-layedit-tool .layui-icon{
+    width:100%;
+    height:100%;
+    margin:0 15px 0 0;
+    font-size: 30px;
+  } */
+/* .layui-layedit-iframe {
+  overflow-y: auto;
+}
+
+.layui-card-body {
+  max-height: 30px;
+  line-height: 24px;
+  overflow: auto;
+}
+.layui-layedit-iframe iframe body {
+  padding: 0;
+} */
+body {
+  padding: 0 !important;
+}
+
+.add{
+  position: relative;
+}
+.add input{
+display: inline-block;
+width:125px;
+height:47px;
+position: absolute;
+top:0;
+left:0;
+opacity: 0;
+filter: Alpha(opacity=0);
+-webkit-filter: Alpha(opacity=0);
+}

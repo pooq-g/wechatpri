@@ -1,0 +1,447 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="layui/css/layui.css"  media="all">
+<link rel="stylesheet" href="css/style.css">
+<title>群管-拉群任务</title>
+</head>
+
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">
+            <img src="images/logo.png" alt="" class="img"/>
+        </div>
+        <div class="head_right clearfix">
+            <div class="top_notice fl">
+                <span class="fz">拉群任务</span>
+                <div class="txt">
+                    <li>这里是全站公告这里是全站公告这里是全站公告</li>
+                </div>
+            </div>
+            <div class="fr">
+                <a href="#" class="r_fz c_blue">查看登陆日志</a>
+                <span class="r_fz">xdqy</span>
+                <a href="#" class="r_fz c_blue">修改密码</a>
+                <span class="quit quits">退出</span>
+            </div>
+        </div>
+    </div> 
+    <div class="layui-side left_menu_side">
+        <div class="layui-side-scroll">
+            <ul class="left_menu">
+                <li class="item index">
+                    <a href="#">首页</a>
+                </li>
+                <li class="item account haschild">
+                    <a href="#">账号</a>
+                    <div class="drop">
+                        <a href="账号-会员管理.html">会员管理</a>
+                        <a href="账号-账号管理.html">账号管理</a>
+                        <a href="账号-账号设置.html">账号设置</a>
+                    </div>
+                </li>
+                <li class="item friend haschild">
+                    <a href="#">好友</a>
+                    <div class="drop">
+                        <a href="好友管理.html">好友管理</a>
+                        <a href="好友-加粉任务.html">加粉任务</a>
+                        <a href="好友分析.html">好友分析</a>
+                    </div>
+                </li>
+                <li class="item group haschild cur">
+                    <a href="#">群</a>
+                    <div class="drop">
+                        <a href="#">批量拉群</a>
+                        <a href="#">自动群聊</a>
+                    </div>
+                </li>
+                <li class="item function haschild">
+                    <a href="#">功能</a>
+                    <div class="drop">
+                        <a href="功能-群发消息.html">群发消息</a>
+                        <a href="功能-发朋友圈.html">群发朋友圈</a>
+                        <a href="功能-朋友圈评论.html">朋友圈评论</a>
+                        <a href="功能-素材管理.html">素材管理</a>
+                    </div>
+                </li>
+                <li class="item customer haschild">
+                    <a href="#">客服系统</a>
+                    <div class="drop">
+                        <a href="客服-客服管理.html">客服管理</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="layui-body">
+        <div class="qg_task_module bg_white">
+            <div class="qg_tit">拉群设置</div>
+            <div class="detail">
+                <span class="button">关闭</span>
+                <div class="tips">上传群二维码<em class="c_blue">（每次导入最多添加50张，请勿上次重复的群二维码）</em></div>
+                <div class="file_upbox">
+                    <div class="btns">
+                        <button class="button" id="test2">上传图片</button>
+                        <button class="button" id="test9">提交二维码</button>
+                    </div>
+                    <blockquote class="file_showlist">
+                        <div class="layui-upload-list" id="demo2"></div>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bd_wrap bg_white">
+            <div class="qg_tit">群详情</div>
+            <div class="qg_main">
+                <div class="friend_bar layui-form friend_bar2 clearfix">
+                    <li class="item fl">
+                        <span class="fz">群动态</span>
+                        <div class="selectbox">
+                            <select name="" id="">
+                                <option value="1">全部</option>
+                                <option value="2">全部</option>
+                                <option value="3">全部</option>
+                            </select>
+                        </div>
+                    </li>
+                    <div class="fr qg_task_bar">
+                        <li class="item fl">
+                            <span class="fz">标签</span>
+                            <div class="selectbox">
+                                <select name="" id="">
+                                    <option value="1">全部</option>
+                                    <option value="2">全部</option>
+                                    <option value="3">全部</option>
+                                </select>
+                            </div>
+                        </li>
+                        <div class="txt fl">
+                            <em class="wz">当前可拉好友数：<em class="c_blue">100000（新）/484700（全）</em></em>
+                            <div class="radio_group">
+                                <div class="grp">
+                                    <input type="radio" name="sex" value="只拉新增好友" title="只拉新增好友" checked="">
+                                </div>
+                                <div class="grp">
+                                    <input type="radio" name="sex" value="拉全部好友" title="拉全部好友" >
+                                </div>
+                            </div>
+                        </div>
+                        <button class="button fl">恢复失败好友</button>
+                    </div>
+                </div>
+                <div class="friend_tablewrap">
+                    <div class="qg_topbar">
+                        <span class="fz">批量操作（已选<em class="c_blue">10</em>）</span>
+                        <span class="button">开始拉群</span>
+                        <span class="button">批量删除</span>
+                        <span class="button">清除上次拉群记录</span>
+                        <span class="button">验收</span>
+                    </div>
+                    <table class="friend_table layui-form friend_table1">
+                        <thead>
+                            <th width="3%">
+                                <input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose">
+                            </th>
+                            <th width="6%">群二维码</th>
+                            <th width="7%">图片名称</th>
+                            <th width="7%">群名称</th>
+                            <th width="8%">开始时间</th>
+                            <th width="8%">结束时间</th>
+                            <th width="9%">拉群前人数</th>
+                            <th width="9%">当前群人数</th>
+                            <th width="9%">拉群类型</th>
+                            <th width="10%">群成员详情</th>
+                            <th width="7%">当前状态</th>
+                            <th width="6%">原因</th>
+                            <th width="13%">操作</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="" lay-skin="primary" lay-filter="itemChoose">
+                                </td>
+                                <td>
+                                    <img src="images/img_01.jpg" alt="" class="qg_vx"/>
+                                </td>
+                                <td>2.jpg</td>
+                                <td>嘟嘟嘟嘟</td>
+                                <td>2019-07-16 11:38:52</td>
+                                <td>2019-07-16 11:38:52</td>
+                                <td>100人</td>
+                                <td>500人</td>
+                                <td>新增好友</td>
+                                <td>未知</td>
+                                <td>
+                                    <a href="#" class="lk c_red">未处理</a>
+                                </td>
+                                <td>未知</td>
+                                <td>
+                                    <a href="javascript:;" class="lk c_blue">开始拉群</a>
+                                    <a href="javascript:;" class="lk c_blue">删除</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="" lay-skin="primary" lay-filter="itemChoose">
+                                </td>
+                                <td>
+                                    <img src="images/img_01.jpg" alt="" class="qg_vx"/>
+                                </td>
+                                <td>2.jpg</td>
+                                <td>嘟嘟嘟嘟</td>
+                                <td>2019-07-16 11:38:52</td>
+                                <td>2019-07-16 11:38:52</td>
+                                <td>100人</td>
+                                <td>500人</td>
+                                <td>新增好友</td>
+                                <td>未知</td>
+                                <td>
+                                    <a href="#" class="lk c_red">未处理</a>
+                                </td>
+                                <td>未知</td>
+                                <td>
+                                    <a href="javascript:;" class="lk c_blue">开始拉群</a>
+                                    <a href="javascript:;" class="lk c_blue">删除</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="" lay-skin="primary" lay-filter="itemChoose">
+                                </td>
+                                <td>
+                                    <img src="images/img_01.jpg" alt="" class="qg_vx"/>
+                                </td>
+                                <td>2.jpg</td>
+                                <td>嘟嘟嘟嘟</td>
+                                <td>2019-07-16 11:38:52</td>
+                                <td>2019-07-16 11:38:52</td>
+                                <td>100人</td>
+                                <td>500人</td>
+                                <td>新增好友</td>
+                                <td>未知</td>
+                                <td>
+                                    <a href="#" class="lk c_red">未处理</a>
+                                </td>
+                                <td>未知</td>
+                                <td>
+                                    <a href="javascript:;" class="lk c_blue">开始拉群</a>
+                                    <a href="javascript:;" class="lk c_blue">删除</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="" lay-skin="primary" lay-filter="itemChoose">
+                                </td>
+                                <td>
+                                    <img src="images/img_01.jpg" alt="" class="qg_vx"/>
+                                </td>
+                                <td>2.jpg</td>
+                                <td>嘟嘟嘟嘟</td>
+                                <td>2019-07-16 11:38:52</td>
+                                <td>2019-07-16 11:38:52</td>
+                                <td>100人</td>
+                                <td>500人</td>
+                                <td>新增好友</td>
+                                <td>未知</td>
+                                <td>
+                                    <a href="#" class="lk c_red">未处理</a>
+                                </td>
+                                <td>未知</td>
+                                <td>
+                                    <a href="javascript:;" class="lk c_blue">开始拉群</a>
+                                    <a href="javascript:;" class="lk c_blue">删除</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="" lay-skin="primary" lay-filter="itemChoose">
+                                </td>
+                                <td>
+                                    <img src="images/img_01.jpg" alt="" class="qg_vx"/>
+                                </td>
+                                <td>2.jpg</td>
+                                <td>嘟嘟嘟嘟</td>
+                                <td>2019-07-16 11:38:52</td>
+                                <td>2019-07-16 11:38:52</td>
+                                <td>100人</td>
+                                <td>500人</td>
+                                <td>新增好友</td>
+                                <td>未知</td>
+                                <td>
+                                    <a href="#" class="lk c_red">未处理</a>
+                                </td>
+                                <td>未知</td>
+                                <td>
+                                    <a href="javascript:;" class="lk c_blue">开始拉群</a>
+                                    <a href="javascript:;" class="lk c_blue">删除</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="" lay-skin="primary" lay-filter="itemChoose">
+                                </td>
+                                <td>
+                                    <img src="images/img_01.jpg" alt="" class="qg_vx"/>
+                                </td>
+                                <td>2.jpg</td>
+                                <td>嘟嘟嘟嘟</td>
+                                <td>2019-07-16 11:38:52</td>
+                                <td>2019-07-16 11:38:52</td>
+                                <td>100人</td>
+                                <td>500人</td>
+                                <td>新增好友</td>
+                                <td>未知</td>
+                                <td>
+                                    <a href="#" class="lk c_red">未处理</a>
+                                </td>
+                                <td>未知</td>
+                                <td>
+                                    <a href="javascript:;" class="lk c_blue">开始拉群</a>
+                                    <a href="javascript:;" class="lk c_blue">删除</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="" lay-skin="primary" lay-filter="itemChoose">
+                                </td>
+                                <td>
+                                    <img src="images/img_01.jpg" alt="" class="qg_vx"/>
+                                </td>
+                                <td>2.jpg</td>
+                                <td>嘟嘟嘟嘟</td>
+                                <td>2019-07-16 11:38:52</td>
+                                <td>2019-07-16 11:38:52</td>
+                                <td>100人</td>
+                                <td>500人</td>
+                                <td>新增好友</td>
+                                <td>未知</td>
+                                <td>
+                                    <a href="#" class="lk c_green">已验收</a>
+                                </td>
+                                <td>未知</td>
+                                <td>
+                                    <a href="javascript:;" class="lk c_blue">开始拉群</a>
+                                    <a href="javascript:;" class="lk c_blue">删除</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="" lay-skin="primary" lay-filter="itemChoose">
+                                </td>
+                                <td>
+                                    <img src="images/img_01.jpg" alt="" class="qg_vx"/>
+                                </td>
+                                <td>2.jpg</td>
+                                <td>嘟嘟嘟嘟</td>
+                                <td>2019-07-16 11:38:52</td>
+                                <td>2019-07-16 11:38:52</td>
+                                <td>100人</td>
+                                <td>500人</td>
+                                <td>新增好友</td>
+                                <td>未知</td>
+                                <td>
+                                    <a href="#" class="lk c_red">未处理</a>
+                                </td>
+                                <td>未知</td>
+                                <td>
+                                    <a href="javascript:;" class="lk c_blue">开始拉群</a>
+                                    <a href="javascript:;" class="lk c_blue">删除</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="pagelist_wrap">
+                        <span class="fz">共144条记录，每页显示</span>
+                        <select name="" id="" class="num_box">
+                            <option value="">10</option>
+                            <option value="">20</option>
+                            <option value="">30</option>
+                            <option value="">40</option>
+                        </select>
+                        <div class="pagelist" id="Page">
+    
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="js/jquery-1.8.3.min.js"></script>
+<script src="layui/layui.js" charset="utf-8"></script>
+<script src="js/common.js" charset="utf-8"></script>
+<script src="js/loginout.js"></script>
+<script>
+layui.use(['form', 'upload', 'laydate'], function(){
+var form = layui.form
+,layer = layui.layer
+,layedit = layui.layedit
+,laydate = layui.laydate
+,upload = layui.upload;
+
+upload.render({
+    elem: '#test2'
+    ,url: '/upload/'
+    ,multiple: true
+    //,bindAction: '#test9'
+    ,before: function(obj){
+      //预读本地文件示例，不支持ie8
+      obj.preview(function(index, file, result){
+        $('#demo2').append('<li><img src="'+ result +'" alt="'+ file.name +'" class="layui-upload-img"><em class="close"></em></li>');
+        $('.layui-upload-list').addClass('line');
+      });
+    }
+    ,done: function(res){
+      //上传完毕
+      
+    }
+  });
+
+form.on('checkbox(allChoose)', function(data){
+    var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
+    child.each(function(index, item){
+        item.checked = data.elem.checked;
+    });
+    form.render('checkbox');
+});
+form.on('checkbox(itemChoose)',function(data){
+    var sib = $(data.elem).parents('table').find('tbody input[type="checkbox"]:checked').length;
+    var total = $(data.elem).parents('table').find('tbody input[type="checkbox"]').length;
+    if(sib == total){
+        $(data.elem).parents('table').find('thead input[type="checkbox"]').prop("checked",true);
+        form.render();
+    }else{
+        $(data.elem).parents('table').find('thead input[type="checkbox"]').prop("checked",false);
+        form.render();
+    }
+}); 
+
+
+  
+});
+
+</script>
+
+<script type="text/javascript" src="js/mypage.js"></script>
+<script type="text/javascript">
+    P.initMathod({
+        params: {elemId: '#Page',total:'123'},
+        requestFunction: function () {
+           // P.config.total = parseInt(Math.random() * 10 + 85);//此处模拟总记录变化
+
+            //TODO ajax异步请求过程,异步获取到的数据总条数赋值给 P.config.total
+            
+            //列表渲染自行处理
+            
+            console.log(JSON.stringify(P.config));
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+.msg-list {
+    position: relative;
+    margin: 0;
+    padding: 0
+}
+.msg-list li{
+    display: table;
+    padding: 15px 0;
+    width: 100%;
+    border-bottom: solid 1px #e1ebf4
+}
+.msg-list li .num{
+    margin-right: 10px;
+    width: 60px;
+    text-align: center;
+}
+
+.msg-list li .num .icon{
+    display: inline-block;
+    position: relative;
+    top: -2px;
+    margin-right: 5px;
+    width: 20px;
+    height: 20px;
+    background: url(../images/kf_16.png) no-repeat;
+    vertical-align: middle;
+}
+.num span{
+    border: solid 1px #e1ebf4;
+    display: inline-block;
+    width:18px;
+    height:18px;
+    text-align: center;
+    line-height: 18px
+}
+
+.msg-list li>div{
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.details .text {
+    padding: 15px;
+    border: dashed 1px #73879c;
+    border-radius: 6px;
+    white-space: pre-wrap;
+}
+.btnbox{
+    width: 100px;
+    padding: 0 10px;
+    white-space: nowrap;
+    text-align: right;
+}
+.btnbox a{
+    color: inherit;
+    text-decoration: none;
+    display: inline-block;
+    width: 25px;
+    height: 20px;
+    margin-right: 10px
+}
+.editname{
+    background: url(../images/icon_26.png) no-repeat left center;
+    background-size: 22px;
+}
+.quit{
+    background: url(../images/icon_27.png) no-repeat left center;
+    background-size: 22px;
+    color: #fa4d51;
+}
+.dialog_box .pic-list{
+    padding:0 10px;
+    min-height: 156px;
+    max-height: 234px;
+    overflow-y: auto
+}

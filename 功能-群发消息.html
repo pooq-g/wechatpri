@@ -234,6 +234,7 @@
           //获取好友微信列表
           friend_wxid = JSON.parse(localStorage.getItem('friend_wxid'))
 
+          //添加图片
           for (let i = 0; i < friend_wxid.length; i++) {
             $('.dialog_box input').change(function() {
               var preview = document.getElementsByClassName('image')

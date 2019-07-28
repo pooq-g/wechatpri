@@ -86,7 +86,7 @@
             <div class="searchbox fl">
               <input
                 type="text"
-                class="ipt ipt_txt searchmuban"
+                class="ipt ipt_txt searchkj"
                 placeholder="请输入模板名称（最多20字）"
               />
             </div>
@@ -206,17 +206,8 @@
       })
 
       //搜索模板名称
-      $('body').delegate('.searchmuban', 'propertychange input', function() {
-        if ($(this).val().length > 0) {
-          var $len = $(this).val().length
-          if ($len >= 20) {
-            $(this).val(
-              $(this)
-                .val()
-                .substring(0, 20)
-            )
-          }
-        }
+      $('body').delegate('.searchkj', 'propertychange input', function() {
+        console.log($(this).val())
       })
 
       //添加文字

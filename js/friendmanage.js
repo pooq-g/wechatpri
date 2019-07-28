@@ -53,7 +53,7 @@ $(function() {
         '}'
 
       //传入参数
-      console.log(data)
+      //console.log(data)
 
       $.ajax({
         type: 'post',
@@ -203,46 +203,51 @@ $(function() {
       $('.queding2').click(function() {
         $('.positiemoij').hide()
         var $content = $('textarea').val()
-        var data =
-          '{"type":' +
-          '"send_msg",' +
-          '"wxid":' +
-          '"' +
-          wxid_raw +
-          '",' +
-          '"to_wxid":' +
-          '"z1161091470",' +
-          '"content":' +
-          '"' +
-          $content +
-          '",' +
-          '"ticket":' +
-          '"' +
-          token +
-          '"' +
-          '}'
-        //console.log(data)
 
-        $.ajax({
-          type: 'post',
-          url: 'http://192.168.10.177/api.esp',
-          data: data,
-          dataType: 'json',
-          success: function(msg) {
-            //console.log(msg)
-            if (msg.err_code == 0) {
-              $('.pop_hy_addtag1').hide()
-              $('.pop_bg').hide()
-              layer.msg('发送成功')
-            } else {
-              layer.msg('发送失败')
+        for (var i in wxid_raw) {
+          var data =
+            '{"type":' +
+            '"send_msg",' +
+            '"wxid":' +
+            '"' +
+            wxid_raw[i] +
+            '",' +
+            '"to_wxid":' +
+            '"' +
+            $friend +
+            '",' +
+            '"content":' +
+            '"' +
+            $content +
+            '",' +
+            '"ticket":' +
+            '"' +
+            token +
+            '"' +
+            '}'
+          //console.log(data)
+          $.ajax({
+            type: 'post',
+            url: 'http://192.168.10.177/api.esp',
+            data: data,
+            dataType: 'json',
+            success: function(msg) {
+              //console.log(msg)
+              if (msg.err_code == 0) {
+                $('.pop_hy_addtag1').hide()
+                $('.pop_bg').hide()
+                layer.msg('发送成功')
+                $('.positiemoij').hide()
+              } else {
+                layer.msg('发送失败')
+              }
+              $('textarea').val('')
+            },
+            error: function(err) {
+              console.log(err)
             }
-            $('textarea').val('')
-          },
-          error: function(err) {
-            console.log(err)
-          }
-        })
+          })
+        }
       })
     })
     //去朋友圈

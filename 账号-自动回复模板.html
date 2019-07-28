@@ -87,7 +87,7 @@
               <div class="searchbox fl">
                 <input
                   type="text"
-                  class="ipt ipt_txt"
+                  class="ipt ipt_txt searchmuban"
                   placeholder="请输入模板名称（最多20字）"
                 />
               </div>
@@ -97,8 +97,8 @@
               <div class="searchbox fl">
                 <input
                   type="text"
-                  class="ipt ipt_txt"
-                  placeholder="请输入模板名称（最多20字）"
+                  class="ipt ipt_txt searchkj"
+                  placeholder="请输入关键字（最多20字）"
                 />
               </div>
             </li>
@@ -107,8 +107,20 @@
                 <input
                   type="radio"
                   name="apply"
-                  value="是否仅第一次回复"
-                  title="是否仅第一次回复"
+                  value="1"
+                  title="仅第一次回复"
+                  lay-filter="firstcall"
+                />
+              </div>
+            </li>
+            <li class="item_group clearfix fl">
+              <div class="apply">
+                <input
+                  type="radio"
+                  name="apply"
+                  value="2"
+                  title="可多次回复"
+                  lay-filter="firstcall"
                 />
               </div>
             </li>
@@ -123,12 +135,12 @@
               <span class="lk link">链接</span>
             </div>
             <ul class="template_bar msg-list" style="padding:22px"></ul>
-            <div class="template_fz">
+            <!-- <div class="template_fz">
               文字（<em class="c_blue">0</em>）、图片（<em class="c_blue">0</em
               >）、语音（<em class="c_blue">0</em>）、链接（<em class="c_blue"
                 >0</em
               >）
-            </div>
+            </div> -->
             <button class="template_btn">确定</button>
           </div>
         </div>
@@ -191,6 +203,9 @@
           <div style="height:200px;padding:20px">
             <input type="file" />
           </div>
+          <div class="pic-list">
+            <img class="image" src="" height="200" alt="Image preview..." />
+          </div>
         </div>
       </div>
       <div class="btns clearfix">
@@ -211,64 +226,272 @@
           layedit = layui.layedit,
           laydate = layui.laydate,
           upload = layui.upload
-      })
 
-      //添加文字
-      $('.txts').click(function() {
-        $('.pop_chart_msg1').show()
-        $('.pop_bg').show()
+        token = localStorage.getItem('token')
+        wxid_raw = JSON.parse(localStorage.getItem('wxid_raw'))
 
-        //表情包
-        var count = 0
-        $('.bq').click(function() {
-          count++
-          if (count % 2 == 0) {
-            $('.positiemoij').hide()
-          } else {
-            $('.positiemoij').show()
-          }
-          var content = $('.textarea').val()
-
-          //输入表情
-          $('.positiemoij>.expression li').click(function() {
-            console.log(content)
-            var name = $(this)
-              .find('i')
-              .get(0)
-              .getAttribute('data-name')
-            $('.positiemoij').hide()
-            //$content += $(".ipt").val("["+name+"]")
-            content += '[' + name + ']'
-
-            console.log(content)
-            $('.textarea').val(content)
-          })
+        //选择消息设置
+        form.on('radio(firstcall)', function(data) {
+          //选中的dom元素
+          //console.log(data.elem);
+          // alert(data.value);//判断单选框的选中值
+          //alert(data.othis);
+          // layer.tips('开关checked：' + (this.checked ? 'true' : 'false'), data.othis);
+          //选中的value值
+          console.log(data.value)
+          localStorage.setItem('messagecallback', data.value)
         })
-        //点击确定
-        var str = ''
-        $('.queding1')
-          .unbind('click')
-          .bind('click', function() {
-            //用于获取编辑器内容
-            //var layuicontent = layedit.getContent(index)
-            //console.log(layuicontent)
-            str = `
-           <li>
-                   <div class="num">
-                     <span></span>
-                   </div>
-                   <div class="details" data-msgtype="text">
-                     <div class="text">${$('.textarea').val()}</div>
-                   </div><div class="btnbox">
-                       <a href="javascript:;" class="lk_ico quit quit1"></a>
-                   </div>
-                 </li>
-           `
-            $('.msg-list').append(str)
-            $('.pop_chart_msg1').hide()
-            $('.pop_bg').hide()
-            $('.textarea').val('')
+
+        //搜索模板名称
+        $('body').delegate('.searchmuban', 'propertychange input', function() {
+          console.log($(this).val())
+        })
+
+        //搜索模板名称
+        var messagecall = 0
+        $('body').delegate('.searchkj', 'propertychange input', function() {
+          console.log($(this).val())
+          localStorage.setItem('messagecall', messagecall)
+        })
+
+        //获取好友微信列表
+        friend_wxid = JSON.parse(localStorage.getItem('friend_wxid'))
+
+        //添加图片
+        for (var j in wxid_raw) {
+          for (let i = 0; i < friend_wxid.length; i++) {
+            $('.dialog_box input').change(function() {
+              var preview = document.getElementsByClassName('image')
+              var file = document.querySelector('input[type=file]').files[0]
+              var reader = new FileReader()
+
+              reader.addEventListener(
+                'load',
+                function() {
+                  preview.src = reader.result
+                  var baseimg = reader.result
+                  var data =
+                    '{"type":' +
+                    '"send_img",' +
+                    '"wxid":' +
+                    '"' +
+                    wxid_raw[j] +
+                    '",' +
+                    '"to_wxid":' +
+                    '"' +
+                    friend_wxid[i] +
+                    '",' +
+                    '"img":' +
+                    '"' +
+                    baseimg +
+                    '",' +
+                    '"ticket":' +
+                    '"' +
+                    token +
+                    '"' +
+                    '}'
+                  //console.log(data)
+                  $.ajax({
+                    type: 'post',
+                    url: 'http://192.168.10.177/api.esp',
+                    data: data,
+                    async: false,
+                    dataType: 'json',
+                    success: function(msg) {
+                      console.log(msg)
+                    },
+                    error: function(err) {
+                      console.log(err)
+                    }
+                  })
+                },
+                false
+              )
+              if (file) {
+                reader.readAsDataURL(file)
+              }
+            })
+          }
+        }
+
+        //添加文字
+        $('.txts').click(function() {
+          $('.pop_chart_msg1').show()
+          $('.pop_bg').show()
+
+          //表情包
+          var count = 0
+          $('.bq').click(function() {
+            count++
+            if (count % 2 == 0) {
+              $('.positiemoij').hide()
+            } else {
+              $('.positiemoij').show()
+            }
+            var content = $('.textarea').val()
+
+            //输入表情
+            $('.positiemoij>.expression li').click(function() {
+              console.log(content)
+              var name = $(this)
+                .find('i')
+                .get(0)
+                .getAttribute('data-name')
+              $('.positiemoij').hide()
+              //$content += $(".ipt").val("["+name+"]")
+              content += '[' + name + ']'
+
+              console.log(content)
+              $('.textarea').val(content)
+            })
           })
+          //点击确定
+          var str = ''
+          $('.queding1')
+            .unbind('click')
+            .bind('click', function() {
+              //用于获取编辑器内容
+              //var layuicontent = layedit.getContent(index)
+              //console.log(layuicontent)
+
+              // for (var i in wxid_raw) {
+              //   var data =
+              //     '{"type":' +
+              //     '"add_auto_send",' +
+              //     '"wxid":' +
+              //     '"' +
+              //     wxid_raw[i] +
+              //     '",' +
+              //     '"content":' +
+              //     '"' +
+              //     $('.textarea').val() +
+              //     '",' +
+              //     '"ticket":' +
+              //     '"' +
+              //     token +
+              //     '"' +
+              //     '}'
+              //   //console.log(data)
+              //   $.ajax({
+              //     type: 'post',
+              //     url: 'http://192.168.10.177/api.esp',
+              //     data: data,
+              //     dataType: 'json',
+              //     success: function(msg) {
+              //       console.log(msg)
+              //       if (msg.err_code == 0) {
+              //         layer.msg('添加成功')
+              //       } else {
+              //         layer.msg('添加失败')
+              //       }
+              //     },
+              //     error: function(err) {
+              //       console.log(err)
+              //     }
+              //   })
+              // }
+
+              //点击确定后在把输入的内容在页面中展示
+              str = `
+               <li>
+                       <div class="num">
+                         <span></span>
+                       </div>
+                       <div class="details" data-msgtype="text">
+                         <div class="text">${$('.textarea').val()}</div>
+                     </li>
+               `
+              $('.msg-list').append(str)
+              $('.pop_chart_msg1').hide()
+              $('.pop_bg').hide()
+              $('.textarea').val('')
+            })
+        })
+
+        //点击确定的时候
+        $('.template_btn').click(function() {
+          var messagecallback = localStorage.getItem('messagecallback')
+          if (messagecallback == 1) {
+            var mes = $('.msg-list')
+              .find('.text')
+              .html()
+
+            for (var i in wxid_raw) {
+              var data =
+                '{"type":' +
+                '"add_auto_send",' +
+                '"wxid":' +
+                '"' +
+                wxid_raw[i] +
+                '",' +
+                '"content":' +
+                '"' +
+                mes +
+                '",' +
+                '"ticket":' +
+                '"' +
+                token +
+                '"' +
+                '}'
+              //console.log(data)
+              $.ajax({
+                type: 'post',
+                url: 'http://192.168.10.177/api.esp',
+                data: data,
+                dataType: 'json',
+                success: function(msg) {
+                  console.log(msg)
+                  if (msg.err_code == 0) {
+                    layer.msg('添加成功')
+                  } else {
+                    layer.msg('添加失败')
+                  }
+                },
+                error: function(err) {
+                  console.log(err)
+                }
+              })
+            }
+          } else {
+            for (var i in wxid_raw) {
+              var data =
+                '{"type":' +
+                '"auto_send",' +
+                '"wxid":' +
+                '"' +
+                wxid_raw[i] +
+                '",' +
+                '"keywords":' +
+                '"' +
+                $('.searchkj').val() +
+                '",' +
+                '"ticket":' +
+                '"' +
+                token +
+                '"' +
+                '}'
+              //console.log(data)
+
+              $.ajax({
+                type: 'post',
+                url: 'http://192.168.10.177/api.esp',
+                data: data,
+                dataType: 'json',
+                success: function(msg) {
+                  console.log(msg)
+                  if (msg.err_code == 0) {
+                    layer.msg('添加成功')
+                  } else {
+                    layer.msg('添加失败')
+                  }
+                },
+                error: function(err) {
+                  console.log(err)
+                }
+              })
+            }
+          }
+        })
       })
 
       //添加图片

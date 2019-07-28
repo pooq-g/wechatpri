@@ -8,7 +8,7 @@ img{border:0;display: inline-block;max-width:100%;vertical-align: middle;}
 ul,li{ list-style:none; }
 a{ text-decoration:none; color:inherit;}
 :focus{outline:none!important;border-color:inherit;}
-.clearfix{*zoom: 1;}
+.clearfix{*zoom: 1;}z
 .clearfix:before,.clearfix:after
 {display: table;line-height: 0;content: "";}
 .clearfix:after{clear: both;}

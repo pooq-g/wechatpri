@@ -5,6 +5,21 @@
     <link rel="stylesheet" href="layui/css/layui.css" media="all" />
     <link rel="stylesheet" href="css/style.css" />
     <title>群管-新建朋友圈</title>
+    <style>
+      .upload-pick {
+        position: relative;
+      }
+      .upload-pick input {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        filter: Alpha(opacity=0);
+        -webkit-filter: Alpha(opacity=0);
+      }
+    </style>
   </head>
 
   <body class="layui-layout-body">
@@ -86,8 +101,7 @@
                 id=""
               >
                 <option value="1">选择发布账号</option>
-                <option value="2">选择发布账号</option>
-                <option value="3">选择发布账号</option>
+                <option value="2">全部账号</option>
               </select>
             </div>
           </li>
@@ -155,16 +169,14 @@
                   value="链接"
                   title="链接"
                   lay-filter="pic"
+                  disabled
                 />
               </div>
             </div>
             <div class="fileup_box">
               <ul class="upload-ul clearfix">
                 <li class="upload-pick">
-                  <div
-                    class="webuploader-container clearfix"
-                    id="goodsUpload"
-                  ></div>
+                  <input type="file" />
                 </li>
               </ul>
             </div>
@@ -220,7 +232,21 @@
           laydate = layui.laydate,
           upload = layui.upload
 
-        //选择发布账号
+        token = localStorage.getItem('token')
+        wxid_raw = JSON.parse(localStorage.getItem('wxid_raw'))
+        //1.动态添加要发布的账号
+        // var str = ''
+        // var count = 1
+        // for (var i in wxid_raw) {
+        //   count++
+        //   str += `
+        //   <option value="${count}">${wxid_raw[i]}</option>
+        //   `
+        // }
+        // $('select').append(str)
+        // form.render()
+
+        //2.选择发布账号
         form.on('select(category)', function(data) {
           category = data.value
           categoryName = data.elem[data.elem.selectedIndex].text
@@ -228,7 +254,7 @@
           form.render('select')
         })
 
-        //表情包
+        //3.输入文字表情包
         var count = 0
         $('.bq').click(function() {
           count++
@@ -253,6 +279,59 @@
             console.log(content)
             $('.textarea1').val(content)
           })
+        })
+
+        $('.upload-pick input').change(function() {
+          var file = document.querySelector('.upload-pick input[type=file]')
+            .files[0]
+          var reader = new FileReader()
+          var imgUrlBase64
+          if (file) {
+            imgUrlBase64 = reader.readAsDataURL(file)
+            reader.onload = function() {
+              baseimg = reader.result
+              for (var i in wxid_raw) {
+                var data =
+                  '{"type":' +
+                  '"mm_post",' +
+                  '"wxid":' +
+                  '"' +
+                  wxid_raw[i] +
+                  '",' +
+                  '"content":' +
+                  '"' +
+                  $('.textarea1').val() +
+                  '",' +
+                  '"img":' +
+                  '"' +
+                  baseimg +
+                  '",' +
+                  '"ticket":' +
+                  '"' +
+                  token +
+                  '"' +
+                  '}'
+                //console.log(data)
+                $.ajax({
+                  type: 'post',
+                  url: 'http://192.168.10.177/api.esp',
+                  data: data,
+                  dataType: 'json',
+                  success: function(msg) {
+                    console.log(msg)
+                    if (msg.err_code == 0) {
+                      layer.msg('发布成功')
+                    } else {
+                      layer.msg('发布成功')
+                    }
+                  },
+                  error: function(err) {
+                    console.log(err)
+                  }
+                })
+              }
+            }
+          }
         })
 
         //选择发送的类型
@@ -283,24 +362,26 @@
     <script>
       $(function() {
         //上传图片
-        var $tgaUpload = $('#goodsUpload').diyUpload({
-          url: 'uploadFilePath',
-          success: function(data) {},
-          error: function(err) {},
-          buttonText: '',
-          accept: {
-            title: 'Images',
-            extensions: 'gif,jpg,jpeg,bmp,png'
-          },
-          thumb: {
-            width: 172,
-            height: 172,
-            quality: 100,
-            allowMagnify: true,
-            crop: true,
-            type: 'image/jpeg'
-          }
-        })
+        //   var $tgaUpload = $('#goodsUpload').diyUpload({
+        //     url: '#',
+        //     success: function(data) {
+        //       console.log(data)
+        //     },
+        //     error: function(err) {},
+        //     buttonText: '',
+        //     accept: {
+        //       title: 'Images',
+        //       extensions: 'gif,jpg,jpeg,bmp,png'
+        //     },
+        //     thumb: {
+        //       width: 172,
+        //       height: 172,
+        //       quality: 100,
+        //       allowMagnify: true,
+        //       crop: true,
+        //       type: 'image/jpeg'
+        //     }
+        //   })
       })
 
       //控制输入的文字数量

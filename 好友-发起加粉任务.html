@@ -6,16 +6,16 @@
     <link rel="stylesheet" href="css/style.css" />
     <title>好友-发起加粉任务</title>
     <style>
-      #filetxt{
+      #filetxt {
         position: relative;
       }
-      #filetxt input{
+      #filetxt input {
         display: inline-block;
-        width:120px;
+        width: 120px;
         height: 30px;
         position: absolute;
-        left:0;
-        top:0;
+        left: 0;
+        top: 0;
         opacity: 0;
         filter: Alpha(opacity=0);
         -webkit-filter: Alpha(opacity=0);
@@ -96,7 +96,12 @@
           <li class="item fl">
             账号：
             <div class="selectbox layui-input-block" style="margin-left:0">
-              <select  name="category" lay-filter="category" aria-invalid="false" id="">
+              <select
+                name="category"
+                lay-filter="category"
+                aria-invalid="false"
+                id=""
+              >
                 <option value="">全部账号</option>
                 <option value="1">全部账号</option>
                 <option value="2">全部账号</option>
@@ -117,8 +122,11 @@
                   class="layui-btn-normal button"
                   id="filetxt"
                 >
-                <input type="file" id="files"/>
+                  <input type="file" id="files" />
                   选择文件
+                </button>
+                <button type="button" class="layui-btn-normal button addtagBtn">
+                  添加标签
                 </button>
               </div>
             </div>
@@ -185,7 +193,7 @@
               ></textarea>
               <div class="bar layui-form">
                 <span class="words">[昵称] [自己昵称] 添加成功后打标签：</span>
-                <span class="addtag addtagBtn">添加标签</span>
+                <!-- <span class="addtag addtagBtn">添加标签</span> -->
               </div>
             </div>
           </div>
@@ -195,23 +203,11 @@
             <div class="timebox">
               任务执行时间&nbsp;&nbsp;
               <div class="time">
-                <input
-                  type="text"
-                  class="layui-input"
-                  id="test1"
-                  placeholder=""
-                  readonly
-                />
+                <input type="text" id="test1" placeholder="" />
               </div>
-              <em class="line">——</em>
+              <!-- <em class="line">——</em> -->
               <div class="time">
-                <input
-                  type="text"
-                  class="layui-input"
-                  id="test2"
-                  placeholder=""
-                  readonly
-                />
+                <input type="text" id="test2" placeholder="" />
               </div>
             </div>
             <div class="txt">
@@ -246,152 +242,222 @@
       <div class="detail layui-form">
         <div class="box box1">
           <li class="grp">
-            <input type="radio" name="tag" value="" title="测试" />
+            <input
+              type="radio"
+              name="tag"
+              value="测试"
+              title="测试"
+              lay-filter="messageset"
+            />
           </li>
           <li class="grp">
-            <input type="radio" name="tag" value="" title="123" />
+            <input
+              type="radio"
+              name="tag"
+              value="123"
+              title="123"
+              lay-filter="messageset"
+            />
           </li>
           <li class="grp">
-            <input type="radio" name="tag" value="啊啊" title="啊啊" />
+            <input
+              type="radio"
+              name="tag"
+              value="啊啊"
+              title="啊啊"
+              lay-filter="messageset"
+            />
           </li>
         </div>
         <span class="addbq">+新建标签 </span>
         <div class="btns clearfix">
-          <button class="button this fl">确定</button>
+          <button class="button this fl quedingfl">确定</button>
           <button class="button fr cancel">取消</button>
         </div>
       </div>
     </div>
 
     <!--新建标签-->
-<div class="pop pop_zh pop_hy_addtag pop_hy_addtag1">
-    <em class="close">&times;</em>
-    <div class="t_tit">新建标签</div>
-    <div class="detail layui-form">
+    <div class="pop pop_zh pop_hy_addtag pop_hy_addtag1">
+      <em class="close">&times;</em>
+      <div class="t_tit">新建标签</div>
+      <div class="detail layui-form">
         <div class="box box2">
-            <li>
-               <input type="text" class="ipt ipt_txt"/>
-            </li>
+          <li>
+            <input type="text" class="ipt ipt_txt" />
+          </li>
         </div>
         <div class="btns clearfix">
-            <button class="button this fl fl1">确定</button>
-            <button class="button fr cancel">取消</button>
+          <button class="button this fl fl1">确定</button>
+          <button class="button fr cancel">取消</button>
         </div>
+      </div>
     </div>
-</div>
 
     <script src="js/jquery-1.8.3.min.js"></script>
     <script src="layui/layui.js" charset="utf-8"></script>
     <script src="js/common.js" charset="utf-8"></script>
     <script src="js/loginout.js"></script>
     <script>
-     layui.use(["layer",'form', 'upload', 'laydate'], function(){
-      var form = layui.form
-      ,layer = layui.layer
-      ,layedit = layui.layedit
-      ,laydate = layui.laydate
-      ,upload = layui.upload;
+      layui.use(['layer', 'form', 'upload', 'laydate'], function() {
+        var form = layui.form,
+          layer = layui.layer,
+          layedit = layui.layedit,
+          laydate = layui.laydate,
+          upload = layui.upload
 
-
-      token = localStorage.getItem("token")
+        token = localStorage.getItem('token')
+        wxid_raw = JSON.parse(localStorage.getItem('wxid_raw'))
 
         //点击下拉框选择
-        form.on('select(category)', function (data) {
-          category = data.value;
-          categoryName = data.elem[data.elem.selectedIndex].text;
+        form.on('select(category)', function(data) {
+          category = data.value
+          categoryName = data.elem[data.elem.selectedIndex].text
           console.log(categoryName)
-          form.render('select');
-        
-        var files = document.getElementById('files');
-        files.onchange = function() {
-          var file = files.files[0];
-          var reader = new FileReader();
-          reader.readAsText(file,'gb2312');//后面的参数是防止中文乱码
-          reader.onload = function() {
-            //console.log(reader.result)
-            $(".textarea1").val(reader.result)
-            var str = reader.result
-            //读取到的文档数据
-            //console.log(str)
-            var nstr = str.split("\n")
-            //对数据进行换行符分割
-            console.log(nstr.length)
-            $(".totalphone").html("共："+nstr.length+"条")
-            for(var j in nstr){
-              var data = 
-              '{"type":' +
-              '"upload_phone",' +
-              '"phone":' +
-              '"'+nstr[j]+'",' +
-              '"content":' +
-              '"'+0+'",' +
-              '"lable":' +
-              '"'+categoryName+'",' +
-              '"ticket":' +
-              '"'+token+'"' +
-              '}'
-              //拿到的传入的参数
-              //console.log(data)
-              $.ajax({
-                type: 'post',
-                url: 'http://192.168.10.177/api.esp',
-                data:data,
-                dataType: 'json',
-                success:function(msg){
-                  console.log(msg)
-                  if(msg.err_code == 0){
-                    layer.msg("上传成功")
-                  }
+          form.render('select')
+
+          //选择标签
+          form.on('radio(messageset)', function(data) {
+            var labelradio = data.value
+            console.log(labelradio)
+
+            //上传手机号
+            var files = document.getElementById('files')
+            files.onchange = function() {
+              var file = files.files[0]
+              var reader = new FileReader()
+              reader.readAsText(file, 'gb2312') //后面的参数是防止中文乱码
+              reader.onload = function() {
+                //console.log(reader.result)
+                $('.textarea1').val(reader.result)
+                var str = reader.result
+                //读取到的文档数据
+                //console.log(str)
+                var nstr = str.split('\n')
+                //对数据进行换行符分割
+                console.log(nstr.length)
+                $('.totalphone').html('共：' + nstr.length + '条')
+                for (var j in nstr) {
+                  var data =
+                    '{"type":' +
+                    '"upload_phone",' +
+                    '"phone":' +
+                    '"' +
+                    nstr[j] +
+                    '",' +
+                    '"content":' +
+                    '"' +
+                    0 +
+                    '",' +
+                    '"lable":' +
+                    '"' +
+                    labelradio +
+                    '",' +
+                    '"ticket":' +
+                    '"' +
+                    token +
+                    '"' +
+                    '}'
+                  //拿到的传入的参数
+                  console.log(data)
+                  $.ajax({
+                    type: 'post',
+                    url: 'http://192.168.10.177/api.esp',
+                    data: data,
+                    dataType: 'json',
+                    success: function(msg) {
+                      console.log(msg)
+                      if (msg.err_code == 0) {
+                        layer.msg('上传成功')
+                      } else {
+                        layer.msg('上传失败')
+                      }
+                    },
+                    error: function(err) {
+                      console.log(err)
+                    }
+                  })
                 }
-              })
+              }
             }
-          }
-        }
 
-      });
+            //点击爆粉
+            $('.filetxtBtn').click(function() {
+              var matnnum = Math.floor(Math.random() * 5 + 10)
+              for (var i in wxid_raw) {
+                var data =
+                  '{"type":' +
+                  '"add_phone",' +
+                  '"wxid":' +
+                  '"' +
+                  wxid_raw[i] +
+                  '",' +
+                  '"num":' +
+                  '"' +
+                  matnnum +
+                  '",' +
+                  '"time1":' +
+                  '"' +
+                  $('#test1').val() +
+                  '",' +
+                  '"time2":' +
+                  '"' +
+                  $('#test2').val() +
+                  '",' +
+                  '"lable":' +
+                  '"' +
+                  labelradio +
+                  '",' +
+                  '"ticket":' +
+                  '"' +
+                  token +
+                  '"' +
+                  '}'
 
+                //传入参数
+                console.log(data)
+                $.ajax({
+                  type: 'post',
+                  url: 'http://192.168.10.177/api.esp',
+                  data: data,
+                  dataType: 'json',
+                  success: function(msg) {
+                    console.log(msg)
+                    if (msg.err_code == 0) {
+                      layer.msg('爆粉成功')
+                    } else {
+                      layer.msg('爆粉失败')
+                    }
+                  },
+                  error: function(err) {
+                    console.log(err)
+                  }
+                })
+              }
+            })
+          })
+        })
 
         //中间单选框的值
-        form.on('radio(tongguo)', function (data) {
-          //选中的dom元素
-        //console.log(data.elem);
-        // alert(data.value);//判断单选框的选中值
-        //alert(data.othis);
-        // layer.tips('开关checked：' + (this.checked ? 'true' : 'false'), data.othis);
-        //选中的value值
-        console.log(data.value);
-        
-    });
-        
-
-        //时间范围
-        laydate.render({
-          elem: '#test1',
-          type: 'time',
-          format: 'HH:mm',
-          change: function(value, date){ //监听日期被切换
-            console.log(value)
-          }
-        })
-        laydate.render({
-          elem: '#test2',
-          type: 'time',
-          format: 'HH:mm'
-          ,change: function(value, date){ //监听日期被切换
-            console.log(value)
-          }
+        form.on('radio(tongguo)', function(data) {
+          console.log(data.value)
         })
       })
       $('.addtagBtn').click(function() {
         $('.pop_hy_edittag').show()
         $('.pop_bg').show()
-        $(".addbq").click(function(){
+        $('.addbq').click(function() {
           $('.pop_bg').show()
-          $(".pop_hy_addtag1").show()
+          $('.pop_hy_addtag1').show()
         })
       })
 
-      $(".backlist").click(function(){
+      $('.quedingfl').click(function() {
+        $('.pop_hy_edittag').hide()
+        $('.pop_bg').hide()
+      })
+
+      $('.backlist').click(function() {
         history.back()
       })
     </script>

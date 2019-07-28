@@ -61,7 +61,6 @@ $(function(){
                             var ind = 0
                             var wx_raw = []
                             var wx_nick = []
-                            var lablegroup = []
                             for(var id in data){
                                 //微信号
                                 // if(data[id].wxid_raw != "" || data[id].nick != ""){
@@ -75,10 +74,6 @@ $(function(){
                                 //     localStorage.setItem("weixinnick",JSON.stringify(wx_nick))
                                 // }
                                 
-        
-                                lablegroup.push(data[id].lable)
-                                var lablegroup =  norepeat(lablegroup)
-                                localStorage.setItem("lablegroup",JSON.stringify(lablegroup))
                                 ind ++;
                                 ind = ind < 10 ? "0" + ind : ind
                                 str += `

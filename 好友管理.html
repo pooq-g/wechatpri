@@ -268,20 +268,38 @@
             <span class="fz fl">好友昵称：王展鹏</span>
             <span class="fz fr">所属账号：邵磊盛</span>
         </div>
-        <div class="dialog_box">
+        <div class="dialog_box" style="position: relative">
             <textarea name="" class="ipt textarea" placeholder="请输入..."></textarea>
+            <div class="positiemoij" style="width: 100%;position: absolute;left:0;top: 0;background:#f4f4fc;display: none">
+                    <div class="expression expression1 one" >
+                            <div class="scroll-wrapper">
+                              <div class="face-tb">
+                                  <ul>
+                                    
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                      
+                            <div class="expression expression2 " >
+                                <div class="scroll-wrapper">
+                                  <div class="face-tb">
+                                      <ul>
+                                        
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </div>
+                                <ul>
+                                  <li>1</li>
+                                  <li>2</li>
+                                </ul>
+            </div>
             <div class="bar clearfix group-sending">
                 <em class="bq"></em>
                 <span class="fz fr frs">还可输入3000字，按Enter键换行</span>
-                <div class="expression" id="face-1564158560341" style="display: block;">
-                        <div class="scroll-wrapper">
-                          <div class="face-tb">
-                              <ul>
-                                
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
+                
+                <!--  -->
             </div>
         </div>
     </div>
@@ -367,7 +385,7 @@
 <script src="js/jquery-1.8.3.min.js"></script>
 <script src="layui/layui.js" charset="utf-8"></script>
 <script src="js/common.js" charset="utf-8"></script>
-<script src="js/loginout.js"></script>
+<!-- <script src="js/loginout.js"></script> -->
 <script src="js/norepeat.js"></script>
 <script src="js/face.js"></script>
 <script>
@@ -380,7 +398,6 @@ var form = layui.form
 
 token = localStorage.getItem("token")
 wxid_raw =JSON.parse(localStorage.getItem("wxid_raw"))
-console.log(token,wxid_raw)
 for(var id in wxid_raw){
         var data =
         '{"type":' +
@@ -481,6 +498,9 @@ $('.addtagBtn').click(function(){
     $('.pop_hy_addtag').show();
     $('.pop_bg').show();
 });
+
+
+
 //去聊天
 $("body").delegate(".msgBtn","click",function(){
     $('.pop_chart_msg').show();
@@ -489,8 +509,37 @@ $("body").delegate(".msgBtn","click",function(){
     var nickname = $(this).get(0).getAttribute("data-nickname")
     nickname = "好友昵称：" + nickname
     $(".pop_chart_msg .fl").html(nickname)
+
+   
+    //表情包
+    var count = 0
+    $(".bq").click(function(){
+        count++
+        if(count%2 == 0){
+            $(".positiemoij").hide()
+        }else{
+            $(".positiemoij").show()
+        }
+        var content = $(".textarea").val()
+
+        //输入表情
+        $(".positiemoij>.expression li").click(function(){
+            console.log(content)
+            var name = $(this).find("i").get(0).getAttribute("data-name")
+            $(".positiemoij").hide()
+            //$content += $(".ipt").val("["+name+"]")
+            content += "["+name+"]"
+                
+                console.log(content)
+                $(".textarea").val(content)
+            })
+
+    })
+
+    
     
     $(".queding2").click(function(){
+        $(".positiemoij").hide()
         var $content = $("textarea").val()
         var data =
         '{"type":' +
@@ -552,6 +601,13 @@ $('.edittagBtn').click(function(){
 });
   
 });
+
+$(".positiemoij>ul li").click(function(){
+    var $ind = $(this).text()-1
+    console.log($ind)
+    $(".expression").eq($ind).addClass("one").siblings().removeClass("one")
+})
+
 
 
 //控制输入的文字数量

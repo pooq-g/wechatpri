@@ -21,9 +21,32 @@ var m = 0;
 for(var i = 0; i < 7; i++){
     //列
     for(var j = 0; j < 15; j++){
-    $("li").eq(m).find("i").css({"background-position-x":-29*j + "px","background-position-y":-29*i + "px"})
+    $(".expression1 ul li").eq(m).find("i").css({"background-position-x":-29*j + "px","background-position-y":-29*i + "px"})
     m++
 }
+}
+
+var str2 = ""
+for(var i = 0; i< face2.length; i++){
+    str2 += `
+    <li>
+                <a href="javascript:void(0)" title="${face2[i]}">
+                 
+                  <i class="imgFace" data-name="${face2[i]}"></i>
+              </a>
+            </li>
+    `
+    
+}
+$(".expression2 ul").append(str2)
+
+var n = 0;
+for(var i = 0; i <12; i++){
+    //列
+    for(var j = 0; j < 15; j++){
+        $(".expression2 ul li").eq(n).find("i").css({"background-position-x":-32*j + "px","background-position-y":-32*i + "px"})
+        n++
+    }
 }
 
 

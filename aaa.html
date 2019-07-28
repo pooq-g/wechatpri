@@ -11,7 +11,7 @@
         margin:0;
         padding: 0
       }
-      .group-sending .expression{
+      .expression{
         position: relative;
         top: 0;
         bottom: 45px;
@@ -22,6 +22,7 @@
     position: absolute;
     z-index: 5;
     background: #fff;
+    display: none
     }
 
     .expression1{
@@ -33,9 +34,6 @@
     }
     .expression .scroll-wrapper{
       box-sizing: border-box;
-       /* margin: 10px 0; 
-    padding: 0 10px; */
-    /* overflow-x: auto; */
     }
     .expression .face-tb{
       width: 100%;
@@ -65,13 +63,19 @@
       margin: auto;
     display: block;
     width: 100%;
-    height: 30px;
+    
     float: left;
     }
     
+    .expression1 .face-tb a{
+      height: 30px;
+    }
+    .expression2 .face-tb a{
+      height: 32px;
+    }
   
 
-    .expression .face-tb a i{
+    .expression1 .face-tb a i{
       background: url(./images/1.png) no-repeat;
       margin: auto;
     display: block;
@@ -79,14 +83,37 @@
     height: 30px;
     /* margin:0 3px  */
     }
+    .expression2 .face-tb a i{
+      background: url(./images/2.png) no-repeat;
+      margin: auto;
+    display: block;
+    width: 32px;
+    height: 32px;
+    /* margin:0 3px  */
+    }
 
+.one{
+  display: block
+}
 
+.positiemoij>ul{
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  width:500px;
+  height:10px;
+  background: #f00
+}
+.positiemoij>ul li{
+  float: left;
+  width: 50%
+}
     </style>
   </head>
   <body>
    
-<div class="group-sending">
-    <div class="expression expression1" style="display: block;">
+<div class="positiemoij">
+    <div class="expression expression1 " >
       <div class="scroll-wrapper">
         <div class="face-tb">
             <ul>
@@ -96,7 +123,7 @@
         </div>
       </div>
 
-      <div class="expression expression2" style="display: block;">
+      <div class="expression expression2 one">
           <div class="scroll-wrapper">
             <div class="face-tb">
                 <ul>
@@ -105,6 +132,10 @@
               </div>
             </div>
           </div>
+          <ul>
+            <li>1</li>
+            <li>2</li>
+          </ul>
     </div>
 
 

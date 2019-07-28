@@ -111,21 +111,28 @@
             <h6 class="firend_tit">好友列表</h6>
             <div class="friend_bar clearfix layui-form">
                 <div class="selectbox fl">
-                    <select name="" id="">
+                    <select 
+                    name="category1"
+                lay-filter="category1"
+                aria-invalid="false"
+                id="">
                         <option value="1">全部</option>
                         <option value="2">全部</option>
                         <option value="3">全部</option>
                     </select>
                 </div>
                 <div class="selectbox fl">
-                    <select name="" id="">
+                    <select name="category2"
+                    lay-filter="category2"
+                    aria-invalid="false"
+                    id="">
                         <option value="1">标签</option>
                         <option value="2">标签</option>
                         <option value="3">标签</option>
                     </select>
                 </div>
                 <div class="searchbox fl">
-                    <input type="text" class="ipt ipt_txt" placeholder="请输入好友昵称"/>
+                    <input type="text" class="ipt ipt_txt searchnick" placeholder="请输入好友昵称"/>
                 </div>
                 <button class="button add fr addtagBtn">新建标签</button>
             </div>
@@ -146,7 +153,7 @@
                         <th width="21%">操作</th>
                     </thead>
                     <tbody>
-                        <tr>
+                      <!--    <tr>
                             <td>
                                 <input type="checkbox" name="" lay-skin="primary" lay-filter="itemChoose">
                             </td>
@@ -165,7 +172,7 @@
                                 <a href="javascript:;" class="lk_ico quan chartquanBtn">朋友圈</a>
                             </td>
                         </tr>
-                     <!--    <tr>
+                       <tr>
                             <td>
                                 <input type="checkbox" name="" lay-skin="primary" lay-filter="itemChoose">
                             </td>
@@ -279,9 +286,9 @@
                                   </ul>
                                 </div>
                               </div>
-                            </div>
+                        </div>
                       
-                            <div class="expression expression2 " >
+                    <div class="expression expression2 " >
                                 <div class="scroll-wrapper">
                                   <div class="face-tb">
                                       <ul>
@@ -289,17 +296,16 @@
                                       </ul>
                                     </div>
                                   </div>
-                                </div>
-                                <ul>
-                                  <li>1</li>
-                                  <li>2</li>
-                                </ul>
+                        </div>
+                    <ul class="nextemoij">
+                        <li>1</li>
+                        <li>2</li>
+                    </ul>
             </div>
             <div class="bar clearfix group-sending">
                 <em class="bq"></em>
                 <span class="fz fr frs">还可输入3000字，按Enter键换行</span>
-                
-                <!--  -->
+          
             </div>
         </div>
     </div>
@@ -385,245 +391,11 @@
 <script src="js/jquery-1.8.3.min.js"></script>
 <script src="layui/layui.js" charset="utf-8"></script>
 <script src="js/common.js" charset="utf-8"></script>
-<!-- <script src="js/loginout.js"></script> -->
+<script src="js/loginout.js"></script>
 <script src="js/norepeat.js"></script>
 <script src="js/face.js"></script>
+<script src="js/friendmanage.js"></script>
 <script>
-layui.use(['form', 'upload', 'laydate'], function(){
-var form = layui.form
-,layer = layui.layer
-,layedit = layui.layedit
-,laydate = layui.laydate
-,upload = layui.upload;
-
-token = localStorage.getItem("token")
-wxid_raw =JSON.parse(localStorage.getItem("wxid_raw"))
-for(var id in wxid_raw){
-        var data =
-        '{"type":' +
-        '"get_friend_list",' +
-        '"wxid":' +
-        '"'+wxid_raw[id]+'",' +
-        '"limit1":' +
-        '"'+0+'",' +
-        '"limit2":' +
-        '"'+20+'",' +
-        '"ticket":' +
-        '"'+token+'"' +
-        '}'
-
-        //传入参数
-        //console.log(data)
-
-        $.ajax({
-        type: 'post',
-        url: 'http://192.168.10.177/api.esp',
-        data:data,
-        dataType: 'json',
-        success:function(msg){
-            console.log(msg)
-            if(msg.err_code == 0){
-                var data = msg.data
-                console.log(data)
-                var str = "";
-                var ind = 0
-                let msglist = []
-                var wxfrom = []
-                for(var id in data){
-                    //存储本人账号对应以及对应的好友账号
-                    wxfrom.push({"selfwx":data[id].from_wxid,"fronwx":data[id].friend_wxid})
-                    wxfrom = norepeat(wxfrom)
-                    console.log(wxfrom)
-                    localStorage.setItem("wxfrom",JSON.stringify(wxfrom))
-
-
-                    msglist.push(data[id].friend_wxid)
-                    msglist = norepeat(msglist)
-                    str += `
-                    <tr>
-                            <td>
-                                <input type="checkbox" name="" lay-skin="primary" lay-filter="itemChoose">
-                            </td>
-                            <td>${data[id].friend_wxid}</td>
-                            <td>
-                                    <img src="${data[id].headurl}" data-id=${data[id].id} style="width:31px;height:31px;border-radius:50%">
-                                ${data[id].nickname}</td>
-                            <td>${data[id].friend_wxid}</td>
-                            <td>
-                                <em class="c_blue">同学家庭</em>
-                            </td>
-                            <td>${data[id].from_wxid}</td>
-                            <td>
-                                <a href="javascript:;" class="lk c_blue chartdetBtn">查看详情</a>
-                            </td>
-                            <td>
-                                <a href="javascript:;" class="lk_ico chart msgBtn" data-friend=${data[id].friend_wxid} data-nickname=${data[id].nickname}>去聊天</a>
-                                <a href="javascript:;" class="lk_ico quan chartquanBtn">朋友圈</a>
-                            </td>
-                        </tr>
-                    `
-                }
-                $("tbody").append(str)  
-                localStorage.setItem("friend_wxid",JSON.stringify(msglist))
-                form.render('checkbox');
-            }
-        },
-        error:function(err){
-            console.log(err)
-        }
-    })
-}
-
-
-form.on('checkbox(allChoose)', function(data){
-    var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
-    child.each(function(index, item){
-        item.checked = data.elem.checked;
-    });
-    form.render('checkbox');
-});
-form.on('checkbox(itemChoose)',function(data){
-    var sib = $(data.elem).parents('table').find('tbody input[type="checkbox"]:checked').length;
-    var total = $(data.elem).parents('table').find('tbody input[type="checkbox"]').length;
-    if(sib == total){
-        $(data.elem).parents('table').find('thead input[type="checkbox"]').prop("checked",true);
-        form.render();
-    }else{
-        $(data.elem).parents('table').find('thead input[type="checkbox"]').prop("checked",false);
-        form.render();
-    }
-}); 
-
-$('.addtagBtn').click(function(){
-    $('.pop_hy_addtag').show();
-    $('.pop_bg').show();
-});
-
-
-
-//去聊天
-$("body").delegate(".msgBtn","click",function(){
-    $('.pop_chart_msg').show();
-    $('.pop_bg').show();
-    var $friend = $(this).get(0).getAttribute("data-friend")
-    var nickname = $(this).get(0).getAttribute("data-nickname")
-    nickname = "好友昵称：" + nickname
-    $(".pop_chart_msg .fl").html(nickname)
-
-   
-    //表情包
-    var count = 0
-    $(".bq").click(function(){
-        count++
-        if(count%2 == 0){
-            $(".positiemoij").hide()
-        }else{
-            $(".positiemoij").show()
-        }
-        var content = $(".textarea").val()
-
-        //输入表情
-        $(".positiemoij>.expression li").click(function(){
-            console.log(content)
-            var name = $(this).find("i").get(0).getAttribute("data-name")
-            $(".positiemoij").hide()
-            //$content += $(".ipt").val("["+name+"]")
-            content += "["+name+"]"
-                
-                console.log(content)
-                $(".textarea").val(content)
-            })
-
-    })
-
-    
-    
-    $(".queding2").click(function(){
-        $(".positiemoij").hide()
-        var $content = $("textarea").val()
-        var data =
-        '{"type":' +
-        '"send_msg",' +
-        '"wxid":' +
-        '"'+wxid_raw+'",' +
-        '"to_wxid":' +
-        '"z1161091470",' +
-        '"content":' +
-        '"'+$content+'",' +
-        '"ticket":' +
-        '"'+token+'"' +
-        '}'
-        //console.log(data)
-
-        $.ajax({
-            type: 'post',
-            url: 'http://192.168.10.177/api.esp',
-            data:data,
-            dataType: 'json',
-            success:function(msg){
-                //console.log(msg)
-                if(msg.err_code == 0){
-                    $('.pop_hy_addtag1').hide();
-                    $('.pop_bg').hide();
-                    layer.msg("发送成功")
-                }else{
-                    layer.msg("发送失败")
-                }
-                $("textarea").val("")
-            },
-            error:function(err){
-                console.log(err)
-            }
-        })
-    })
-    
-})
-//去朋友圈
-$("body").delegate(".chartquanBtn","click",function(){
-    $('.pop_chart_quan').show();
-    $('.pop_bg').show();
-})
-
-$("body").delegate(".chartdetBtn","click",function(){
-    $('.pop_chart_det').show();
-    $('.pop_bg').show();
-})
-
-
-// $('.chartdetBtn').click(function(){
-//     $('.pop_chart_det').show();
-//     $('.pop_bg').show();
-// });  
- 
-$('.edittagBtn').click(function(){
-    $('.pop_hy_edittag').show();
-    $('.pop_bg').show();
-});
-  
-});
-
-$(".positiemoij>ul li").click(function(){
-    var $ind = $(this).text()-1
-    console.log($ind)
-    $(".expression").eq($ind).addClass("one").siblings().removeClass("one")
-})
-
-
-
-//控制输入的文字数量
-$("body").delegate(".ipt","propertychange input",function(){
-    if($(this).length > 0){
-        var $len = $(this).val().length
-        var $inputlen = 3000-$len;
-        $(".frs").html("还可输入"+$inputlen +"字，按Enter键换行")
-        if($len >= 3000){ 
-            $(this).val($(this).val().substring(0,3000));    
-            $(".words").html(0)
-        }
-    }else{
-        console.log("未输入")
-    }
-})
 </script>
 <script type="text/javascript" src="js/mypage.js"></script>
 

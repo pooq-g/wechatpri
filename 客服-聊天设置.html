@@ -85,9 +85,10 @@
                   <input
                     type="radio"
                     name="sex"
-                    value=""
+                    value="好友聊天消息全部接入客服系统"
                     title="好友聊天消息全部接入客服系统"
                     checked=""
+                    lay-filter="messageset"
                   />
                 </div>
               </li>
@@ -96,8 +97,9 @@
                   <input
                     type="radio"
                     name="sex"
-                    value=""
+                    value="启用关键词匹配，当消息触发了相应的关键词后，该好友的消息生成问题接入客服系统中。"
                     title="启用关键词匹配，当消息触发了相应的关键词后，该好友的消息生成问题接入客服系统中。"
+                    lay-filter="messageset"
                   />
                 </div>
               </li>
@@ -118,6 +120,17 @@
           layedit = layui.layedit,
           laydate = layui.laydate,
           upload = layui.upload
+
+        //选择消息设置
+        form.on('radio(messageset)', function(data) {
+          //选中的dom元素
+          //console.log(data.elem);
+          // alert(data.value);//判断单选框的选中值
+          //alert(data.othis);
+          // layer.tips('开关checked：' + (this.checked ? 'true' : 'false'), data.othis);
+          //选中的value值
+          console.log(data.value)
+        })
       })
     </script>
   </body>

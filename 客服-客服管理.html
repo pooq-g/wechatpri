@@ -108,7 +108,7 @@
         <div class="qg_main bg_white mb20">
             <div class="friend_bar clearfix layui-form friend_bar2 pb0">
                 <div class="searchbox fl">
-                    <input type="text" class="ipt ipt_txt" placeholder="请输入客服名称"/>
+                    <input type="text" class="ipt ipt_txt searchkefu" placeholder="请输入客服名称"/>
                 </div>
                 <button class="button_ico add fr addkfBtn">添加客服</button>
                 <button class="button_ico add fr addkfBtn addkfBtns">客服聊天</button>
@@ -214,14 +214,14 @@
             <li class="clearfix">
                <span class="tit">账号名称</span>
                <div class="info">
-                   <input type="text" class="ipt ipt_txt" placeholder="请输入账号名称"/>
-                   <p class="fz">可使用中文、英文（不区分大小写)、数字，不超过20个字。</p>
+                   <input type="text" class="ipt ipt_txt addacount" placeholder="请输入账号名称"/>
+                   <p class="fz ">可使用中文、英文（不区分大小写)、数字，不超过20个字。</p>
                </div>
             </li>
             <li class="clearfix">
                <span class="tit">登录密码</span>
                <div class="info">
-                   <input type="password" class="ipt ipt_txt" placeholder="请输入登录密码"/>
+                   <input type="password" class="ipt ipt_txt addpsw" placeholder="请输入登录密码"/>
                    <p class="fz">可使用英文（不区分大小写)、数字，不超过20个字。</p>
                </div>
             </li>
@@ -247,14 +247,14 @@
             <li class="clearfix">
                <span class="tit">账号名称</span>
                <div class="info">
-                   <input type="text" class="ipt ipt_txt" placeholder="请输入账号名称"/>
+                   <input type="text" class="ipt ipt_txt bianjiaccount" placeholder="请输入账号名称"/>
                    <p class="fz">可使用中文、英文（不区分大小写)、数字，不超过20个字。</p>
                </div>
             </li>
             <li class="clearfix">
                <span class="tit">登录密码</span>
                <div class="info">
-                   <input type="password" class="ipt ipt_txt" placeholder="请输入登录密码"/>
+                   <input type="password" class="ipt ipt_txt bianjipsw" placeholder="请输入登录密码"/>
                    <p class="fz">可使用英文（不区分大小写)、数字，不超过20个字。</p>
                </div>
             </li>
@@ -287,8 +287,66 @@ var form = layui.form
 ,laydate = layui.laydate
 ,upload = layui.upload;
   
-  
+   //搜索客服
+ $('body').delegate('.searchkefu', 'propertychange input', function() {
+      console.log($(this).val())
+    })
 
+     //添加客服账号
+ $('body').delegate('.addacount', 'propertychange input', function() {
+  if ($(this).val().length > 0) {
+      var $len = $(this).val().length
+      if ($len >= 20) {
+        $(this).val(
+          $(this)
+            .val()
+            .substring(0, 20)
+        )
+      }
+    } 
+    })
+
+     //添加密码
+ $('body').delegate('.addpsw', 'propertychange input', function() {
+  if ($(this).val().length > 0) {
+      var $len = $(this).val().length
+      if ($len >= 20) {
+        $(this).val(
+          $(this)
+            .val()
+            .substring(0, 20)
+        )
+      }
+    } 
+    })
+
+     //编辑账号
+ $('body').delegate('.bianjiaccount', 'propertychange input', function() {
+  if ($(this).val().length > 0) {
+      var $len = $(this).val().length
+      if ($len >= 20) {
+        $(this).val(
+          $(this)
+            .val()
+            .substring(0, 20)
+        )
+      }
+    } 
+    })
+
+     //编辑密码
+ $('body').delegate('.bianjipsw', 'propertychange input', function() {
+  if ($(this).val().length > 0) {
+      var $len = $(this).val().length
+      if ($len >= 20) {
+        $(this).val(
+          $(this)
+            .val()
+            .substring(0, 20)
+        )
+      }
+    } 
+    })
 
 });
 $('.addkfBtn').click(function(){

@@ -725,7 +725,7 @@ body{min-width:1200px;background: #f4f4fc;}
 .chart_bottom_l{width: 543px;}
 .chart_dialog{background: #f4f4fc;padding: 0 0 15px;}
 .chart_dialog .list{height: 435px;overflow-y: scroll;padding:20px 20px 0;}
-.chart_dialog li{margin-bottom: 20px;}
+.chart_dialog .list li{margin-bottom: 20px;}
 .chart_dialog .hdimg{width: 46px;height: 46px;border-radius:50%;display: inline-block;vertical-align: middle;}
 .chart_dialog .txt{font-size: 14px;color: #333333;line-height: 30px;padding:10px 15px;border-radius:4px;background: #fff;display: inline-block;vertical-align: middle;}
 .chart_dialog li.odd{}
@@ -788,7 +788,8 @@ body{min-width:1200px;background: #f4f4fc;}
 .expression{
 position: absolute;
 z-index: 5;
-display: none
+display: none;
+
 }
 
 .bar .expression1{
@@ -840,14 +841,12 @@ float: left;
   height: 32px;
 }
 
-
 .expression1 .face-tb a i{
   background: url(../images/1.png) no-repeat;
   margin: auto;
 display: block;
 width: 30px;
 height: 30px;
-/* margin:0 3px  */
 }
 .expression2 .face-tb a i{
   background: url(../images/2.png) no-repeat;
@@ -855,22 +854,21 @@ height: 30px;
 display: block;
 width: 32px;
 height: 32px;
-/* margin:0 3px  */
 }
 
 .one{
 display: block
 }
 
-.positiemoij>ul{
+.positiemoij .nextemoij{
 position: absolute;
 bottom: -250px;
 left: 0;
 width:80px;
 height:30px;
-margin-left:50px
+margin-left:250px
 }
-.positiemoij>ul li{
+.positiemoij .nextemoij li{
 float: left;
 width: 50%;
 text-align: center;

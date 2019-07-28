@@ -81,7 +81,11 @@
     <div class="layui-body">
         <div class="friend_bar clearfix layui-form friend_bar2">
             <div class="selectbox fl">
-                <select name="" id="">
+                <select 
+                name="category"
+                lay-filter="category"
+                aria-invalid="false"
+                id="">
                     <option value="1">全部会员</option>
                     <option value="2">全部会员</option>
                     <option value="3">全部会员</option>
@@ -373,6 +377,17 @@ var form = layui.form
 ,layedit = layui.layedit
 ,laydate = layui.laydate
 ,upload = layui.upload;
+
+
+//群发对象
+form.on('select(category)', function(data) {
+  category = data.value
+  categoryName = data.elem[data.elem.selectedIndex].text
+  console.log(categoryName)
+  form.render('select')
+})
+
+
  
 form.on('checkbox(allChoose)', function(data){
     var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');

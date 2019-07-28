@@ -79,7 +79,12 @@
         <div class="friend_bar layui-form">
           <li class="item">
             <div class="selectbox">
-              <select name="" id="">
+              <select
+                name="category"
+                lay-filter="category"
+                aria-invalid="false"
+                id=""
+              >
                 <option value="1">选择发布账号</option>
                 <option value="2">选择发布账号</option>
                 <option value="3">选择发布账号</option>
@@ -89,12 +94,42 @@
         </div>
         <div class="qg_tit">发布内容</div>
         <div class="qg_main bg_white layui-form">
-          <div class="friend_text">
+          <div class="friend_text" style="position: relative">
             <textarea
               name=""
-              class="ipt textarea"
+              class="ipt textarea textarea1"
               placeholder="说说你的想法吧。。。"
             ></textarea>
+            <div
+              class="positiemoij"
+              style="width: 512px;position: absolute;left:0;top: 0;display: none;"
+            >
+              <div
+                class="expression expression1 one"
+                style="background: #fff !important"
+              >
+                <div class="scroll-wrapper">
+                  <div class="face-tb">
+                    <ul></ul>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="expression expression2"
+                style="width: 736px;background: #fff !important"
+              >
+                <div class="scroll-wrapper">
+                  <div class="face-tb">
+                    <ul></ul>
+                  </div>
+                </div>
+              </div>
+              <ul class="nextemoij" style="bottom: -301px">
+                <li>1</li>
+                <li>2</li>
+              </ul>
+            </div>
             <div class="bar">
               <span class="bq"></span>
               <span class="words fr">0/1000</span>
@@ -110,10 +145,17 @@
                   value="图片"
                   title="图片"
                   checked=""
+                  lay-filter="pic"
                 />
               </div>
               <div class="grp">
-                <input type="radio" name="type" value="链接" title="链接" />
+                <input
+                  type="radio"
+                  name="type"
+                  value="链接"
+                  title="链接"
+                  lay-filter="pic"
+                />
               </div>
             </div>
             <div class="fileup_box">
@@ -137,6 +179,7 @@
                   value="展示评论"
                   title="展示评论"
                   checked=""
+                  lay-filter="comment"
                 />
               </div>
               <div class="grp">
@@ -145,13 +188,14 @@
                   name="com"
                   value="隐藏评论"
                   title="隐藏评论"
+                  lay-filter="comment"
                 />
               </div>
             </div>
             <p class="fz">评论（可多选）</p>
             <textarea
               name=""
-              class="ipt textarea"
+              class="ipt textarea textarea2"
               placeholder="请输入评论，多条评论请用；分隔"
             ></textarea>
           </div>
@@ -167,6 +211,7 @@
     <script src="layui/layui.js" charset="utf-8"></script>
     <script src="js/common.js" charset="utf-8"></script>
     <script src="js/loginout.js"></script>
+    <script src="js/face.js"></script>
     <script>
       layui.use(['form', 'upload', 'laydate'], function() {
         var form = layui.form,
@@ -174,6 +219,63 @@
           layedit = layui.layedit,
           laydate = layui.laydate,
           upload = layui.upload
+
+        //选择发布账号
+        form.on('select(category)', function(data) {
+          category = data.value
+          categoryName = data.elem[data.elem.selectedIndex].text
+          console.log(categoryName)
+          form.render('select')
+        })
+
+        //表情包
+        var count = 0
+        $('.bq').click(function() {
+          count++
+          if (count % 2 == 0) {
+            $('.positiemoij').hide()
+          } else {
+            $('.positiemoij').show()
+          }
+          var content = $('.textarea1').val()
+
+          //输入表情
+          $('.positiemoij>.expression li').click(function() {
+            console.log(content)
+            var name = $(this)
+              .find('i')
+              .get(0)
+              .getAttribute('data-name')
+            $('.positiemoij').hide()
+            //$content += $(".ipt").val("["+name+"]")
+            content += '[' + name + ']'
+
+            console.log(content)
+            $('.textarea1').val(content)
+          })
+        })
+
+        //选择发送的类型
+        form.on('radio(pic)', function(data) {
+          //选中的dom元素
+          //console.log(data.elem);
+          // alert(data.value);//判断单选框的选中值
+          //alert(data.othis);
+          // layer.tips('开关checked：' + (this.checked ? 'true' : 'false'), data.othis);
+          //选中的value值
+          console.log(data.value)
+        })
+
+        //选择发品论提醒设置
+        form.on('radio(comment)', function(data) {
+          //选中的dom元素
+          //console.log(data.elem);
+          // alert(data.value);//判断单选框的选中值
+          //alert(data.othis);
+          // layer.tips('开关checked：' + (this.checked ? 'true' : 'false'), data.othis);
+          //选中的value值
+          console.log(data.value)
+        })
       })
     </script>
     <script src="js/webuploader.min.js"></script>
@@ -202,19 +304,33 @@
       })
 
       //控制输入的文字数量
-      $("body").delegate(".ipt","propertychange input",function(){
-        if($(this).length > 0){
-            var $len = $(this).val().length
-            var $inputlen = 1000-$len;
-            $(".words").html($inputlen + "/1000")
-            if($len >= 1000){ 
-                $(this).val($(this).val().substring(0,1000));    
-                $(".words").html(0)
-            }
-        }else{
-            console.log("未输入")
+      $('body').delegate('.ipt', 'propertychange input', function() {
+        if ($(this).length > 0) {
+          var $len = $(this).val().length
+          var $inputlen = 1000 - $len
+          $('.words').html($inputlen + '/1000')
+          if ($len >= 1000) {
+            $(this).val(
+              $(this)
+                .val()
+                .substring(0, 1000)
+            )
+            $('.words').html(0)
+          }
+        } else {
+          console.log('未输入')
         }
-    })
+      })
+
+      $('.positiemoij>ul li').click(function() {
+        var $ind = $(this).text() - 1
+        console.log($ind)
+        $('.expression')
+          .eq($ind)
+          .addClass('one')
+          .siblings()
+          .removeClass('one')
+      })
     </script>
   </body>
 </html>

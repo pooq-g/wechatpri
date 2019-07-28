@@ -80,10 +80,15 @@
           <div class="friend_bar clearfix layui-form friend_bar2">
             <span class="fz fl">账号</span>
             <div class="selectbox fl">
-              <select name="" id="">
-                <option value="1">全部</option>
-                <option value="2">全部</option>
-                <option value="3">全部</option>
+              <select
+                name="category"
+                lay-filter="category"
+                aria-invalid="false"
+                id=""
+              >
+                <option value="">全部账号</option>
+                <option value="1">全部账号</option>
+                <option value="2">全部账号</option>
               </select>
             </div>
           </div>
@@ -120,6 +125,13 @@
           layedit = layui.layedit,
           laydate = layui.laydate,
           upload = layui.upload
+
+        form.on('select(category)', function(data) {
+          category = data.value
+          categoryName = data.elem[data.elem.selectedIndex].text
+          console.log(categoryName)
+          form.render('select')
+        })
       })
     </script>
   </body>

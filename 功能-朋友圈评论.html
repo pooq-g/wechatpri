@@ -80,7 +80,7 @@
             <div class="searchbox fl">
               <input
                 type="text"
-                class="ipt ipt_txt"
+                class="ipt ipt_txt searchnick"
                 placeholder="请输入朋友圈昵称"
               />
             </div>
@@ -210,6 +210,11 @@
           elem: '#datecope',
           range: true
         })
+
+         //搜索朋友圈昵称
+ $('body').delegate('.searchnick', 'propertychange input', function() {
+      console.log($(this).val())
+    })
       })
     </script>
     <script type="text/javascript" src="js/mypage.js"></script>

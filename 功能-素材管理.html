@@ -89,7 +89,7 @@
               <div class="searchbox fl searchbox2 clearfix">
                 <input
                   type="text"
-                  class="ipt ipt_txt fl"
+                  class="ipt ipt_txt fl searchnick"
                   placeholder="请输入模板名称（最多20字）"
                 />
                 <input type="button" value="" class="ipt ipt_button fr" />
@@ -194,6 +194,19 @@
           layedit = layui.layedit,
           laydate = layui.laydate,
           upload = layui.upload
+
+        //搜索模板名称昵称
+        $('body').delegate('.searchnick', 'propertychange input', function() {
+          if ($(this).val().length >= 20) {
+            //不超过20个字，最多20个字
+            $(this).val(
+              $(this)
+                .val()
+                .substring(0, 20)
+            )
+            console.log($(this).val())
+          }
+        })
 
         //指定允许上传的文件类型
         upload.render({

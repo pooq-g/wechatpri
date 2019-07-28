@@ -84,7 +84,7 @@
             <div class="searchbox fl">
               <input
                 type="text"
-                class="ipt ipt_txt"
+                class="ipt ipt_txt searchkj"
                 placeholder="请输入快捷语名称"
               />
             </div>
@@ -209,6 +209,11 @@
           laydate = layui.laydate,
           upload = layui.upload
 
+        //搜索快捷语名称
+        $('body').delegate('.searchkj', 'propertychange input', function() {
+          console.log($(this).val())
+        })
+
         form.on('checkbox(allChoose)', function(data) {
           var child = $(data.elem)
             .parents('table')
@@ -240,12 +245,9 @@
           }
         })
 
-
-        $(".add").click(function(){
-            location.href="账号-打招呼模板.html"
+        $('.add').click(function() {
+          location.href = '账号-打招呼模板.html'
         })
-        
-
       })
     </script>
     <script type="text/javascript" src="js/mypage.js"></script>

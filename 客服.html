@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="layui/css/layui.css" />
-    <link rel="stylesheet" href="css/iconcss.css" />
+    <!-- <link rel="stylesheet" href="css/iconcss.css" /> -->
     <title>客服</title>
   </head>
 
@@ -114,7 +114,31 @@
         </div>
         <div class="chart_bottom clearfix">
           <div class="chart_bottom_l fl">
-            <div class="chart_dialog">
+            <div class="chart_dialog" style="position: relative">
+              <div
+                class="positiemoij"
+                style="width: 100%;position: absolute;left:0;top: 0;background:#f00;display: none"
+              >
+                <div class="expression expression1 one">
+                  <div class="scroll-wrapper">
+                    <div class="face-tb">
+                      <ul></ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="expression expression2 ">
+                  <div class="scroll-wrapper">
+                    <div class="face-tb">
+                      <ul></ul>
+                    </div>
+                  </div>
+                </div>
+                <ul class="nextemoij" style="bottom: -405px">
+                  <li>1</li>
+                  <li>2</li>
+                </ul>
+              </div>
               <ul class="list scrolllist">
                 <!-- <li class="odd">
                   <img src="images/kf_10.png" alt="" class="hdimg" />
@@ -144,9 +168,9 @@
                 <div class="botbox">
                   <textarea
                     name=""
-                    placeholder="输入聊天内容"
                     id="demo"
-                    style="display: none"
+                    class="ipt textarea"
+                    placeholder="输入聊天内容"
                   ></textarea>
                 </div>
               </div>
@@ -234,6 +258,7 @@
     <script src="js/common.js" charset="utf-8"></script>
     <script src="js/loginout.js"></script>
     <script src="js/server.js"></script>
+    <script src="js/face.js"></script>
     <script>
       //一般直接写在一个js文件中
       layui.use(
@@ -257,12 +282,6 @@
           var table = layui.table
           var layedit = layui.layedit
 
-          layedit.build('demo') //建立编辑器
-          var index = layedit.build('demo', {
-            height: 30,
-            tool: ['face']
-          })
-          layedit.getText(index)
           upload.render({
             elem: '#test',
             url: '',
@@ -273,8 +292,46 @@
           })
         }
       )
+
+      //表情包
+      var count = 0
+      $('.bq').click(function() {
+        count++
+        if (count % 2 == 0) {
+          $('.positiemoij').hide()
+        } else {
+          $('.positiemoij').show()
+        }
+        var content = $('.textarea').val()
+
+        //输入表情
+        $('.positiemoij>.expression li').click(function() {
+          console.log(content)
+          var name = $(this)
+            .find('i')
+            .get(0)
+            .getAttribute('data-name')
+          $('.positiemoij').hide()
+          //$content += $(".ipt").val("["+name+"]")
+          content += '[' + name + ']'
+
+          console.log(content)
+          $('.textarea').val(content)
+        })
+      })
+
       $('.chart_focus .item').click(function() {
         $(this).toggleClass('this')
+      })
+
+      $('.positiemoij .nextemoij li').click(function() {
+        var $ind = $(this).text() - 1
+        console.log($ind)
+        $('.expression')
+          .eq($ind)
+          .addClass('one')
+          .siblings()
+          .removeClass('one')
       })
     </script>
   </body>

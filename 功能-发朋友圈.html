@@ -80,7 +80,7 @@
         <div class="bd_wrap bg_white">
             <div class="friend_bar clearfix layui-form friend_bar2 bg_f4">
                 <div class="searchbox fl">
-                    <input type="text" class="ipt ipt_txt" placeholder="请输入朋友圈昵称"/>
+                    <input type="text" class="ipt ipt_txt searchnick" placeholder="请输入朋友圈昵称"/>
                 </div>
                 <div class="datebox fl">
                     <input type="text" class="layui-input" id="datecope" placeholder="2019-06-12 至   2019-07-12" readonly>
@@ -245,9 +245,18 @@ var form = layui.form
   laydate.render({
     elem: '#datecope'
     ,range: true
+    ,change: function(value, date){ //监听日期被切换
+        //获取时间
+        console.log(value)
+    }
   });
   
 });
+
+ //搜索好友昵称
+ $('body').delegate('.searchnick', 'propertychange input', function() {
+      console.log($(this).val())
+    })
 
 $(".add").click(function(){
     location.href="功能-新建朋友圈.html"

@@ -4,8 +4,8 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" href="layui/css/layui.css" media="all" />
     <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/ullist.css">
-    <link rel="stylesheet" href="css/msgicon.css">
+    <link rel="stylesheet" href="css/ullist.css" />
+    <link rel="stylesheet" href="css/msgicon.css" />
     <title>功能-群发消息</title>
   </head>
 
@@ -84,7 +84,12 @@
         <div class="bd_wrap bg_white">
           <div class="friend_bar clearfix layui-form bg_f4">
             <div class="selectbox">
-              <select name="" id="">
+              <select
+                name="category"
+                lay-filter="category"
+                aria-invalid="false"
+                id=""
+              >
                 <option value="1">群发对象</option>
                 <option value="2">群发对象</option>
                 <option value="3">群发对象</option>
@@ -102,7 +107,7 @@
             </div>
 
             <ul class="template_bar msg-list" style="padding:22px">
-                <!-- <li>
+              <!-- <li>
                     <div class="num">
                       <span>1</span>
                     </div>
@@ -123,54 +128,82 @@
       </div>
     </div>
 
-        <!--添加文字-->
-        <div class="pop_bg"></div>
-        <div class="pop pop_chart pop_chart_msg pop_chart_msg1">
-          <h5 class="t_title">添加文字</h5>
-          <div class="detail">
-              <div class="dialog_box">
-                  <textarea name="" id="demo" class="ipt textarea" placeholder="请输入..."></textarea>
-                  <div class="bar clearfix">
-                      <em class="bq"></em>
-                      <span class="fz fr frs">还可输入300字，按Enter键换行</span>
-                      
-                  </div>
+    <!--添加文字-->
+    <div class="pop_bg"></div>
+    <div class="pop pop_chart pop_chart_msg pop_chart_msg1">
+      <h5 class="t_title">添加文字</h5>
+      <div class="detail">
+        <div class="dialog_box" style="position: relative">
+          <textarea
+            name=""
+            id="demo"
+            class="ipt textarea"
+            placeholder="请输入..."
+          ></textarea>
+          <div
+            class="positiemoij"
+            style="width: 100%;position: absolute;left:0;top: 0;background:#f4f4fc;display: none"
+          >
+            <div class="expression expression1 one">
+              <div class="scroll-wrapper">
+                <div class="face-tb">
+                  <ul></ul>
+                </div>
               </div>
-          </div>
-          <div class="btns clearfix">
-              <button class="button this queding1">确定</button>
-              <button class="button cancel">取消</button>
-          </div>
-      </div>
-    
-      <!-- 添加图片 -->
-      <div class="pop pop_chart pop_chart_msg pop_chart_msg2">
-        <h5 class="t_title">添加图片</h5>
-        
-        <div class="detail">
-            <div class="dialog_box">
-                <div style="padding:20px"> 
-                    <input type="file">
-                </div>
-                <div class="pic-list">
-                    <img class="image" src="" height="200" alt="Image preview...">
-                </div>
             </div>
+
+            <div class="expression expression2 ">
+              <div class="scroll-wrapper">
+                <div class="face-tb">
+                  <ul></ul>
+                </div>
+              </div>
+            </div>
+            <ul class="nextemoij">
+              <li>1</li>
+              <li>2</li>
+            </ul>
+          </div>
+          <div class="bar clearfix">
+            <em class="bq"></em>
+            <span class="fz fr frs">还可输入300字，按Enter键换行</span>
+          </div>
         </div>
-        <div class="btns clearfix">
-            <button class="button this queding2">确定</button>
-            <button class="button cancel">取消</button>
-        </div>
+      </div>
+      <div class="btns clearfix">
+        <button class="button this queding1">确定</button>
+        <button class="button cancel">取消</button>
+      </div>
     </div>
 
-  
+    <!-- 添加图片 -->
+    <div class="pop pop_chart pop_chart_msg pop_chart_msg2">
+      <h5 class="t_title">添加图片</h5>
+
+      <div class="detail">
+        <div class="dialog_box">
+          <div style="padding:20px">
+            <input type="file" />
+          </div>
+          <div class="pic-list">
+            <img class="image" src="" height="200" alt="Image preview..." />
+          </div>
+        </div>
+      </div>
+      <div class="btns clearfix">
+        <button class="button this queding2">确定</button>
+        <button class="button cancel">取消</button>
+      </div>
+    </div>
 
     <script src="js/jquery-1.8.3.min.js"></script>
     <script src="layui/layui.js" charset="utf-8"></script>
     <script src="js/common.js" charset="utf-8"></script>
     <script src="js/loginout.js"></script>
+    <script src="js/face.js"></script>
     <script>
-      layui.use([
+      layui.use(
+        [
           'layer',
           'form',
           'element',
@@ -179,130 +212,176 @@
           'laypage',
           'layedit',
           'upload'
-        ], function() {
-        var form = layui.form,
-          layer = layui.layer,
-          layedit = layui.layedit,
-          laydate = layui.laydate,
-          upload = layui.upload
+        ],
+        function() {
+          var form = layui.form,
+            layer = layui.layer,
+            layedit = layui.layedit,
+            laydate = layui.laydate,
+            upload = layui.upload
           var layedit = layui.layedit
 
-          //用于layui的富文本编辑
-          // layedit.build('demo') //建立编辑器
-          // var index = layedit.build('demo', {
-          //   tool: ['face']
-          // })
+          //群发对象
+          form.on('select(category)', function(data) {
+            category = data.value
+            categoryName = data.elem[data.elem.selectedIndex].text
+            console.log(categoryName)
+            form.render('select')
+          })
 
+          token = localStorage.getItem('token')
+          wxid_raw = localStorage.getItem('wxid_raw')
+          //获取好友微信列表
+          friend_wxid = JSON.parse(localStorage.getItem('friend_wxid'))
 
-      token = localStorage.getItem("token")
-      wxid_raw = localStorage.getItem("wxid_raw")
-      //获取好友微信列表
-      friend_wxid =JSON.parse(localStorage.getItem("friend_wxid"))
+          for (let i = 0; i < friend_wxid.length; i++) {
+            $('.dialog_box input').change(function() {
+              var preview = document.getElementsByClassName('image')
+              var file = document.querySelector('input[type=file]').files[0]
+              var reader = new FileReader()
 
-      for(let i = 0; i< friend_wxid.length; i++){
-
-        $(".dialog_box input").change(function(){
-          var preview = document.getElementsByClassName('image');
-            var file    = document.querySelector('input[type=file]').files[0];
-            var reader  = new FileReader();
-  
-            reader.addEventListener("load", function () {
-              
-              preview.src = reader.result;
-              var baseimg = reader.result
-              var data =
-                '{"type":' +
-                '"send_img",' +
-                '"wxid":' +
-                '"'+wxid_raw+'",' +
-                '"to_wxid":' +
-                '"'+friend_wxid[i]+'",' +
-                '"img":' +
-                '"'+baseimg+'",' +
-                '"ticket":' +
-                '"'+token+'"' +
-                '}'
-                //console.log(data)
-                $.ajax({
-                      type: 'post',
-                      url: 'http://192.168.10.177/api.esp',
-                      data:data,
-                      async:false,
-                      dataType: 'json',
-                      success:function(msg){
-                          console.log(msg)
-                          // if(msg.err_code !== 0){
-                          //     continue
-                          // }
-                      },
-                      error:function(err){
-                          console.log(err)
-                      }
+              reader.addEventListener(
+                'load',
+                function() {
+                  preview.src = reader.result
+                  var baseimg = reader.result
+                  var data =
+                    '{"type":' +
+                    '"send_img",' +
+                    '"wxid":' +
+                    '"' +
+                    wxid_raw +
+                    '",' +
+                    '"to_wxid":' +
+                    '"' +
+                    friend_wxid[i] +
+                    '",' +
+                    '"img":' +
+                    '"' +
+                    baseimg +
+                    '",' +
+                    '"ticket":' +
+                    '"' +
+                    token +
+                    '"' +
+                    '}'
+                  //console.log(data)
+                  $.ajax({
+                    type: 'post',
+                    url: 'http://192.168.10.177/api.esp',
+                    data: data,
+                    async: false,
+                    dataType: 'json',
+                    success: function(msg) {
+                      console.log(msg)
+                      // if(msg.err_code !== 0){
+                      //     continue
+                      // }
+                    },
+                    error: function(err) {
+                      console.log(err)
+                    }
                   })
-            }, false);
-            if (file) {
-              reader.readAsDataURL(file);
-            }
-          
-        })
-       
-      }  
-    
+                },
+                false
+              )
+              if (file) {
+                reader.readAsDataURL(file)
+              }
+            })
+          }
 
+          // //添加文字
+          $('.txts').click(function() {
+            $('.pop_chart_msg1').show()
+            $('.pop_bg').show()
 
-      // //添加文字
-       $('.txts').click(function(){
-           $('.pop_chart_msg1').show();
-           $('.pop_bg').show();
-           var str = ""
-           $(".queding1").unbind("click").bind("click",function(){
-             //用于获取编辑器内容
-            //var layuicontent = layedit.getContent(index)
-           //console.log(layuicontent)
-             str = `
+            //表情包
+            var count = 0
+            $('.bq').click(function() {
+              count++
+              if (count % 2 == 0) {
+                $('.positiemoij').hide()
+              } else {
+                $('.positiemoij').show()
+              }
+              var content = $('.textarea').val()
+
+              //输入表情
+              $('.positiemoij>.expression li').click(function() {
+                console.log(content)
+                var name = $(this)
+                  .find('i')
+                  .get(0)
+                  .getAttribute('data-name')
+                $('.positiemoij').hide()
+                //$content += $(".ipt").val("["+name+"]")
+                content += '[' + name + ']'
+
+                console.log(content)
+                $('.textarea').val(content)
+              })
+            })
+
+            var str = ''
+            $('.queding1')
+              .unbind('click')
+              .bind('click', function() {
+                //用于获取编辑器内容
+                //var layuicontent = layedit.getContent(index)
+                //console.log(layuicontent)
+                str = `
              <li>
                      <div class="num">
                        <span></span>
                      </div>
                      <div class="details" data-msgtype="text">
-                       <div class="text">${$(".textarea").val()}</div>
+                       <div class="text">${$('.textarea').val()}</div>
                      </div><div class="btnbox">
                          <a href="javascript:;" class="lk_ico editname"></a>
                          <a href="javascript:;" class="lk_ico quit"></a>
                      </div>
                    </li>
              `
-             $(".msg-list").append(str)
-             $('.pop_chart_msg1').hide();
-             $('.pop_bg').hide();
-             $(".textarea").val("")
-           })
-
-        }); 
-
-      })
+                $('.msg-list').append(str)
+                $('.pop_chart_msg1').hide()
+                $('.pop_bg').hide()
+                $('.textarea').val('')
+              })
+          })
+        }
+      )
 
       //添加图片
-      $('.pics').click(function(){
-          $('.pop_chart_msg2').show();
-          $('.pop_bg').show();
-      }); 
+      $('.pics').click(function() {
+        $('.pop_chart_msg2').show()
+        $('.pop_bg').show()
+      })
 
       //控制输入的文字数量
-      $("body").delegate(".pop_chart_msg1 .ipt","propertychange input",function(){
-          if($(this).length > 0){
-              var $len = $(this).val().length
-              var $inputlen = 300-$len;
-              $(".pop_chart_msg1 .frs").html("还可输入"+$inputlen +"字，按Enter键换行")
-              if($len >= 300){ 
-                  $(this).val($(this).val().substring(0,300));    
-                  $(".words").html(0)
-              }
-          }else{
-              console.log("未输入")
+      $('body').delegate(
+        '.pop_chart_msg1 .ipt',
+        'propertychange input',
+        function() {
+          if ($(this).length > 0) {
+            var $len = $(this).val().length
+            var $inputlen = 300 - $len
+            $('.pop_chart_msg1 .frs').html(
+              '还可输入' + $inputlen + '字，按Enter键换行'
+            )
+            if ($len >= 300) {
+              $(this).val(
+                $(this)
+                  .val()
+                  .substring(0, 300)
+              )
+              $('.words').html(0)
+            }
+          } else {
+            console.log('未输入')
           }
-      })
-    
+        }
+      )
     </script>
   </body>
 </html>

@@ -29,7 +29,6 @@ $(function() {
 
     token = localStorage.getItem('token')
     wxid_raw = JSON.parse(localStorage.getItem('wxid_raw'))
-    console.log(token, wxid_raw)
     for (var id in wxid_raw) {
       var data =
         '{"type":' +
@@ -61,24 +60,31 @@ $(function() {
         data: data,
         dataType: 'json',
         success: function(msg) {
-          console.log(msg)
           if (msg.err_code == 0) {
+            var totalcount = $('.item_1')
+              .find('.num')
+              .text()
+            totalcount = Number(totalcount)
+            var data = msg.data
+            totalcount += msg.friend_count
+            $('.item_1 .num').text(totalcount)
             var data = msg.data
             console.log(data)
             var str = ''
             var ind = 0
             let msglist = []
             var wxfrom = []
+            var count = 0
             for (var id in data) {
+              console.log(data[id])
               //存储本人账号对应以及对应的好友账号
               wxfrom.push({
                 selfwx: data[id].from_wxid,
                 fronwx: data[id].friend_wxid
               })
               wxfrom = norepeat(wxfrom)
-              console.log(wxfrom)
+              //console.log(wxfrom)
               localStorage.setItem('wxfrom', JSON.stringify(wxfrom))
-
               msglist.push(data[id].friend_wxid)
               msglist = norepeat(msglist)
               str += `
@@ -95,7 +101,9 @@ $(function() {
               } style="width:31px;height:31px;border-radius:50%">
                                         ${data[id].nickname}</td>
                                     <td>
-                                        <em class="c_blue">同学家庭</em>
+                                        <em class="c_blue" data-id=${
+                                          data[id].id
+                                        }>同学家庭</em>
                                     </td>
                                     <td>${data[id].from_wxid}</td>
                                     <td>
@@ -124,15 +132,115 @@ $(function() {
     }
 
     form.on('checkbox(allChoose)', function(data) {
+      var arr = []
       var child = $(data.elem)
         .parents('table')
         .find('tbody input[type="checkbox"]')
       child.each(function(index, item) {
         item.checked = data.elem.checked
+        arr.push(
+          $(item)
+            .parents('tr')
+            .find('td:nth-of-type(4) em')
+            .get(0)
+            .getAttribute('data-id')
+        )
       })
       form.render('checkbox')
+      //console.log(arr)
+      //点击修改标签
+      $('.edittagBtn').click(function() {
+        $('.queding3').click(function() {
+          //console.log($('.edittxt').val())
+          for (let i = 0; i < arr.length; i++) {
+            var data =
+              '{"type":' +
+              '"change_friend_lable",' +
+              '"id":' +
+              '"' +
+              arr[i] +
+              '",' +
+              '"lable":' +
+              '"' +
+              $('.edittxt').val() +
+              '",' +
+              '"ticket":' +
+              '"' +
+              token +
+              '"' +
+              '}'
+            //console.log(data)
+            $.ajax({
+              type: 'post',
+              url: 'http://192.168.10.177/api.esp',
+              data: data,
+              dataType: 'json',
+              success: function(msg) {
+                console.log(msg)
+                if (msg.err_code == 0) {
+                  layer.msg('修改成功')
+                } else {
+                  layer.msg('修改失败')
+                }
+              }
+            })
+          }
+        })
+      })
     })
     form.on('checkbox(itemChoose)', function(data) {
+      var arr = []
+      var imgOneAll = $(data.elem)
+        .parents('table')
+        .find('tbody input[type="checkbox"]:checked')
+      imgOneAll.each(function(index, item) {
+        //console.log(item)
+        arr.push(
+          $(item)
+            .parents('tr')
+            .find('td:nth-of-type(4) em')
+            .get(0)
+            .getAttribute('data-id')
+        )
+      })
+
+      $('.queding3').click(function() {
+        console.log($('.edittxt').val())
+        for (let i = 0; i < arr.length; i++) {
+          var data =
+            '{"type":' +
+            '"change_friend_lable",' +
+            '"id":' +
+            '"' +
+            arr[i] +
+            '",' +
+            '"lable":' +
+            '"' +
+            $('.edittxt').val() +
+            '",' +
+            '"ticket":' +
+            '"' +
+            token +
+            '"' +
+            '}'
+          //console.log(data)
+          $.ajax({
+            type: 'post',
+            url: 'http://192.168.10.177/api.esp',
+            data: data,
+            dataType: 'json',
+            success: function(msg) {
+              console.log(msg)
+              if (msg.err_code == 0) {
+                layer.msg('修改成功')
+              } else {
+                layer.msg('修改失败')
+              }
+            }
+          })
+        }
+      })
+
       var sib = $(data.elem)
         .parents('table')
         .find('tbody input[type="checkbox"]:checked').length

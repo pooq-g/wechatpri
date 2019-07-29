@@ -91,17 +91,19 @@
               />
             </div>
             <button class="button_ico add fr">添加自动回复模板</button>
+            <button class="button_ico addover fr">添加完毕</button>
           </div>
           <div class="friend_tablewrap">
             <table class="friend_table layui-form">
               <thead>
+                <th width="10%">&nbsp;&nbsp;全选</th>
                 <th width="10%">序号</th>
                 <th width="30%">模板标题</th>
                 <th width="20%">匹配关键词</th>
-                <th width="20%">操作</th>
+                <th width="30%">操作</th>
               </thead>
               <tbody>
-                <tr>
+                <!-- <tr>
                   <td>01</td>
                   <td>好了，好了，我知道了</td>
                   <td><em class="c_blue">不如</em></td>
@@ -160,7 +162,7 @@
                     <a href="javascript:;" class="lk_ico edit">编辑</a>
                     <a href="javascript:;" class="lk_ico delete">删除</a>
                   </td>
-                </tr>
+                </tr> -->
               </tbody>
             </table>
             <div class="pagelist_wrap">
@@ -190,6 +192,95 @@
           laydate = layui.laydate,
           upload = layui.upload
 
+        //获取好友模板
+        token = localStorage.getItem('token')
+        var data =
+          '{"type":' +
+          '"get_auto_send_template",' +
+          '"ticket":' +
+          '"' +
+          token +
+          '"' +
+          '}'
+        //传入参数
+        //console.log(data)
+        $.ajax({
+          type: 'post',
+          url: 'http://192.168.10.177/api.esp',
+          data: data,
+          dataType: 'json',
+          success: function(msg) {
+            if (msg.err_code == 0) {
+              var data = msg.data
+              var str = ''
+              var ind = 0
+              for (var i in data) {
+                ind++
+                ind = ind < 10 ? '0' + ind : ind
+                str += `
+              <tr>
+                  <td>
+                                          <input type="checkbox" name="" lay-skin="primary" lay-filter="itemChoose">
+                                      </td>
+                  <td>${ind}</td>
+                  <td>${data[i].content}</td>
+                  <td><em class="c_blue">${data[i].keywords}</em></td>
+
+                  <td>
+                    <a href="javascript:;" class="lk_ico delete" data-id=${
+                      data[i].id
+                    }>删除</a>
+                  </td>
+                </tr>
+                `
+              }
+              $('tbody').append(str)
+              form.render()
+            }
+          }
+        })
+
+        //删除关键词自动回复模板
+        $('body').delegate('.delete', 'click', function() {
+          var $id = $(this)
+            .get(0)
+            .getAttribute('data-id')
+
+          var data =
+            '{"type":' +
+            '"del_auto_send_template",' +
+            '"id":' +
+            '"' +
+            $id +
+            '",' +
+            '"ticket":' +
+            '"' +
+            token +
+            '"' +
+            '}'
+          //传入参数
+          //console.log(data)
+          $.ajax({
+            type: 'post',
+            url: 'http://192.168.10.177/api.esp',
+            data: data,
+            dataType: 'json',
+            success: function(msg) {
+              console.log(msg)
+              if (msg.err_code == 0) {
+                layer.msg('删除成功')
+                location.reload()
+              } else {
+                layer.msg('删除成功')
+                location.reload()
+              }
+            },
+            error: function(err) {
+              console.log(err)
+            }
+          })
+        })
+
         form.on('checkbox(allChoose)', function(data) {
           var child = $(data.elem)
             .parents('table')
@@ -200,6 +291,26 @@
           form.render('checkbox')
         })
         form.on('checkbox(itemChoose)', function(data) {
+          var arrOne = []
+          var imgOneAll = $(data.elem)
+            .parents('table')
+            .find('tbody input[type="checkbox"]:checked')
+
+          imgOneAll.each(function(index, item) {
+            arrOne.push({
+              muban: $(item)
+                .parents('tr')
+                .find('td:nth-of-type(3)')
+                .text(),
+              keywords: $(item)
+                .parents('tr')
+                .find('td:nth-of-type(4) em')
+                .text()
+            })
+          })
+          console.log(arrOne)
+          localStorage.setItem('arrOne', JSON.stringify(arrOne))
+
           var sib = $(data.elem)
             .parents('table')
             .find('tbody input[type="checkbox"]:checked').length
@@ -227,7 +338,16 @@
         })
 
         $('.add').click(function() {
-          location.href = '账号-自动回复模板.html'
+          if (localStorage.getItem('arrOne')) {
+            location.href = '账号-自动回复模板.html'
+          }
+        })
+
+        //返回上一级
+        $('.addover').click(function() {
+          if (localStorage.getItem('arrOne')) {
+            history.go(-1)
+          }
         })
       })
     </script>

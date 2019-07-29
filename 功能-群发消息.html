@@ -285,7 +285,7 @@
           })
 
           token = localStorage.getItem('token')
-          wxid_raw = localStorage.getItem('wxid_raw')
+          wxid_raw = JSON.parse(localStorage.getItem('wxid_raw'))
           //获取好友微信列表
           friend_wxid = JSON.parse(localStorage.getItem('friend_wxid'))
 
@@ -429,7 +429,7 @@
                   token +
                   '"' +
                   '}'
-                console.log(data)
+                //console.log(data)
                 $.ajax({
                   type: 'post',
                   url: 'http://192.168.10.177/api.esp',

@@ -82,14 +82,14 @@
       </div>
       <div class="layui-body">
         <div class="">
-          <div class="zh_total">
+          <!-- <div class="zh_total">
             <img src="images/icon_31.png" alt="" class="icon" />
             <div class="info">
               <p class="fz">总数</p>
               <p class="num">18734</p>
             </div>
             <span class="share fr">分享</span>
-          </div>
+          </div> -->
           <h6 class="firend_tit">会员列表</h6>
           <div class="friend_bar clearfix layui-form">
             <div class="searchbox fl">
@@ -289,12 +289,20 @@
       <div class="detail layui-form">
         <div class="box box1">
           <li>
-            <input type="text" class="ipt ipt_txt" placeholder="请输入会员名" />
+            <input
+              type="text"
+              class="ipt ipt_txt ipt_txt1"
+              placeholder="请输入会员名"
+            />
           </li>
         </div>
         <div class="box box2">
           <li>
-            <input type="text" class="ipt ipt_txt" placeholder="请输入密码" />
+            <input
+              type="text"
+              class="ipt ipt_txt ipt_txt2"
+              placeholder="请输入密码"
+            />
           </li>
         </div>
         <div class="btns clearfix">
@@ -313,18 +321,22 @@
           <li>
             <input
               type="text"
-              class="ipt ipt_txt "
+              class="ipt ipt_txt ipt_txt3"
               placeholder="请输入会员名"
             />
           </li>
         </div>
         <div class="box box4">
           <li>
-            <input type="text" class="ipt ipt_txt" placeholder="请输入密码" />
+            <input
+              type="text"
+              class="ipt ipt_txt ipt_txt4"
+              placeholder="请输入密码"
+            />
           </li>
         </div>
         <div class="btns clearfix">
-          <button class="button this fl queding1">确定</button>
+          <button class="button this fl queding2">确定</button>
           <button class="button fr cancel">取消</button>
         </div>
       </div>
@@ -345,6 +357,92 @@
         //搜索会员
         $('body').delegate('.searchname', 'propertychange input', function() {
           console.log($(this).val())
+        })
+        // var result = {
+        //   a: {
+        //     name: 12,
+        //     psw: 12
+        //   },
+        //   v: {
+        //     name: 45,
+        //     psw: 54
+        //   }
+        // }
+        // localStorage.setItem('alllabelgoup', JSON.stringify(result))
+
+        //判断是否存在
+
+        if (localStorage.getItem('alllabelgoup')) {
+          alllabelgoup = JSON.parse(localStorage.getItem('alllabelgoup'))
+        } else {
+          alllabelgoup = {}
+        }
+        console.log(alllabelgoup)
+        var str = ''
+        for (var i in alllabelgoup) {
+          str += `
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="" lay-skin="primary" lay-filter="itemChoose">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            </td>
+                            <td>${alllabelgoup[i].name}</td>
+                            <td>${alllabelgoup[i].psw}</td>
+                            <td>2019-07-15 15:31:26</td>
+                            <td>
+                                <div class="select_wrap">
+                                    <select name="" id="">
+                                        <option value="1">请选择</option>
+                                        <option value="2">请选择</option>
+                                        <option value="3">请选择</option>
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                10/${100} <span class="online_btn">一键上线</span>
+                            </td>
+                            <td>
+                                <a href="javascript:;" class="lk_ico editname" data-id=${i}>修改名称</a>
+                                <a href="javascript:;" class="lk_ico quit quitdel" data-id=${i}
+          }>注销</a>
+                            </td>
+                        </tr>
+                        `
+        }
+        $('tbody').append(str)
+        form.render()
+
+        //点击修改分组和密码
+        $('body').delegate('.editname', 'click', function() {
+          console.log(
+            $(this)
+              .get(0)
+              .getAttribute('data-id')
+          )
+          var $id = $(this)
+            .get(0)
+            .getAttribute('data-id')
+
+          $('.ipt_txt3').val(alllabelgoup[$id].name)
+          $('.ipt_txt4').val(alllabelgoup[$id].psw)
+          $('.queding2').click(function() {
+            alllabelgoup[$id].name = $('.ipt_txt3').val()
+            alllabelgoup[$id].psw = $('.ipt_txt4').val()
+            localStorage.setItem('alllabelgoup', JSON.stringify(alllabelgoup))
+            $('.pop_hy_addtag2').hide()
+            $('.pop_bg').show()
+            location.reload()
+          })
+        })
+
+        //点击注销
+        $('body').delegate('.quitdel', 'click', function() {
+          var $id = $(this)
+            .get(0)
+            .getAttribute('data-id')
+          console.log($id)
+          delete alllabelgoup[$id]
+          localStorage.setItem('alllabelgoup', JSON.stringify(alllabelgoup))
+          location.reload()
         })
 
         //全选
@@ -382,6 +480,7 @@
         })
 
         token = localStorage.getItem('token')
+
         var data =
           '{"type":' + '"get_lable",' + '"ticket":' + '"' + token + '"' + '}'
         //console.log(data)
@@ -395,46 +494,19 @@
             if (msg.err_code == 0) {
               var data = msg.data
               console.log(data)
-              if (data != undefined) {
-                localStorage.setItem('lablegroup', JSON.stringify(data))
-                var str = ''
-                for (var i in data) {
-                  str += `
-                        <tr>
-                            <td>
-                                <input type="checkbox" name="" lay-skin="primary" lay-filter="itemChoose">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            </td>
-                            <td>${data[i].lable}</td>
-                            <td>1234567</td>
-                            <td>2019-07-15 15:31:26</td>
-                            <td>
-                                <div class="select_wrap">
-                                    <select name="" id="">
-                                        <option value="1">请选择</option>
-                                        <option value="2">请选择</option>
-                                        <option value="3">请选择</option>
-                                    </select>
-                                </div>
-                            </td>
-                            <td>
-                                ${data[i].count}/${
-                    data[i].count
-                  } <span class="online_btn">一键上线</span>
-                            </td>
-                            <td>
-                                <a href="javascript:;" class="lk_ico editname">修改名称</a>
-                                <a href="javascript:;" class="lk_ico quit quitdel" data-lable=${
-                                  data[i]
-                                }>注销</a>
-                            </td>
-                        </tr>
-                        `
+              for (var i in data) {
+                console.log(data[i].lable)
+                var id = data[i].lable
+                console.log(alllabelgoup)
+                if (!alllabelgoup[id]) {
+                  alllabelgoup[id] = {}
                 }
-                $('tbody').append(str)
-                form.render()
-              } else {
-                var dd = {}
-                localStorage.setItem('lablegroup', JSON.stringify(dd))
+                alllabelgoup[id].name = id
+                alllabelgoup[id].psw = ''
+                localStorage.setItem(
+                  'alllabelgoup',
+                  JSON.stringify(alllabelgoup)
+                )
               }
             }
           }
@@ -491,6 +563,21 @@
         $('body').delegate('.editname', 'click', function() {
           $('.pop_hy_addtag2').show()
           $('.pop_bg').show()
+        })
+
+        //点击添加分组，存入本地
+
+        $('.queding1').click(function() {
+          console.log($('.ipt_txt1').val())
+          console.log($('.ipt_txt2').val())
+          var $id = $('.ipt_txt1').val()
+          console.log(alllabelgoup)
+          if (!alllabelgoup[$id]) {
+            alllabelgoup[$id] = {}
+          }
+          alllabelgoup[$id].name = $('.ipt_txt1').val()
+          alllabelgoup[$id].psw = $('.ipt_txt2').val()
+          localStorage.setItem('alllabelgoup', JSON.stringify(alllabelgoup))
         })
       })
     </script>

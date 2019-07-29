@@ -128,7 +128,7 @@
                   选择文件
                 </button>
                 <button type="button" class="layui-btn-normal button addtagBtn">
-                  添加标签
+                  选择标签
                 </button>
                 <span> 添加成功后自动打标签</span>
               </div>
@@ -206,12 +206,27 @@
             <div class="timebox">
               任务执行时间&nbsp;&nbsp;
               <div class="time">
-                <input type="text" id="test1" placeholder="" />
+                <div class="layui-inline">
+                  <div class="layui-input-inline">
+                    <input
+                      type="text"
+                      class="layui-input"
+                      id="test1"
+                      placeholder=" - "
+                    />
+                  </div>
+                </div>
               </div>
-              <!-- <em class="line">——</em> -->
+              <!-- <em class="line">——</em>
               <div class="time">
-                <input type="text" id="test2" placeholder="" />
-              </div>
+                <input
+                  type="text"
+                  class="layui-input"
+                  id="test2"
+                  placeholder=""
+                  readonly
+                />
+              </div> -->
             </div>
             <div class="txt">
               <p class="fz">（每日加粉任务在指定时间内执行）</p>
@@ -237,14 +252,14 @@
       </div>
     </div>
 
-    <!--修改标签-->
+    <!--选择标签-->
     <div class="pop_bg"></div>
     <div class="pop pop_zh pop_hy_edittag">
       <em class="close">&times;</em>
-      <div class="t_tit">修改标签</div>
+      <div class="t_tit">选择标签</div>
       <div class="detail layui-form">
         <div class="box box1">
-          <li class="grp">
+          <!-- <li class="grp">
             <input
               type="radio"
               name="tag"
@@ -253,7 +268,7 @@
               lay-filter="messageset"
             />
           </li>
-          <li class="grp">
+              <li class="grp">
             <input
               type="radio"
               name="tag"
@@ -270,7 +285,7 @@
               title="啊啊"
               lay-filter="messageset"
             />
-          </li>
+          </li> -->
         </div>
         <span class="addbq">+新建标签 </span>
         <div class="btns clearfix">
@@ -309,8 +324,79 @@
           laydate = layui.laydate,
           upload = layui.upload
 
+        //时间范围
+        laydate.render({
+          elem: '#test1',
+          type: 'time',
+          format: 'HH',
+          range: true,
+          min: '7:00:00',
+          max: '23:00:00',
+          btns: ['clear', 'confirm'],
+          change: function(value, date, endDate) {
+            console.log(value)
+            //console.log(value.split(' - '))
+            value = value.split(' - ')
+
+            localStorage.setItem('starttime', JSON.stringify(value))
+          }
+        })
+        // laydate.render({
+        //   elem: '#test2',
+        //   type: 'time',
+        //   format: 'HH',
+        //   min: '7:00:00',
+        //   max: '23:00:00',
+        //   btns: ['clear', 'confirm'],
+        //   change: function(value, date, endDate) {
+        //     console.log(value)
+        //     localStorage.setItem('endtime', value)
+        //   }
+        // })
+
+        //判断手机分组是否存在
+        var phonelabelgoup = []
+        if (localStorage.getItem('phonelabelgoup')) {
+          phonelabelgoup = JSON.parse(localStorage.getItem('phonelabelgoup'))
+        } else {
+          phonelabelgoup = {}
+        }
+
+        var str = ''
+        for (var i in phonelabelgoup) {
+          str += `
+          <li class="grp">
+            <input
+              type="radio"
+              name="tag"
+              value="${phonelabelgoup[i].name}"
+              title="${phonelabelgoup[i].name}"
+              lay-filter="messageset"
+            />
+          </li> 
+                        `
+        }
+        $('.box1').append(str)
+        form.render('radio')
+
         token = localStorage.getItem('token')
         wxid_raw = JSON.parse(localStorage.getItem('wxid_raw'))
+
+        $('.fl1').click(function() {
+          var $id = $('.ipt_txt').val()
+          console.log($id)
+          console.log(phonelabelgoup)
+          if (!phonelabelgoup[$id]) {
+            phonelabelgoup[$id] = {}
+          }
+          phonelabelgoup[$id].name = $id
+          localStorage.setItem('phonelabelgoup', JSON.stringify(phonelabelgoup))
+
+          $('.pop_hy_addtag1').hide()
+          $('.pop_hy_edittag').show()
+          form.render('radio')
+          location.reload()
+        })
 
         //点击下拉框选择
         form.on('select(category)', function(data) {
@@ -387,6 +473,7 @@
             //点击爆粉
             $('.filetxtBtn').click(function() {
               var matnnum = Math.floor(Math.random() * 5 + 10)
+              var starttime = JSON.parse(localStorage.getItem('starttime'))
               for (var i in wxid_raw) {
                 var data =
                   '{"type":' +
@@ -396,16 +483,14 @@
                   wxid_raw[i] +
                   '",' +
                   '"num":' +
-                  '"' +
-                  matnnum +
-                  '",' +
+                  '"10",' +
                   '"time1":' +
                   '"' +
-                  $('#test1').val() +
+                  starttime[0] +
                   '",' +
                   '"time2":' +
                   '"' +
-                  $('#test2').val() +
+                  starttime[1] +
                   '",' +
                   '"lable":' +
                   '"' +
@@ -418,7 +503,7 @@
                   '}'
 
                 //传入参数
-                console.log(data)
+                //console.log(data)
                 $.ajax({
                   type: 'post',
                   url: 'http://192.168.10.177/api.esp',
@@ -446,13 +531,16 @@
           console.log(data.value)
         })
       })
+      //点击选择标签
       $('.addtagBtn').click(function() {
         $('.pop_hy_edittag').show()
         $('.pop_bg').show()
-        $('.addbq').click(function() {
-          $('.pop_bg').show()
-          $('.pop_hy_addtag1').show()
-        })
+      })
+      //点击新建标签
+      $('.addbq').click(function() {
+        $('.pop_bg').show()
+        $('.pop_hy_addtag1').show()
+        $('.pop_hy_edittag').hide()
       })
 
       $('.quedingfl').click(function() {
@@ -461,20 +549,20 @@
       })
 
       //正则表达式
-      $('#test1').blur(function() {
-        var val = $(this).val()
-        if (/^\d{2}$/.test(val) == false) {
-          layer.msg('请输入整数')
-          $(this).val('')
-        }
-      })
-      $('#test2').blur(function() {
-        var val = $(this).val()
-        if (/^\d{2}$/.test(val) == false) {
-          layer.msg('请输入整数')
-          $(this).val('')
-        }
-      })
+      // $('#test1').blur(function() {
+      //   var val = $(this).val()
+      //   if (/^\d{2}$/.test(val) == false) {
+      //     layer.msg('请输入整数')
+      //     $(this).val('')
+      //   }
+      // })
+      // $('#test2').blur(function() {
+      //   var val = $(this).val()
+      //   if (/^\d{2}$/.test(val) == false) {
+      //     layer.msg('请输入整数')
+      //     $(this).val('')
+      //   }
+      // })
 
       $('.backlist').click(function() {
         history.back()

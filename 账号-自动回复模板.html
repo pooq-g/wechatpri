@@ -132,9 +132,9 @@
           <div class="template_main">
             <div class="template_bar">
               <span class="lk txt txts">文字</span>
-              <span class="lk pics">图片</span>
+              <!-- <span class="lk pics">图片</span>
               <span class="lk voice">语音</span>
-              <span class="lk link">链接</span>
+              <span class="lk link">链接</span> -->
             </div>
             <ul class="template_bar msg-list" style="padding:22px"></ul>
             <!-- <div class="template_fz">
@@ -293,19 +293,21 @@
                     '"' +
                     '}'
                   //console.log(data)
-                  $.ajax({
-                    type: 'post',
-                    url: 'http://192.168.10.177/api.esp',
-                    data: data,
-                    async: false,
-                    dataType: 'json',
-                    success: function(msg) {
-                      console.log(msg)
-                    },
-                    error: function(err) {
-                      console.log(err)
-                    }
-                  })
+                  $('.pop_chart_msg2').hide()
+                  $('.pop_bg').hide()
+                  // $.ajax({
+                  //   type: 'post',
+                  //   url: 'http://192.168.10.177/api.esp',
+                  //   data: data,
+                  //   async: false,
+                  //   dataType: 'json',
+                  //   success: function(msg) {
+                  //     console.log(msg)
+                  //   },
+                  //   error: function(err) {
+                  //     console.log(err)
+                  //   }
+                  // })
                 },
                 false
               )
@@ -371,87 +373,96 @@
 
         //点击确定的时候
         $('.template_btn').click(function() {
-          var messagecallback = localStorage.getItem('messagecallback')
-          if (messagecallback == 1) {
-            var mes = $('.msg-list')
-              .find('.text')
-              .html()
+          //var messagecallback = localStorage.getItem('messagecallback')
+          //if (messagecallback == 1) {
 
-            for (var i in wxid_raw) {
-              var data =
-                '{"type":' +
-                '"add_auto_send",' +
-                '"wxid":' +
-                '"' +
-                wxid_raw[i] +
-                '",' +
-                '"content":' +
-                '"' +
-                mes +
-                '",' +
-                '"ticket":' +
-                '"' +
-                token +
-                '"' +
-                '}'
-              //console.log(data)
-              $.ajax({
-                type: 'post',
-                url: 'http://192.168.10.177/api.esp',
-                data: data,
-                dataType: 'json',
-                success: function(msg) {
-                  console.log(msg)
-                  if (msg.err_code == 0) {
-                    layer.msg('添加成功')
-                  } else {
-                    layer.msg('添加失败')
-                  }
-                },
-                error: function(err) {
-                  console.log(err)
-                }
-              })
-            }
-          } else {
-            for (var i in wxid_raw) {
-              var data =
-                '{"type":' +
-                '"auto_send",' +
-                '"wxid":' +
-                '"' +
-                wxid_raw[i] +
-                '",' +
-                '"keywords":' +
-                '"' +
-                $('.searchkj').val() +
-                '",' +
-                '"ticket":' +
-                '"' +
-                token +
-                '"' +
-                '}'
-              //console.log(data)
+          //1.输入内容
+          var $mubanname = $('.searchmuban').val()
+          var $searchkj = $('.searchkj').val()
+          console.log($mubanname)
+          var mes = $('.msg-list')
+            .find('.text')
+            .html()
+          console.log(mes)
 
-              $.ajax({
-                type: 'post',
-                url: 'http://192.168.10.177/api.esp',
-                data: data,
-                dataType: 'json',
-                success: function(msg) {
-                  console.log(msg)
-                  if (msg.err_code == 0) {
-                    layer.msg('添加成功')
-                  } else {
-                    layer.msg('添加失败')
-                  }
-                },
-                error: function(err) {
-                  console.log(err)
-                }
-              })
+          //2.获取是否第一次回复
+          var $num = localStorage.getItem('messagecallback')
+          console.log($num)
+
+          var data =
+            '{"type":' +
+            '"add_auto_send_template",' +
+            '"keywords":' +
+            '"' +
+            $searchkj +
+            '",' +
+            '"content":' +
+            '"' +
+            mes +
+            '",' +
+            '"ticket":' +
+            '"' +
+            token +
+            '"' +
+            '}'
+          //console.log(data)
+          $.ajax({
+            type: 'post',
+            url: 'http://192.168.10.177/api.esp',
+            data: data,
+            dataType: 'json',
+            success: function(msg) {
+              console.log(msg)
+              if (msg.err_code == 0) {
+                layer.msg('添加成功')
+                location.reload()
+              } else {
+                layer.msg('添加成功')
+                location.reload()
+              }
+            },
+            error: function(err) {
+              console.log(err)
             }
-          }
+          })
+
+          // for (var i in wxid_raw) {
+          //   var data =
+          //     '{"type":' +
+          //     '"auto_send",' +
+          //     '"wxid":' +
+          //     '"' +
+          //     wxid_raw[i] +
+          //     '",' +
+          //     '"keywords":' +
+          //     '"' +
+          //     $('.searchkj').val() +
+          //     '",' +
+          //     '"ticket":' +
+          //     '"' +
+          //     token +
+          //     '"' +
+          //     '}'
+          //   console.log(data)
+
+          //   // $.ajax({
+          //   //   type: 'post',
+          //   //   url: 'http://192.168.10.177/api.esp',
+          //   //   data: data,
+          //   //   dataType: 'json',
+          //   //   success: function(msg) {
+          //   //     console.log(msg)
+          //   //     if (msg.err_code == 0) {
+          //   //       layer.msg('添加成功')
+          //   //     } else {
+          //   //       layer.msg('添加失败')
+          //   //     }
+          //   //   },
+          //   //   error: function(err) {
+          //   //     console.log(err)
+          //   //   }
+          //   // })
+          // }
         })
       })
 
@@ -476,6 +487,11 @@
       // $('body').delegate('.quit1', 'click', function() {
       //   console.log(21)
       // })
+
+      //点击返回
+      $('.backlist').click(function() {
+        history.back()
+      })
     </script>
   </body>
 </html>

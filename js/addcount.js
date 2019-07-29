@@ -6,65 +6,47 @@ $(function() {
       laydate = layui.laydate,
       upload = layui.upload
 
+    var alllabelgoup = localStorage.getItem('alllabelgoup')
+    console.log(alllabelgoup)
     var token = localStorage.getItem('token')
     console.log(token)
 
-    var lablegroup = JSON.parse(localStorage.getItem('lablegroup'))
     $('.addtagBtns')
       .unbind()
       .bind('click', function() {
         $('.pop_hy_edittag').show()
         $('.pop_bg').show()
-        var str = ''
-        // for (var i in lablegroup) {
-        //   str = `
-        // <li class="grp" style="display:block">
-        //   <input
-        //     type="radio"
-        //     name="tag"
-        //     value="${lablegroup[i].lable}"
-        //     title="${lablegroup[i].lable}"
-        //     lay-filter="messageset"
-        //   />
-        // </li>
-        // `
-        // }
-        // $('.box10').append(str)
         form.render('radio')
       })
 
-    $('.fl1s')
-      .unbind()
-      .bind('click', function() {
-        //console.log($('.ipt_txts').val())
-        $('.pop_hy_edittag').show()
-        $('.box10').append(`
-          <li class="grp" style="display:block">
-            <input
-              type="radio"
-              name="tag"
-              value="${$('.ipt_txts').val()}"
-              title="${$('.ipt_txts').val()}"
-              lay-filter="messageset"
-            />
-          </li>
-          `)
-        $('.pop_bg').show()
-        $('.pop_hy_addtag1s').hide()
-        form.render('radio')
-      })
+    //新建标签
+    // $('.fl1s')
+    //   .unbind()
+    //   .bind('click', function() {
+    //     //console.log($('.ipt_txts').val())
+    //     $('.pop_hy_edittag').show()
+    //     $('.box10').append(`
+    //       <li class="grp" style="display:block">
+    //         <input
+    //           type="radio"
+    //           name="tag"
+    //           value="${$('.ipt_txts').val()}"
+    //           title="${$('.ipt_txts').val()}"
+    //           lay-filter="messageset"
+    //         />
+    //       </li>
+    //       `)
+    //     $('.pop_bg').show()
+    //     $('.pop_hy_addtag1s').hide()
+    //     form.render('radio')
+    //   })
 
     //单选
     form.on('radio(messageset)', function(data) {
-      //选中的dom元素
-      console.log(data.elem)
-      // alert(data.value);//判断单选框的选中值
-      //alert(data.othis);
-      // layer.tips('开关checked：' + (this.checked ? 'true' : 'false'), data.othis);
-      //选中的value值
       console.log(data.value)
+      var choosegroup = data.value
 
-      $('.quedingfl').click(function() {
+      $('.quedingf2').click(function() {
         var files = document.getElementById('files')
         files.onchange = function() {
           var file = files.files[0]
@@ -92,7 +74,7 @@ $(function() {
                 '"add_account",' +
                 '"lable":' +
                 '"' +
-                labelxinjian +
+                choosegroup +
                 '",' +
                 '"phone":' +
                 '"' +
@@ -112,7 +94,7 @@ $(function() {
                 '"' +
                 '}'
               //拿到的传入的参数
-              // console.log(data)
+              //console.log(data)
               $.ajax({
                 type: 'post',
                 url: 'http://192.168.10.177/api.esp',

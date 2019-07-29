@@ -97,11 +97,11 @@
               <thead>
                 <th width="10%">序号</th>
                 <th width="30%">模板名称</th>
-                <th width="20%">状态</th>
+                <!-- <th width="20%">状态</th> -->
                 <th width="20%">操作</th>
               </thead>
               <tbody>
-                <tr>
+                <!-- <tr>
                   <td>01</td>
                   <td>好了，好了，我知道了</td>
                   <td><em class="c_blue">开启</em></td>
@@ -180,7 +180,7 @@
                     <a href="javascript:;" class="lk_ico edit">编辑</a>
                     <a href="javascript:;" class="lk_ico delete">删除</a>
                   </td>
-                </tr>
+                </tr> -->
               </tbody>
             </table>
             <div class="pagelist_wrap">
@@ -213,6 +213,94 @@
         //搜索快捷语名称
         $('body').delegate('.searchkj', 'propertychange input', function() {
           console.log($(this).val())
+        })
+
+        //获取好友模板
+        token = localStorage.getItem('token')
+        var data =
+          '{"type":' +
+          '"get_add_auto_send_template",' +
+          '"ticket":' +
+          '"' +
+          token +
+          '"' +
+          '}'
+        //传入参数
+        //console.log(data)
+        $.ajax({
+          type: 'post',
+          url: 'http://192.168.10.177/api.esp',
+          data: data,
+          dataType: 'json',
+          success: function(msg) {
+            if (msg.err_code == 0) {
+              var data = msg.data
+              var str = ''
+              var ind = 0
+              for (var i in data) {
+                console.log(typeof data[i])
+                ind++
+                ind = ind < 10 ? '0' + ind : ind
+                str += `
+                <tr>
+                  <td>${ind}</td>
+                  <td>${data[i].content}</td>
+
+                  <td>
+                    <a href="javascript:;" class="lk_ico delete" data-id=${
+                      data[i].id
+                    }>删除</a>
+                  </td>
+                </tr>
+                `
+              }
+              $('tbody').append(str)
+            }
+          },
+          error: function(err) {
+            console.log(err)
+          }
+        })
+
+        //删除通过好友自动回复
+        $('body').delegate('.delete', 'click', function() {
+          var $id = $(this)
+            .get(0)
+            .getAttribute('data-id')
+
+          var data =
+            '{"type":' +
+            '"del_add_auto_send_template",' +
+            '"id":' +
+            '"' +
+            $id +
+            '",' +
+            '"ticket":' +
+            '"' +
+            token +
+            '"' +
+            '}'
+          //传入参数
+          //console.log(data)
+          $.ajax({
+            type: 'post',
+            url: 'http://192.168.10.177/api.esp',
+            data: data,
+            dataType: 'json',
+            success: function(msg) {
+              console.log(msg)
+              if (msg.err_code == 0) {
+                layer.msg('删除成功')
+                location.reload()
+              } else {
+                layer.msg('删除成功')
+                location.reload()
+              }
+            },
+            error: function(err) {
+              console.log(err)
+            }
+          })
         })
 
         form.on('checkbox(allChoose)', function(data) {

@@ -83,19 +83,19 @@
             <li class="item item_1">
                 <div class="box">
                     <p class="fz"><img src="images/icon_10.png" alt="" class="ico"/>好友总数</p>
-                    <p class="num">23996</p>
+                    <p class="num">0</p>
                 </div>
             </li>
             <li class="item item_2">
                 <div class="box">
                     <p class="fz"><img src="images/icon_11.png" alt="" class="ico"/>新增好友</p>
-                    <p class="num">23996</p>
+                    <p class="num">0</p>
                 </div>
             </li>
             <li class="item item_3">
                 <div class="box">
                     <p class="fz"><img src="images/icon_12.png" alt="" class="ico"/>在线账号</p>
-                    <p class="num">23996</p>
+                    <p class="num">0</p>
                 </div>
             </li>
             <li class="item item_4">
@@ -136,8 +136,8 @@
                 <div class="searchbox fl">
                     <input type="text" class="ipt ipt_txt searchnick" placeholder="请输入好友昵称"/>
                 </div>
-                <button class="button add fr addtagBtn">新建标签</button>
-                <button class="button add fr addtagBtn">修改标签</button>
+                <button class="button add fr addtagBtn addtagBtns">新建标签</button>
+                <button class="button add fr addtagBtn edittagBtn">修改标签</button>
             </div>
             <div class="friend_tablewrap">
                 <table class="friend_table layui-form text-left">
@@ -367,20 +367,13 @@
     <div class="t_tit">修改标签</div>
     <div class="detail layui-form">
         <div class="box">
-            <li class="grp">
-               <input type="radio" name="tag" value="" title="测试" >
-            </li>
-            <li class="grp">
-               <input type="radio" name="tag" value="" title="123" >
-            </li>
-            <li class="grp">
-               <input type="radio" name="tag" value="啊啊" title="啊啊" >
-            </li>
+            <li>
+                <input type="text" class="ipt ipt_txt edittxt"/>
+             </li>
         </div>
-        <span class="addbq">+新建标签 </span>
         <div class="btns clearfix">
             <button class="button this fl queding3">确定</button>
-            <button class="button fr cancel">取消</button>
+            <button class="button fr cancel canceledit">取消</button>
         </div>
     </div>
 </div>
@@ -402,6 +395,15 @@
 <script type="text/javascript" src="js/mypage.js"></script>
 
 <script type="text/javascript">
+//点击修改标签
+$(".edittagBtn").click(function(){
+  $(".pop_hy_edittag").show()
+  $(".pop_bg").show()
+})
+// $(".canceledit").click(function(){
+//   $(".pop_hy_edittag").hide()
+//   $(".pop_bg").hide()
+// })
     P.initMathod({
         params: {elemId: '#Page',total:'123'},
         requestFunction: function () {

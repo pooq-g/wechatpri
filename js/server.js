@@ -3,6 +3,7 @@ $(function() {
   wxid_raw = JSON.parse(localStorage.getItem('wxid_raw'))
   friend_wxid = JSON.parse(localStorage.getItem('friend_wxid'))
   wxfrom = JSON.parse(localStorage.getItem('wxfrom'))
+  console.log(friend_wxid, wxfrom)
 
   msglist = []
   let leftmsg = ''

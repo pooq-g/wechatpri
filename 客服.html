@@ -306,7 +306,6 @@
 
         //输入表情
         $('.positiemoij>.expression li').click(function() {
-          console.log(content)
           var name = $(this)
             .find('i')
             .get(0)
@@ -315,7 +314,6 @@
           //$content += $(".ipt").val("["+name+"]")
           content += '[' + name + ']'
 
-          console.log(content)
           $('.textarea').val(content)
         })
       })

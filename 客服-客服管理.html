@@ -54,8 +54,8 @@
                 <li class="item group haschild">
                     <a href="#">群</a>
                     <div class="drop">
-                        <a href="#">批量拉群</a>
-                        <a href="#">自动群聊</a>
+                        <a href="群管-拉群任务.html">批量拉群</a>
+                        <a href="群管-新建群聊.html">自动群聊</a>
                     </div>
                 </li>
                 <li class="item function haschild">
@@ -65,12 +65,14 @@
                         <a href="功能-发朋友圈.html">群发朋友圈</a>
                         <a href="功能-朋友圈评论.html">朋友圈评论</a>
                         <a href="功能-素材管理.html">素材管理</a>
+                        <a href="#">群发群</a>
                     </div>
                 </li>
                 <li class="item customer haschild cur">
                     <a href="#">客服系统</a>
                     <div class="drop">
                         <a href="客服-客服管理.html" class="this">客服管理</a>
+                        <a href="客服-聊天设置.html">聊天设置</a>
                     </div>
                 </li>
             </ul>
@@ -111,7 +113,6 @@
                     <input type="text" class="ipt ipt_txt searchkefu" placeholder="请输入客服名称"/>
                 </div>
                 <button class="button_ico add fr addkfBtn">添加客服</button>
-                <button class="button_ico add fr addkfBtn addkfBtns">客服聊天</button>
             </div>
 
             
@@ -121,8 +122,8 @@
                 <thead>
                     <th width="10%">客服名称</th>
                     <th width="25%">当前状态</th>
-                    <th width="20%">会员分配</th>
-                    <th width="20%">工作日志</th>
+                    <th width="20%">服务分配</th>
+                    <th width="20%">工作状况</th>
                     <th width="25%">操作</th>
                 </thead>
                 <tbody>
@@ -132,8 +133,9 @@
                             <img src="images/icon_57.png" alt="" class="kf_error"/>待回复：0 <span class="anniu over">一键完成</span>
                         </td>
                         <td><em class="c_blue">待分配</em></td>
-                        <td>暂缺</td>
+                        <td>在线</td>
                         <td>
+                            <span class="anniu edit openBtn">打开</span>
                             <span class="anniu edit editBtn">修改</span>
                             <span class="anniu del">删除</span>
                         </td>
@@ -144,8 +146,9 @@
                             <img src="images/icon_57.png" alt="" class="kf_error"/>待回复：0 <span class="anniu over">一键完成</span>
                         </td>
                         <td><em class="c_blue">待分配</em></td>
-                        <td>暂缺</td>
+                        <td>在线</td>
                         <td>
+                            <span class="anniu edit openBtn">打开</span>
                             <span class="anniu edit editBtn">修改</span>
                             <span class="anniu del">删除</span>
                         </td>
@@ -156,8 +159,9 @@
                             <img src="images/icon_57.png" alt="" class="kf_error"/>待回复：0 <span class="anniu over">一键完成</span>
                         </td>
                         <td><em class="c_blue">待分配</em></td>
-                        <td>暂缺</td>
+                        <td>离线</td>
                         <td>
+                            <span class="anniu edit openBtn">打开</span>
                             <span class="anniu edit editBtn">修改</span>
                             <span class="anniu del">删除</span>
                         </td>
@@ -168,8 +172,9 @@
                             <img src="images/icon_57.png" alt="" class="kf_error"/>待回复：0 <span class="anniu over">一键完成</span>
                         </td>
                         <td><em class="c_blue">待分配</em></td>
-                        <td>暂缺</td>
+                        <td>离线</td>
                         <td>
+                            <span class="anniu edit openBtn">打开</span>
                             <span class="anniu edit editBtn">修改</span>
                             <span class="anniu del">删除</span>
                         </td>
@@ -180,8 +185,9 @@
                             <img src="images/icon_57.png" alt="" class="kf_error"/>待回复：0 <span class="anniu over">一键完成</span>
                         </td>
                         <td><em class="c_blue">待分配</em></td>
-                        <td>暂缺</td>
+                        <td>离线</td>
                         <td>
+                            <span class="anniu edit openBtn">打开</span>
                             <span class="anniu edit editBtn">修改</span>
                             <span class="anniu del">删除</span>
                         </td>
@@ -361,6 +367,11 @@ $('.editBtn').click(function(){
 
 $(".addkfBtns").click(function(){
     location.href="客服.html"
+})
+
+//打开客服
+$(".openBtn").click(function(){
+  location.href="客服.html"
 })
 
 </script>

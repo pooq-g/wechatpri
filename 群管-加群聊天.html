@@ -17,7 +17,7 @@
             <div class="top_notice fl">
                 <span class="fz">自动群聊列表</span>
                 <div class="txt">
-                    <li>这里是全站公告这里是全站公告这里是全站公告</li>
+                    <li>设置自动群聊为有效活跃账号方法，建议新登账号全部设置开启</li>
                 </div>
             </div>
             <div class="fr">
@@ -53,8 +53,8 @@
                 <li class="item group haschild cur">
                     <a href="#">群</a>
                     <div class="drop">
-                        <a href="#">批量拉群</a>
-                        <a href="#">自动群聊</a>
+                        <a href="群管-拉群任务.html">批量拉群</a>
+                        <a href="群管-加群聊天.html">自动群聊</a>
                     </div>
                 </li>
                 <li class="item function haschild">
@@ -64,12 +64,14 @@
                         <a href="功能-发朋友圈.html">群发朋友圈</a>
                         <a href="功能-朋友圈评论.html">朋友圈评论</a>
                         <a href="功能-素材管理.html">素材管理</a>
+                        <a href="#">群发群</a>
                     </div>
                 </li>
                 <li class="item customer haschild">
                     <a href="#">客服系统</a>
                     <div class="drop">
                         <a href="客服-客服管理.html">客服管理</a>
+                        <a href="客服-聊天设置.html">聊天设置</a>
                     </div>
                 </li>
             </ul>
@@ -93,13 +95,11 @@
                             </th>
                             <th width="5%">序号</th>
                             <th width="10%">加群账号</th>
-                            <th width="12%">群链接</th>
+                            <th width="12%">群二维码</th>
                             <th width="10%">群昵称</th>
                             <th width="12%">开始时间</th>
                             <th width="12%">结束时间</th>
-                            <th width="10%">自动聊天</th>
                             <th width="10%">状态</th>
-                            <th width="16%">备注</th>
                         </thead>
                         <tbody>
                             <tr>
@@ -112,9 +112,9 @@
                                 <td>蜡笔小新</td>
                                 <td>2019-07-12 13:00</td>
                                 <td>2019-07-12 13:00</td>
-                                <td></td>
-                                <td><em class="c_red">未处理</em></td>
-                                <td></td>
+                                
+                                <td><em class="c_red">关闭</em></td>
+                                
                             </tr>
                             <tr>
                                 <td>
@@ -126,9 +126,9 @@
                                 <td>蜡笔小新</td>
                                 <td>2019-07-12 13:00</td>
                                 <td>2019-07-12 13:00</td>
-                                <td></td>
-                                <td><em class="c_green">未处理</em></td>
-                                <td></td>
+                                
+                                <td><em class="c_green">开启</em></td>
+                                
                             </tr>
                             <tr>
                                 <td>
@@ -140,9 +140,9 @@
                                 <td>蜡笔小新</td>
                                 <td>2019-07-12 13:00</td>
                                 <td>2019-07-12 13:00</td>
-                                <td></td>
-                                <td><em class="c_red">未处理</em></td>
-                                <td></td>
+                                
+                                <td><em class="c_red">关闭</em></td>
+                                
                             </tr>
                             <tr>
                                 <td>
@@ -154,9 +154,9 @@
                                 <td>蜡笔小新</td>
                                 <td>2019-07-12 13:00</td>
                                 <td>2019-07-12 13:00</td>
-                                <td></td>
-                                <td><em class="c_green">未处理</em></td>
-                                <td></td>
+                                
+                                <td><em class="c_green">开启</em></td>
+                                
                             </tr>
                             <tr>
                                 <td>
@@ -168,9 +168,9 @@
                                 <td>蜡笔小新</td>
                                 <td>2019-07-12 13:00</td>
                                 <td>2019-07-12 13:00</td>
-                                <td></td>
-                                <td><em class="c_red">未处理</em></td>
-                                <td></td>
+                                
+                                <td><em class="c_red">关闭</em></td>
+                                
                             </tr>
                             <tr>
                                 <td>
@@ -182,9 +182,9 @@
                                 <td>蜡笔小新</td>
                                 <td>2019-07-12 13:00</td>
                                 <td>2019-07-12 13:00</td>
-                                <td></td>
-                                <td><em class="c_green">未处理</em></td>
-                                <td></td>
+                                
+                                <td><em class="c_green">开启</em></td>
+                                
                             </tr>
                         </tbody>
                     </table>
@@ -239,6 +239,10 @@ form.on('checkbox(itemChoose)',function(data){
         form.render();
     }
 }); 
+
+$(".add").click(function(){
+  location.href="群管-新建群聊.html"
+})
 
 
   

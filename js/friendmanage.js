@@ -94,7 +94,6 @@ $(function() {
                 data[id].id
               } style="width:31px;height:31px;border-radius:50%">
                                         ${data[id].nickname}</td>
-                                    <td>${data[id].friend_wxid}</td>
                                     <td>
                                         <em class="c_blue">同学家庭</em>
                                     </td>

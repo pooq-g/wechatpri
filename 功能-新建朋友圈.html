@@ -68,8 +68,8 @@
             <li class="item group haschild">
               <a href="#">群</a>
               <div class="drop">
-                <a href="#">批量拉群</a>
-                <a href="#">自动群聊</a>
+                <a href="群管-拉群任务.html">批量拉群</a>
+                <a href="群管-加群聊天.html">自动群聊</a>
               </div>
             </li>
             <li class="item function haschild cur">
@@ -79,12 +79,14 @@
                 <a href="功能-发朋友圈.html">群发朋友圈</a>
                 <a href="功能-朋友圈评论.html">朋友圈评论</a>
                 <a href="功能-素材管理.html">素材管理</a>
+                <a href="#">群发群</a>
               </div>
             </li>
             <li class="item customer haschild">
               <a href="#">客服系统</a>
               <div class="drop">
                 <a href="客服-客服管理.html">客服管理</a>
+                <a href="客服-聊天设置.html">聊天设置</a>
               </div>
             </li>
           </ul>
@@ -93,17 +95,7 @@
       <div class="layui-body">
         <div class="friend_bar layui-form">
           <li class="item">
-            <div class="selectbox">
-              <select
-                name="category"
-                lay-filter="category"
-                aria-invalid="false"
-                id=""
-              >
-                <option value="1">选择发布账号</option>
-                <option value="2">全部账号</option>
-              </select>
-            </div>
+            <a href="javascript:;" class="anniu adduserBtn">+添加分组设置</a>
           </li>
         </div>
         <div class="qg_tit">发布内容</div>
@@ -169,7 +161,6 @@
                   value="链接"
                   title="链接"
                   lay-filter="pic"
-                  disabled
                 />
               </div>
             </div>
@@ -182,28 +173,8 @@
             </div>
           </div>
           <div class="friend_comment">
-            <h6 class="friend_tit">评论提醒设置</h6>
-            <div class="radio_group">
-              <div class="grp">
-                <input
-                  type="radio"
-                  name="com"
-                  value="展示评论"
-                  title="展示评论"
-                  checked=""
-                  lay-filter="comment"
-                />
-              </div>
-              <div class="grp">
-                <input
-                  type="radio"
-                  name="com"
-                  value="隐藏评论"
-                  title="隐藏评论"
-                  lay-filter="comment"
-                />
-              </div>
-            </div>
+            <h6 class="friend_tit">自己朋友圈评论设置</h6>
+
             <p class="fz">评论（可多选）</p>
             <textarea
               name=""
@@ -215,6 +186,71 @@
             <button class="button this">立即发布</button>
             <button class="button">定时发布</button>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!--添加账号-弹窗-->
+    <div class="pop_bg"></div>
+    <div class="pop pop_zh pop_qg_adduser">
+      <em class="close">&times;</em>
+      <div class="t_tit">添加账号</div>
+      <div class="detail layui-form">
+        <div class="searchbox clearfix">
+          <input
+            type="text"
+            class="ipt ipt_txt fl"
+            placeholder="请输入关键词搜索"
+          />
+          <input type="button" class="ipt ipt_button fr" value="搜索" />
+        </div>
+        <div class="box clearfix">
+          <div class="box_l fl">
+            <div class="topbar"><em class="fz fl">全选</em>全部账号</div>
+            <div class="bottom">
+              <li>
+                <input
+                  type="checkbox"
+                  name="like1[write]"
+                  lay-skin="primary"
+                  title=""
+                />7.12-(83)
+              </li>
+              <li>
+                <input
+                  type="checkbox"
+                  name="like1[write]"
+                  lay-skin="primary"
+                  title=""
+                />7.12-(83)
+              </li>
+              <li>
+                <input
+                  type="checkbox"
+                  name="like1[write]"
+                  lay-skin="primary"
+                  title=""
+                />7.12-(83)
+              </li>
+            </div>
+          </div>
+          <div class="box_r fr">
+            <div class="topbar">已选账号<em class="fz fr">清空</em></div>
+            <div class="bottom">
+              <li>安琪<em class="delete"></em></li>
+              <li>安琪<em class="delete"></em></li>
+              <li>安琪<em class="delete"></em></li>
+              <li>安琪<em class="delete"></em></li>
+              <li>安琪<em class="delete"></em></li>
+              <li>安琪<em class="delete"></em></li>
+              <li>安琪<em class="delete"></em></li>
+            </div>
+          </div>
+        </div>
+        <div class="tips">当前已选账号83个</div>
+        <div class="btns clearfix">
+          <button class="button this">确定</button>
+          <button class="button cancel">取消</button>
         </div>
       </div>
     </div>
@@ -311,7 +347,7 @@
                   token +
                   '"' +
                   '}'
-                //console.log(data)
+                console.log(data)
                 $.ajax({
                   type: 'post',
                   url: 'http://192.168.10.177/api.esp',
@@ -401,6 +437,12 @@
         } else {
           console.log('未输入')
         }
+      })
+
+      //点击弹窗
+      $('.adduserBtn').click(function() {
+        $('.pop_qg_adduser').show()
+        $('.pop_bg').show()
       })
 
       $('.positiemoij>ul li').click(function() {

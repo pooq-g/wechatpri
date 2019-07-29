@@ -22,6 +22,15 @@ $(function(){
           console.log(categoryName)
           form.render('select');
         });
+
+                //全部会员
+                form.on('select(categorys)', function (data) {
+                  categorys = data.value;
+                  categoryNames = data.elem[data.elem.selectedIndex].text;
+                  console.log(categoryNames)
+                  form.render('select');
+                });
+                  
           
 
         //搜索账号的值
@@ -31,6 +40,7 @@ $(function(){
 
         token = localStorage.getItem("token")
             //console.log(token)
+            //获取好友列表
             var data =
                 '{"type":' +
                 '"get_account_list",' +
@@ -39,7 +49,7 @@ $(function(){
                 '"limit_start":' +
                 '"'+0+'",' +
                 '"limit_end":' +
-                '"'+20+'",' +
+                '"'+200+'",' +
                 '"ticket":' +
                 '"'+token+'"' +
                 '}'
@@ -54,63 +64,99 @@ $(function(){
                     success:function(msg){
                         if(msg.err_code == 0){
                             console.log(msg.data)
+                            var totalcount = $(".item_1").find(".num").text()
+                            totalcount = Number(totalcount)
                             var data = msg.data
+                            totalcount += data.length
+                            $(".item_1").find(".num").text(totalcount)
                             // localStorage.setItem("wxid_raw",msg.data[0].wxid_raw)
                             // localStorage.setItem("weixinnick",)
                             var str = "";
                             var ind = 0
                             var wx_raw = []
                             var wx_nick = []
+                            var counts = 0
                             for(var id in data){
-                                //微信号
-                                // if(data[id].wxid_raw != "" || data[id].nick != ""){
-                                //     wx_raw.push(data[id].wxid_raw)
-                                //     wx_raw = norepeat(wx_raw)
-                                //     localStorage.setItem("wxid_raw",JSON.stringify(wx_raw))
-        
-                                //     //微信昵称
-                                //     wx_nick.push(data[id].nick)
-                                //     wx_nick = norepeat(wx_nick)
-                                //     localStorage.setItem("weixinnick",JSON.stringify(wx_nick))
-                                // }
-                                
                                 ind ++;
                                 ind = ind < 10 ? "0" + ind : ind
-                                str += `
-                                <tr data-id=${data[id].id}>
-                                    <td>
-                                        <input data-id=${data[id].id} type="checkbox" name="" lay-skin="primary" lay-filter="itemChoose">
-                                    </td>
-                                    <td>&nbsp;&nbsp;${ind}</td>
-                                    <td>
-                                        <img src="${data[id].head_img}" style="width:30px;height:30px;border-radius:50%" data-lable=${data[id].lable} data-phone=${data[id].phone} data-id=${data[id].id} data-nick=${data[id].nick} data-sex=${data[id].sex} data-city=${data[id].sex} data-sign=${data[id].sign_str}>
-                                        ${data[id].nick}
-                                    </td>
-                                    <td>${data[id].wxid_raw}</td>
-                                    <td>8</td>
-                                    <td>${data[id].sex}</td>
-                                    <td>
-                                        <img src="images/img_01.jpg" alt="" class="qg_vx"/>
-                                    </td>
-                                    <td>7.12</td>
-                                    <td>深圳</td>
-                                    <td>未验证</td>
-                                    <td>${data[id].phone}</td>
-                                    <td>--</td>
-                                    <td>185</td>
-                                    <td>185</td>
-                                    <td>${data[id].lable}</td>
-                                    <td>
-                                    <em class="status success"></em>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="lk c_blue c_blues" data-id=${data[id].id}>重新登录</a>
-                                        <a href="#" class="lk">登录信息</a>
-                                    </td>
-                                </tr>
-                                `
-                            }
+                                
+                                if(data[id].state == 2){
+                                  counts++
+                                  str += `
+                                  <tr data-id=${data[id].id}>
+                                      <td>
+                                          <input data-id=${data[id].id} type="checkbox" name="" lay-skin="primary" lay-filter="itemChoose">
+                                      </td>
+                                      <td>&nbsp;&nbsp;${ind}</td>
+                                      <td>
+                                          <img src="${data[id].head_img}" style="width:30px;height:30px;border-radius:50%" data-label=${data[id].lable} data-lable=${data[id].lable} data-phone=${data[id].phone} data-id=${data[id].id} data-nick=${data[id].nick} data-sex=${data[id].sex} data-city=${data[id].sex} data-sign=${data[id].sign_str}>
+                                          ${data[id].nick}
+                                      </td>
+                                      <td>${data[id].wxid_raw}</td>
+                                      <td>8</td>
+                                      <td>${data[id].sex}</td>
+                                      <td>
+                                          <img src="images/img_01.jpg" alt="" class="qg_vx"/>
+                                      </td>
+                                      <td>${data[id].lable}</td>
+                                      <td>深圳</td>
+                                      <td>未验证</td>
+                                      <td>${data[id].phone}</td>
+                                      <td>--</td>
+                                      <td>185</td>
+                                      <td>185</td>
+                                      
+                                      <td>
+                                      <em class="status success"></em>
+                                      
+                                      </td>
+                                      <td>
+                                          <a href="#" class="lk c_blue c_blues" data-id=${data[id].id}>重新登录</a>
+                                          <a href="#" class="lk">${data[id].login_log}</a>
+                                      </td>
+                                  </tr>
+                                  `
+                                }else{
+                                  str += `
+                                  <tr data-id=${data[id].id}>
+                                      <td>
+                                          <input data-id=${data[id].id} type="checkbox" name="" lay-skin="primary" lay-filter="itemChoose">
+                                      </td>
+                                      <td>&nbsp;&nbsp;${ind}</td>
+                                      <td>
+                                          <img src="${data[id].head_img}" style="width:30px;height:30px;border-radius:50%" data-label=${data[id].lable} data-lable=${data[id].lable} data-phone=${data[id].phone} data-id=${data[id].id} data-nick=${data[id].nick} data-sex=${data[id].sex} data-city=${data[id].sex} data-sign=${data[id].sign_str}>
+                                          ${data[id].nick}
+                                      </td>
+                                      <td>${data[id].wxid_raw}</td>
+                                      <td>8</td>
+                                      <td>${data[id].sex}</td>
+                                      <td>
+                                          <img src="images/img_01.jpg" alt="" class="qg_vx"/>
+                                      </td>
+                                      <td>${data[id].lable}</td>
+                                      <td>深圳</td>
+                                      <td>未验证</td>
+                                      <td>${data[id].phone}</td>
+                                      <td>--</td>
+                                      <td>185</td>
+                                      <td>185</td>
+                                      
+                                      <td>
+                                      <em class="status fail"></em>
+                                      </td>
+                                      <td>
+                                          <a href="#" class="lk c_blue c_blues" data-id=${data[id].id}>重新登录</a>
+                                          <a href="#" class="lk">${data[id].login_log}</a>
+                                      </td>
+                                  </tr>
+                                  `
+                                }
+                              }
+                              $(".item_2 .num").text(counts)
+                              $(".item_3 .num").text($(".item_1 .num").text()-$(".item_2 .num").text())
                             $("table tbody").append(str)
+                            
+                            $(".item_1 num").text($("table tbody").find("tr").length)
                             form.render('checkbox');
                         }
                     },
@@ -125,11 +171,12 @@ $(function(){
           form.on('checkbox(allChoose)', function(data){
               //点击全选后的所有的tr元素
             var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
+           
             //console.log(child)
             var imgArr = []
         
             var total = $(data.elem).parents('table').find('tbody input[type="checkbox"]').length;
-            //console.log(total,nototal)
+            console.log(total)
             count++;
             if(count%2 !== 0){
                 console.log("全选")
@@ -142,8 +189,10 @@ $(function(){
             //点击全选的时候批量操作总量
             $(".qg_topbar span:first-child").find("em").text(total)
             child.each(function(index, item){
+                if($(item).parents('table').find('tbody input[type="checkbox"]:checked')){
+                  imgArr.push($(item).parents("tr").find("td:nth-of-type(3) img").get(0))
+                }
                 
-                imgArr.push($(item).parents("tr").find("td:nth-of-type(3) img").get(0))
                 
                 item.checked = data.elem.checked;
             });
@@ -158,6 +207,7 @@ $(function(){
                 let nickAll = imgArr[i].getAttribute("data-nick")
                 let lableAll = imgArr[i].getAttribute("data-lable")
                 let phoneAll = imgArr[i].getAttribute("data-phone")
+                let labelAll = imgArr[i].getAttribute("data-label")
                 //console.log(id,sexAll,cityAll,signAll,nickAll,lableAll,phoneAll)
                 
                 //上传头像
@@ -274,7 +324,7 @@ $(function(){
                     '{"type":' +
                     '"del_account",' +
                     '"lable":' +
-                    '"group1",' +
+                    '"'+labelAll+'",' +
                     '"phone":' +
                     '"'+phoneAll+'",' +
                     '"ticket":' +
@@ -315,34 +365,34 @@ $(function(){
                     '"'+token+'"' +
                     '}'
                     console.log(data)
-                    $.ajax({
-                        type: 'post',
-                        url: 'http://192.168.10.177/api.esp',
-                        data:data,
-                        dataType: 'json',
-                        success:function(msg){
-                            console.log(msg)
-                            if(msg.err_code == 0){
-                                $('.pop_hy_addtag1').hide();
-                                $('.pop_bg').hide();
-                                layer.msg("修改成功")
-                            }else{
-                                layer.msg("修改失败")
-                            }
-                        },
-                        error:function(err){
-                            console.log(err)
-                        }
-                    })
+                    // $.ajax({
+                    //     type: 'post',
+                    //     url: 'http://192.168.10.177/api.esp',
+                    //     data:data,
+                    //     dataType: 'json',
+                    //     success:function(msg){
+                    //         console.log(msg)
+                    //         if(msg.err_code == 0){
+                    //             $('.pop_hy_addtag1').hide();
+                    //             $('.pop_bg').hide();
+                    //             layer.msg("修改成功")
+                    //         }else{
+                    //             layer.msg("修改失败")
+                    //         }
+                    //     },
+                    //     error:function(err){
+                    //         console.log(err)
+                    //     }
+                    // })
                 })
            
-                   //修改个人信息
+                   //全选修改个人信息
                 $(".btns .fl2").click(function(){
-                    console.log(categoryName)
+                    //console.log(categoryNames)
                     var $province = $(".box3 .ipt_txt").val()
                     var $cityAll = $(".box4 .ipt_txt").val()
                     var $signAll = $(".box5 .ipt_txt").val()
-                    $sexAll = categoryName == "男" ? 1 : 2
+                    $sexAll = categoryNames == "男" ? 1 : 2
                     //console.log($cityOneAll,$signOneAll,$sexOneAll)
                     var data =
                     '{"type":' +
@@ -361,25 +411,25 @@ $(function(){
                     '"'+token+'"' +
                     '}'
                     console.log(data)
-                    $.ajax({
-                        type: 'post',
-                        url: 'http://192.168.10.177/api.esp',
-                        data:data,
-                        dataType: 'json',
-                        success:function(msg){
-                            console.log(msg)
-                            if(msg.err_code == 0){
-                                $('.pop_hy_addtag2').hide();
-                                $('.pop_bg').hide();
-                                layer.msg("修改成功")
-                            }else{
-                                layer.msg("修改失败")
-                            }
-                        },
-                        error:function(err){
-                            console.log(err)
-                        }
-                    })
+                    // $.ajax({
+                    //     type: 'post',
+                    //     url: 'http://192.168.10.177/api.esp',
+                    //     data:data,
+                    //     dataType: 'json',
+                    //     success:function(msg){
+                    //         console.log(msg)
+                    //         if(msg.err_code == 0){
+                    //             $('.pop_hy_addtag2').hide();
+                    //             $('.pop_bg').hide();
+                    //             layer.msg("修改成功")
+                    //         }else{
+                    //             layer.msg("修改失败")
+                    //         }
+                    //     },
+                    //     error:function(err){
+                    //         console.log(err)
+                    //     }
+                    // })
                 })
         
             }
@@ -389,11 +439,16 @@ $(function(){
         form.on('checkbox(itemChoose)',function(data){
             var arrOne = []
             var imgOneAll = $(data.elem).parents('table').find('tbody input[type="checkbox"]:checked')
-            console.log(imgOneAll)
+            //console.log(imgOneAll)
+
+            var total = $(data.elem).parents('table').find('tbody input[type="checkbox"]').length;
+            
             imgOneAll.each(function(index,item){
-                arrOne.push($(item).parents("tr").find("td:nth-of-type(3) img").get(0))
-            })
-            for(let i = 0; i < arrOne.length; i++){
+              arrOne.push($(item).parents("tr").find("td:nth-of-type(3) img").get(0))
+              })
+              console.log(arrOne)
+              for(let i = 0; i < arrOne.length; i++){
+                //console.log(arrOne[i])
                 let idOneAll = arrOne[i].getAttribute("data-id")
                 let imgSrcOneAll = arrOne[i].src
                 let sexOneAll = arrOne[i].getAttribute("data-sex")
@@ -428,7 +483,7 @@ $(function(){
                             '"ticket":' +
                             '"'+token+'"' +
                             '}'
-                            //console.log(data)
+                            console.log(data)
                             $.ajax({
                                 type: 'post',
                                 url: 'http://192.168.10.177/api.esp',
@@ -452,48 +507,48 @@ $(function(){
                     })
                 
         
-                     //修改昵称
-                $(".btns .fl1").click(function(){
-                    var $nick = $(".box1 .ipt_txt").val()
-                    var data =
-                    '{"type":' +
-                    '"change_nick",' +
-                    '"id":' +
-                    '"'+idOneAll+'",' +
-                    '"nick":' +
-                    '"'+$nick+'",' +
-                    '"ticket":' +
-                    '"'+token+'"' +
-                    '}'
-                    console.log(data)
-                    $.ajax({
-                        type: 'post',
-                        url: 'http://192.168.10.177/api.esp',
-                        data:data,
-                        dataType: 'json',
-                        success:function(msg){
-                            console.log(msg)
-                            if(msg.err_code == 0){
-                                $('.pop_hy_addtag1').hide();
-                                $('.pop_bg').hide();
-                                layer.msg("修改成功")
-                            }
-                        },
-                        error:function(err){
-                            console.log(err)
+              //        //修改昵称
+                $(".btns .fl1nc").click(function(){
+                  var $nick = $(".box1 .ipt_txt").val()
+                  var data =
+                  '{"type":' +
+                  '"change_nick",' +
+                  '"id":' +
+                  '"'+idOneAll+'",' +
+                  '"nick":' +
+                  '"'+$nick+'",' +
+                  '"ticket":' +
+                  '"'+token+'"' +
+                  '}'
+                  console.log(data)
+
+                  $.ajax({
+                    type: 'post',
+                    url: 'http://192.168.10.177/api.esp',
+                    data:data,
+                    dataType: 'json',
+                    success:function(msg){
+                        console.log(msg)
+                        if(msg.err_code == 0){
+                            $('.pop_hy_addtag1').hide();
+                            $('.pop_bg').hide();
+                            layer.msg("修改成功")
                         }
-                    })
+                    },
+                    error:function(err){
+                        console.log(err)
+                    }
                 })
-        
-        
-                //修改个人信息
+              })  
+         
+              //   //修改个人信息
                 $(".btns .fl2").click(function(){
-                    console.log(categoryName)
+                    //console.log(categoryNames)
                     var $province = $(".box3 .ipt_txt").val()
                     var $cityOneAll = $(".box4 .ipt_txt").val()
                     var $signOneAll = $(".box5 .ipt_txt").val()
-                    $sexOneAll = categoryName == "男" ? 1 : 2
-                    //console.log($cityOneAll,$signOneAll,$sexOneAll)
+                    $sexOneAll = categoryNames == "男" ? 1 : 2
+                    console.log($cityOneAll,$signOneAll,$sexOneAll)
                     var data =
                     '{"type":' +
                     '"change_info",' +
@@ -510,7 +565,7 @@ $(function(){
                     '"ticket":' +
                     '"'+token+'"' +
                     '}'
-                    //console.log(data)
+                    console.log(data)
                     $.ajax({
                         type: 'post',
                         url: 'http://192.168.10.177/api.esp',
@@ -530,7 +585,7 @@ $(function(){
                     })
                 })
         
-                //重新登录
+              //   //重新登录
                 $("body").delegate(".c_blues","click",function(){
                     var data =
                     '{"type":' +
@@ -558,7 +613,7 @@ $(function(){
                     })
                 })
         
-                //上线
+              //   //上线
                 $(".loginup").click(function(){
                     var data =
                     '{"type":' +
@@ -587,7 +642,7 @@ $(function(){
                 })
         
         
-                //下线
+              //   //下线
                 $(".loginout").click(function(){
                     var data =
                     '{"type":' +
@@ -615,7 +670,7 @@ $(function(){
                     })
                 })
         
-                //删除
+              //   //删除
                 $(".del").click(function(){
                     var data =
                     '{"type":' +
@@ -644,7 +699,7 @@ $(function(){
                         }
                     })
                 })
-                }
+                 }
         
            
         
@@ -664,20 +719,27 @@ $(function(){
                 form.render();
             }
         });
-        
-        $('.addtagBtn').click(function(){
-            $('.pop_hy_addtag1').show();
+        //修改昵称
+        $('.addtagBtnnc').click(function(){
+            $('.pop_hy_addtagnc').show();
             $('.pop_bg').show();
         });
-        
+        //修改基本信息
         $('.addtagBtn2').click(function(){
             $('.pop_hy_addtag2').show();
             $('.pop_bg').show();
             
         });
+
+        $(".fl1nc").click(function(){
+          $('.pop_hy_addtagnc').hide();
+          $('.pop_bg').hide();
+        })
         
         });
 
+
+       
 
 
 })

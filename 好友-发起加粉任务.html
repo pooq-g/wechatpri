@@ -69,8 +69,8 @@
             <li class="item group haschild">
               <a href="#">群</a>
               <div class="drop">
-                <a href="#">批量拉群</a>
-                <a href="#">自动群聊</a>
+                <a href="群管-拉群任务.html">批量拉群</a>
+                <a href="群管-新建群聊.html">自动群聊</a>
               </div>
             </li>
             <li class="item function haschild">
@@ -80,12 +80,14 @@
                 <a href="功能-发朋友圈.html">群发朋友圈</a>
                 <a href="功能-朋友圈评论.html">朋友圈评论</a>
                 <a href="功能-素材管理.html">素材管理</a>
+                <a href="#">群发群</a>
               </div>
             </li>
             <li class="item customer haschild">
               <a href="#">客服系统</a>
               <div class="drop">
                 <a href="客服-客服管理.html">客服管理</a>
+                <a href="客服-聊天设置.html">聊天设置</a>
               </div>
             </li>
           </ul>
@@ -102,9 +104,9 @@
                 aria-invalid="false"
                 id=""
               >
-                <option value="">全部账号</option>
-                <option value="1">全部账号</option>
-                <option value="2">全部账号</option>
+                <option value="">全部分组</option>
+                <option value="1">全部分组</option>
+                <option value="2">全部分组</option>
               </select>
             </div>
           </li>
@@ -128,6 +130,7 @@
                 <button type="button" class="layui-btn-normal button addtagBtn">
                   添加标签
                 </button>
+                <span> 添加成功后自动打标签</span>
               </div>
             </div>
             <div class="addfen_tip">
@@ -192,7 +195,7 @@
                 placeholder="请输入验证信息（如果加粉数据是格式2.此验证信息无效）"
               ></textarea>
               <div class="bar layui-form">
-                <span class="words">[昵称] [自己昵称] 添加成功后打标签：</span>
+                <span class="words">[昵称] [自己昵称] [对方名字]</span>
                 <!-- <span class="addtag addtagBtn">添加标签</span> -->
               </div>
             </div>
@@ -455,6 +458,22 @@
       $('.quedingfl').click(function() {
         $('.pop_hy_edittag').hide()
         $('.pop_bg').hide()
+      })
+
+      //正则表达式
+      $('#test1').blur(function() {
+        var val = $(this).val()
+        if (/^\d{2}$/.test(val) == false) {
+          layer.msg('请输入整数')
+          $(this).val('')
+        }
+      })
+      $('#test2').blur(function() {
+        var val = $(this).val()
+        if (/^\d{2}$/.test(val) == false) {
+          layer.msg('请输入整数')
+          $(this).val('')
+        }
       })
 
       $('.backlist').click(function() {

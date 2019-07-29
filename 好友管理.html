@@ -54,8 +54,8 @@
                 <li class="item group haschild">
                     <a href="#">群</a>
                     <div class="drop">
-                        <a href="#">批量拉群</a>
-                        <a href="#">自动群聊</a>
+                        <a href="群管-拉群任务.html">批量拉群</a>
+                        <a href="群管-新建群聊.html">自动群聊</a>
                     </div>
                 </li>
                 <li class="item function haschild">
@@ -65,12 +65,14 @@
                         <a href="功能-发朋友圈.html">群发朋友圈</a>
                         <a href="功能-朋友圈评论.html">朋友圈评论</a>
                         <a href="功能-素材管理.html">素材管理</a>
+                        <a href="#">群发群</a>
                     </div>
                 </li>
                 <li class="item customer haschild">
                     <a href="#">客服系统</a>
                     <div class="drop">
                         <a href="客服-客服管理.html">客服管理</a>
+                        <a href="客服-聊天设置.html">聊天设置</a>
                     </div>
                 </li>
             </ul>
@@ -116,9 +118,9 @@
                 lay-filter="category1"
                 aria-invalid="false"
                 id="">
-                        <option value="1">全部</option>
-                        <option value="2">全部</option>
-                        <option value="3">全部</option>
+                        <option value="1">账号</option>
+                        <option value="2">账号</option>
+                        <option value="3">账号</option>
                     </select>
                 </div>
                 <div class="selectbox fl">
@@ -135,6 +137,7 @@
                     <input type="text" class="ipt ipt_txt searchnick" placeholder="请输入好友昵称"/>
                 </div>
                 <button class="button add fr addtagBtn">新建标签</button>
+                <button class="button add fr addtagBtn">修改标签</button>
             </div>
             <div class="friend_tablewrap">
                 <table class="friend_table layui-form text-left">
@@ -143,14 +146,13 @@
                             <input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose">&nbsp;&nbsp;全选
                         </th>
                         <th width="12%">微信号</th>
-                        <th width="12%">好友昵称</th>
-                        <th width="10%">备注</th>
+                        <th width="15%">好友昵称</th>
                         <th width="15%">
-                            <em class="tag edittagBtn">标签</em>
+                            标签
                         </th>
-                        <th width="10%">所属账号</th>
-                        <th width="12%">聊天记录</th>
-                        <th width="21%">操作</th>
+                        <th width="15%">所属账号</th>
+                        <th width="15%">聊天记录</th>
+                        <th width="30%">操作</th>
                     </thead>
                     <tbody>
                       <!--    <tr>

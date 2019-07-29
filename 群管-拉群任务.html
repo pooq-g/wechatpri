@@ -17,7 +17,7 @@
             <div class="top_notice fl">
                 <span class="fz">拉群任务</span>
                 <div class="txt">
-                    <li>这里是全站公告这里是全站公告这里是全站公告</li>
+                    <li>所显示的可拉好友数包含僵尸粉，最后结果以有效粉为准</li>
                 </div>
             </div>
             <div class="fr">
@@ -53,8 +53,9 @@
                 <li class="item group haschild cur">
                     <a href="#">群</a>
                     <div class="drop">
-                        <a href="#">批量拉群</a>
-                        <a href="#">自动群聊</a>
+                        <a href="群管-拉群任务.html">批量拉群</a>
+                        <a href="群管-加群聊天.html">自动群聊</a>
+                        
                     </div>
                 </li>
                 <li class="item function haschild">
@@ -64,12 +65,14 @@
                         <a href="功能-发朋友圈.html">群发朋友圈</a>
                         <a href="功能-朋友圈评论.html">朋友圈评论</a>
                         <a href="功能-素材管理.html">素材管理</a>
+                        <a href="#">群发群</a>
                     </div>
                 </li>
                 <li class="item customer haschild">
                     <a href="#">客服系统</a>
                     <div class="drop">
                         <a href="客服-客服管理.html">客服管理</a>
+                        <a href="客服-聊天设置.html">聊天设置</a>
                     </div>
                 </li>
             </ul>
@@ -78,8 +81,11 @@
     <div class="layui-body">
         <div class="qg_task_module bg_white">
             <div class="qg_tit">拉群设置</div>
+            
             <div class="detail">
-                <span class="button">关闭</span>
+                <span class="button">新建拉群任务</span>
+                <span class="button">关闭拉群任务</span>
+                <span class="button laqndetail">拉群任务详情</span>
                 <div class="tips">上传群二维码<em class="c_blue">（每次导入最多添加50张，请勿上次重复的群二维码）</em></div>
                 <div class="file_upbox">
                     <div class="btns">
@@ -98,7 +104,7 @@
             <div class="qg_main">
                 <div class="friend_bar layui-form friend_bar2 clearfix">
                     <li class="item fl">
-                        <span class="fz">群动态</span>
+                        <span class="fz">全部分组</span>
                         <div class="selectbox">
                             <select name="" id="">
                                 <option value="1">全部</option>
@@ -129,7 +135,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button class="button fl">恢复失败好友</button>
+                        <button class="button fl">恢复可拉好友</button>
                     </div>
                 </div>
                 <div class="friend_tablewrap">
@@ -137,8 +143,6 @@
                         <span class="fz">批量操作（已选<em class="c_blue">10</em>）</span>
                         <span class="button">开始拉群</span>
                         <span class="button">批量删除</span>
-                        <span class="button">清除上次拉群记录</span>
-                        <span class="button">验收</span>
                     </div>
                     <table class="friend_table layui-form friend_table1">
                         <thead>
@@ -153,10 +157,8 @@
                             <th width="9%">拉群前人数</th>
                             <th width="9%">当前群人数</th>
                             <th width="9%">拉群类型</th>
-                            <th width="10%">群成员详情</th>
                             <th width="7%">当前状态</th>
                             <th width="6%">原因</th>
-                            <th width="13%">操作</th>
                         </thead>
                         <tbody>
                             <tr>
@@ -173,15 +175,11 @@
                                 <td>100人</td>
                                 <td>500人</td>
                                 <td>新增好友</td>
-                                <td>未知</td>
                                 <td>
                                     <a href="#" class="lk c_red">未处理</a>
                                 </td>
                                 <td>未知</td>
-                                <td>
-                                    <a href="javascript:;" class="lk c_blue">开始拉群</a>
-                                    <a href="javascript:;" class="lk c_blue">删除</a>
-                                </td>
+                                
                             </tr>
                             <tr>
                                 <td>
@@ -197,15 +195,11 @@
                                 <td>100人</td>
                                 <td>500人</td>
                                 <td>新增好友</td>
-                                <td>未知</td>
                                 <td>
                                     <a href="#" class="lk c_red">未处理</a>
                                 </td>
                                 <td>未知</td>
-                                <td>
-                                    <a href="javascript:;" class="lk c_blue">开始拉群</a>
-                                    <a href="javascript:;" class="lk c_blue">删除</a>
-                                </td>
+                                
                             </tr>
                             <tr>
                                 <td>
@@ -221,15 +215,11 @@
                                 <td>100人</td>
                                 <td>500人</td>
                                 <td>新增好友</td>
-                                <td>未知</td>
                                 <td>
                                     <a href="#" class="lk c_red">未处理</a>
                                 </td>
                                 <td>未知</td>
-                                <td>
-                                    <a href="javascript:;" class="lk c_blue">开始拉群</a>
-                                    <a href="javascript:;" class="lk c_blue">删除</a>
-                                </td>
+                                
                             </tr>
                             <tr>
                                 <td>
@@ -245,15 +235,11 @@
                                 <td>100人</td>
                                 <td>500人</td>
                                 <td>新增好友</td>
-                                <td>未知</td>
                                 <td>
                                     <a href="#" class="lk c_red">未处理</a>
                                 </td>
                                 <td>未知</td>
-                                <td>
-                                    <a href="javascript:;" class="lk c_blue">开始拉群</a>
-                                    <a href="javascript:;" class="lk c_blue">删除</a>
-                                </td>
+                                
                             </tr>
                             <tr>
                                 <td>
@@ -269,15 +255,11 @@
                                 <td>100人</td>
                                 <td>500人</td>
                                 <td>新增好友</td>
-                                <td>未知</td>
                                 <td>
                                     <a href="#" class="lk c_red">未处理</a>
                                 </td>
                                 <td>未知</td>
-                                <td>
-                                    <a href="javascript:;" class="lk c_blue">开始拉群</a>
-                                    <a href="javascript:;" class="lk c_blue">删除</a>
-                                </td>
+                                
                             </tr>
                             <tr>
                                 <td>
@@ -293,15 +275,11 @@
                                 <td>100人</td>
                                 <td>500人</td>
                                 <td>新增好友</td>
-                                <td>未知</td>
                                 <td>
                                     <a href="#" class="lk c_red">未处理</a>
                                 </td>
                                 <td>未知</td>
-                                <td>
-                                    <a href="javascript:;" class="lk c_blue">开始拉群</a>
-                                    <a href="javascript:;" class="lk c_blue">删除</a>
-                                </td>
+                                
                             </tr>
                             <tr>
                                 <td>
@@ -317,15 +295,11 @@
                                 <td>100人</td>
                                 <td>500人</td>
                                 <td>新增好友</td>
-                                <td>未知</td>
                                 <td>
                                     <a href="#" class="lk c_green">已验收</a>
                                 </td>
                                 <td>未知</td>
-                                <td>
-                                    <a href="javascript:;" class="lk c_blue">开始拉群</a>
-                                    <a href="javascript:;" class="lk c_blue">删除</a>
-                                </td>
+                                
                             </tr>
                             <tr>
                                 <td>
@@ -341,15 +315,11 @@
                                 <td>100人</td>
                                 <td>500人</td>
                                 <td>新增好友</td>
-                                <td>未知</td>
                                 <td>
                                     <a href="#" class="lk c_red">未处理</a>
                                 </td>
                                 <td>未知</td>
-                                <td>
-                                    <a href="javascript:;" class="lk c_blue">开始拉群</a>
-                                    <a href="javascript:;" class="lk c_blue">删除</a>
-                                </td>
+                                
                             </tr>
                         </tbody>
                     </table>
@@ -421,6 +391,11 @@ form.on('checkbox(itemChoose)',function(data){
         form.render();
     }
 }); 
+
+
+$(".laqndetail").click(function(){
+  location.href="群管-拉群记录.html"
+})
 
 
   

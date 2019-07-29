@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" href="layui/css/layui.css" media="all" />
     <link rel="stylesheet" href="css/style.css" />
-    <title>账号-会员管理</title>
+    <title>账号-分组管理</title>
   </head>
 
   <body class="layui-layout-body">
@@ -15,7 +15,7 @@
         </div>
         <div class="head_right clearfix">
           <div class="top_notice fl">
-            <span class="fz">会员管理</span>
+            <span class="fz">分组管理</span>
             <div class="txt">
               <li>账号管理可以批量修改，操作，管理账号</li>
             </div>
@@ -40,7 +40,7 @@
             <li class="item account haschild cur">
               <a href="#">账号</a>
               <div class="drop">
-                <a href="账号-会员管理.html" class="this">会员管理</a>
+                <a href="账号-会员管理.html" class="this">分组管理</a>
                 <a href="账号-账号管理.html">账号管理</a>
                 <a href="账号-账号设置.html">账号设置</a>
               </div>
@@ -56,8 +56,8 @@
             <li class="item group haschild">
               <a href="#">群</a>
               <div class="drop">
-                <a href="#">批量拉群</a>
-                <a href="#">自动群聊</a>
+                <a href="群管-拉群任务.html">批量拉群</a>
+                <a href="群管-新建群聊.html">自动群聊</a>
               </div>
             </li>
             <li class="item function haschild">
@@ -67,12 +67,14 @@
                 <a href="功能-发朋友圈.html">群发朋友圈</a>
                 <a href="功能-朋友圈评论.html">朋友圈评论</a>
                 <a href="功能-素材管理.html">素材管理</a>
+                <a href="#">群发群</a>
               </div>
             </li>
             <li class="item customer haschild">
               <a href="#">客服系统</a>
               <div class="drop">
                 <a href="客服-客服管理.html">客服管理</a>
+                <a href="客服-聊天设置.html">聊天设置</a>
               </div>
             </li>
           </ul>
@@ -97,7 +99,7 @@
                 placeholder="请输入会员名称"
               />
             </div>
-            <button class="button_ico add fr">添加会员</button>
+            <button class="button_ico add fr">添加账号分组</button>
           </div>
           <div class="friend_tablewrap">
             <table class="friend_table layui-form">
@@ -379,25 +381,25 @@
           }
         })
 
-        
         token = localStorage.getItem('token')
         var data =
           '{"type":' + '"get_lable",' + '"ticket":' + '"' + token + '"' + '}'
-        console.log(data)
+        //console.log(data)
         $.ajax({
           type: 'post',
           url: 'http://192.168.10.177/api.esp',
           data: data,
           dataType: 'json',
           success: function(msg) {
-            //console.log(msg)
+            console.log(msg)
             if (msg.err_code == 0) {
               var data = msg.data
               console.log(data)
-              localStorage.setItem('lablegroup', data)
-              var str = ''
-              for (var i in data) {
-                str += `
+              if (data != undefined) {
+                localStorage.setItem('lablegroup', JSON.stringify(data))
+                var str = ''
+                for (var i in data) {
+                  str += `
                         <tr>
                             <td>
                                 <input type="checkbox" name="" lay-skin="primary" lay-filter="itemChoose">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -415,7 +417,9 @@
                                 </div>
                             </td>
                             <td>
-                                88/144 <span class="online_btn">一键上线</span>
+                                ${data[i].count}/${
+                    data[i].count
+                  } <span class="online_btn">一键上线</span>
                             </td>
                             <td>
                                 <a href="javascript:;" class="lk_ico editname">修改名称</a>
@@ -425,9 +429,13 @@
                             </td>
                         </tr>
                         `
+                }
+                $('tbody').append(str)
+                form.render()
+              } else {
+                var dd = {}
+                localStorage.setItem('lablegroup', JSON.stringify(dd))
               }
-              $('tbody').append(str)
-              form.render()
             }
           }
         })

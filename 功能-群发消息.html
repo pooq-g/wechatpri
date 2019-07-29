@@ -58,8 +58,8 @@
             <li class="item group haschild">
               <a href="#">群</a>
               <div class="drop">
-                <a href="#">批量拉群</a>
-                <a href="#">自动群聊</a>
+                <a href="群管-拉群任务.html">批量拉群</a>
+                <a href="群管-加群聊天.html">自动群聊</a>
               </div>
             </li>
             <li class="item function haschild cur">
@@ -69,12 +69,14 @@
                 <a href="功能-发朋友圈.html">群发朋友圈</a>
                 <a href="功能-朋友圈评论.html">朋友圈评论</a>
                 <a href="功能-素材管理.html">素材管理</a>
+                <a href="#">群发群</a>
               </div>
             </li>
             <li class="item customer haschild">
               <a href="#">客服系统</a>
               <div class="drop">
                 <a href="客服-客服管理.html">客服管理</a>
+                <a href="客服-聊天设置.html">聊天设置</a>
               </div>
             </li>
           </ul>
@@ -83,18 +85,7 @@
       <div class="layui-body">
         <div class="bd_wrap bg_white">
           <div class="friend_bar clearfix layui-form bg_f4">
-            <div class="selectbox">
-              <select
-                name="category"
-                lay-filter="category"
-                aria-invalid="false"
-                id=""
-              >
-                <option value="1">群发对象</option>
-                <option value="2">群发对象</option>
-                <option value="3">群发对象</option>
-              </select>
-            </div>
+            <a href="javascript:;" class="anniu adduserBtn">+添加分组设置</a>
             <button class="button_ico qunfa fr">群发记录</button>
           </div>
           <div class="qg_tit">群发内容</div>
@@ -120,7 +111,7 @@
                   </li> -->
             </ul>
             <div class="friend_btns">
-              <button class="button this">立即群发</button>
+              <button class="button this fastsend">立即群发</button>
               <button class="button">定时群发</button>
             </div>
           </div>
@@ -193,6 +184,70 @@
       <div class="btns clearfix">
         <button class="button this queding2">确定</button>
         <button class="button cancel">取消</button>
+      </div>
+    </div>
+
+    <!--添加账号-弹窗-->
+    <div class="pop pop_zh pop_qg_adduser">
+      <em class="close">&times;</em>
+      <div class="t_tit">添加账号</div>
+      <div class="detail layui-form">
+        <div class="searchbox clearfix">
+          <input
+            type="text"
+            class="ipt ipt_txt fl"
+            placeholder="请输入关键词搜索"
+          />
+          <input type="button" class="ipt ipt_button fr" value="搜索" />
+        </div>
+        <div class="box clearfix">
+          <div class="box_l fl">
+            <div class="topbar"><em class="fz fl">全选</em>全部账号</div>
+            <div class="bottom">
+              <li>
+                <input
+                  type="checkbox"
+                  name="like1[write]"
+                  lay-skin="primary"
+                  title=""
+                />7.12-(83)
+              </li>
+              <li>
+                <input
+                  type="checkbox"
+                  name="like1[write]"
+                  lay-skin="primary"
+                  title=""
+                />7.12-(83)
+              </li>
+              <li>
+                <input
+                  type="checkbox"
+                  name="like1[write]"
+                  lay-skin="primary"
+                  title=""
+                />7.12-(83)
+              </li>
+            </div>
+          </div>
+          <div class="box_r fr">
+            <div class="topbar">已选账号<em class="fz fr">清空</em></div>
+            <div class="bottom">
+              <li>安琪<em class="delete"></em></li>
+              <li>安琪<em class="delete"></em></li>
+              <li>安琪<em class="delete"></em></li>
+              <li>安琪<em class="delete"></em></li>
+              <li>安琪<em class="delete"></em></li>
+              <li>安琪<em class="delete"></em></li>
+              <li>安琪<em class="delete"></em></li>
+            </div>
+          </div>
+        </div>
+        <div class="tips">当前已选账号83个</div>
+        <div class="btns clearfix">
+          <button class="button this">确定</button>
+          <button class="button cancel">取消</button>
+        </div>
       </div>
     </div>
 
@@ -332,17 +387,13 @@
                 //var layuicontent = layedit.getContent(index)
                 //console.log(layuicontent)
                 str = `
-             <li>
-                     <div class="num">
-                       <span></span>
-                     </div>
-                     <div class="details" data-msgtype="text">
-                       <div class="text">${$('.textarea').val()}</div>
-                     </div><div class="btnbox">
-                         <a href="javascript:;" class="lk_ico editname"></a>
-                         <a href="javascript:;" class="lk_ico quit"></a>
-                     </div>
-                   </li>
+                <li>
+                       <div class="num">
+                         <span></span>
+                       </div>
+                       <div class="details" data-msgtype="text">
+                         <div class="text">${$('.textarea').val()}</div>
+                     </li>
              `
                 $('.msg-list').append(str)
                 $('.pop_chart_msg1').hide()
@@ -350,12 +401,72 @@
                 $('.textarea').val('')
               })
           })
+
+          //点击确定的时候
+          $('.fastsend').click(function() {
+            var mes = $('.msg-list')
+              .find('.text')
+              .html()
+            for (var i in wxid_raw) {
+              for (var j in friend_wxid) {
+                var data =
+                  '{"type":' +
+                  '"send_msg",' +
+                  '"wxid":' +
+                  '"' +
+                  wxid_raw[i] +
+                  '",' +
+                  '"to_wxid":' +
+                  '"' +
+                  friend_wxid[j] +
+                  '",' +
+                  '"content":' +
+                  '"' +
+                  mes +
+                  '",' +
+                  '"ticket":' +
+                  '"' +
+                  token +
+                  '"' +
+                  '}'
+                console.log(data)
+                $.ajax({
+                  type: 'post',
+                  url: 'http://192.168.10.177/api.esp',
+                  data: data,
+                  dataType: 'json',
+                  success: function(msg) {
+                    console.log(msg)
+                    if (msg.err_code == 0) {
+                      layer.msg('群发成功')
+                    } else {
+                      layer.msg('群发失败')
+                    }
+                  },
+                  error: function(err) {
+                    console.log(err)
+                  }
+                })
+              }
+            }
+          })
         }
       )
 
       //添加图片
       $('.pics').click(function() {
         $('.pop_chart_msg2').show()
+        $('.pop_bg').show()
+      })
+
+      //群发记录
+      $('.qunfa').click(function() {
+        location.href = '功能-群发记录.html'
+      })
+
+      //点击弹窗
+      $('.adduserBtn').click(function() {
+        $('.pop_qg_adduser').show()
         $('.pop_bg').show()
       })
 

@@ -6,6 +6,7 @@ $(function() {
   console.log(friend_wxid, wxfrom)
 
   msglist = []
+  msgnick = []
   let leftmsg = ''
   for (var i in wxfrom) {
     var data =
@@ -34,72 +35,72 @@ $(function() {
       data: data,
       dataType: 'json',
       success: function(msg) {
-        if (msg.err_code == 0) {
+        // console.log(msg)
+        if (msg.msg_count == 1) {
           var data = msg.data
           console.log(data)
-          msgnick = []
-          for (m in wxid_raw) {
+          for (var m in wxid_raw) {
             if (data[0]) {
               if (data[0].from_wxid !== wxid_raw[m]) {
                 leftmsg = `
-                                <li class="item clearfix clickhandler" data-fd=${
-                                  data[0].to_wxid
-                                } data-td=${data[0].from_wxid}>
-                                    <img src="images/kf_06.png" alt="" class="hdimg fl" />
-                                    <div class="info">
-                                    <h6 class="name">${
-                                      data[0].from_wxid
-                                    }<em class="num">1</em></h6>
-                                    <p class="fz ellipsis">留言内容聊天内容留言内...</p>
-                                    </div>
-                                </li>
-                                `
+                                 <li class="item clearfix clickhandler" data-fd=${
+                                   data[0].to_wxid
+                                 } data-td=${data[0].from_wxid}>
+                                     <img src="images/kf_06.png" alt="" class="hdimg fl" />
+                                     <div class="info">
+                                     <h6 class="name">${
+                                       data[0].from_wxid
+                                     }<em class="num">1</em></h6>
+                                     <p class="fz ellipsis">留言内容聊天内容留言内...</p>
+                                     </div>
+                                 </li>
+                                 `
               } else {
                 leftmsg = `
-                                <li class="item clearfix clickhandler" data-fd=${
-                                  data[0].from_wxid
-                                } data-td=${data[0].to_wxid}>
-                                    <img src="images/kf_06.png" alt="" class="hdimg fl" />
-                                    <div class="info">
-                                    <h6 class="name">${
-                                      data[0].to_wxid
-                                    }<em class="num">1</em></h6>
-                                    <p class="fz ellipsis">留言内容聊天内容留言内...</p>
-                                    </div>
-                                </li>
-                                `
+                                 <li class="item clearfix clickhandler" data-fd=${
+                                   data[0].from_wxid
+                                 } data-td=${data[0].to_wxid}>
+                                     <img src="images/kf_06.png" alt="" class="hdimg fl" />
+                                     <div class="info">
+                                     <h6 class="name">${
+                                       data[0].to_wxid
+                                     }<em class="num">1</em></h6>
+                                     <p class="fz ellipsis">留言内容聊天内容留言内...</p>
+                                     </div>
+                                 </li>
+                                 `
               }
             }
           }
           $('.chart_memlist').append(leftmsg)
-          // for(i in data){
-          //     //获取消息来源好友微信号
-          //     for(m in wxid_raw){
-          //         //如果data[i].from_wxid不等于本微信号，则添加from
-          //         if(data[i].from_wxid !== wxid_raw[m]){
-          //             //console.log(data[i].to_wxid)
-          //             msglist.push(data[i].from_wxid)
-          //         }else{
-          //             //否则添加to微信号 do 1470
-          //             //console.log(data[i].to_wxid)
-          //             msglist.push(data[i].to_wxid)
-          //         }
-          //     }
-          // }
-          // msglist = norepeat(msglist)
-          // //左边的好友
-          // for(let j = 0; j < msglist.length; j++){
-          //         leftmsg = `
-          //         <li class="item clearfix clickhandler">
-          //             <img src="images/kf_06.png" alt="" class="hdimg fl" />
-          //             <div class="info">
-          //             <h6 class="name">${msglist[j]}<em class="num">1</em></h6>
-          //             <p class="fz ellipsis">留言内容聊天内容留言内...</p>
-          //             </div>
-          //         </li>
-          //         `
-          //     }
-          //     $(".chart_memlist").append(leftmsg)
+          for (i in data) {
+            //获取消息来源好友微信号
+            for (m in wxid_raw) {
+              //如果data[i].from_wxid不等于本微信号，则添加from
+              if (data[i].from_wxid !== wxid_raw[m]) {
+                //console.log(data[i].to_wxid)
+                msglist.push(data[i].from_wxid)
+              } else {
+                //否则添加to微信号 do 1470
+                //console.log(data[i].to_wxid)
+                msglist.push(data[i].to_wxid)
+              }
+            }
+          }
+          msglist = norepeat(msglist)
+          //左边的好友
+          for (let j = 0; j < msglist.length; j++) {
+            leftmsg = `
+                   <li class="item clearfix clickhandler">
+                       <img src="images/kf_06.png" alt="" class="hdimg fl" />
+                       <div class="info">
+                       <h6 class="name">${msglist[j]}<em class="num">1</em></h6>
+                       <p class="fz ellipsis">留言内容聊天内容留言内...</p>
+                       </div>
+                   </li>
+                   `
+          }
+          $('.chart_memlist').append(leftmsg)
         }
       },
       error: function(err) {

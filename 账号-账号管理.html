@@ -155,10 +155,12 @@
                 lay-filter="category2"
                 aria-invalid="false"
                 id=""
+                class="addlabel"
               >
-                <option value="1">全部分组</option>
+              <option value="">全部账号</option>
+                <!-- <option value="1">全部分组</option>
                 <option value="2">全部分组</option>
-                <option value="3">全部分组</option>
+                <option value="3">全部分组</option> -->
               </select>
             </div>
             <div class="searchbox fl">
@@ -208,7 +210,6 @@
                 <th width="4%">&nbsp;&nbsp;全选</th>
                 <th width="8%">账号名称</th>
                 <th width="8%">账号</th>
-                <th width="5%">等级</th>
                 <th width="5%">性别</th>
                 <th width="5%">二维码</th>
                 <th width="6%">所属分组</th>
@@ -222,7 +223,7 @@
                 <th width="12%">操作</th>
               </thead>
               <tbody>
-                <!--    <tr>
+              <!--     <tr>
                             <td>
                                 <input type="checkbox" class="actives" name="" lay-skin="primary" lay-filter="itemChoose">
                             </td>
@@ -232,7 +233,6 @@
                                 ${data[id].nick}/>
                                 小猪佩奇</td>
                             <td>13997467472</td>
-                            <td>8</td>
                             <td>男</td>
                             <td>
                                 <img src="images/img_01.jpg" alt="" class="qg_vx"/>
@@ -241,7 +241,6 @@
                             <td>深圳</td>
                             <td>未验证</td>
                             <td>1366706871</td>
-                            <td>--</td>
                             <td>185</td>
                             <td>185</td>
                             <td>1815</td>
@@ -259,11 +258,10 @@
                             </td>
                             <td>&nbsp;&nbsp;01</td>
                             <td>
-                              <img src="images/icon_14.png"  data-label=${data[id].lable} data-lable=${data[id].lable} data-phone=${data[id].phone} data-id=${data[id].id} data-nick=${data[id].nick} data-sex=${data[id].sex} data-city=${data[id].sex} data-sign=${data[id].sign_str}>
+                              <img src="images/icon_14.png"  data-label=${data[id].ddd} data-lable=${data[id].labfffle} data-phone=${dagga[id].phone} data-id=${datgga[id].id} data-nick=${dggata[id].nick} data-sex=${data[id].sex} data-city=${data[id].sex} data-sign=${data[id].sign_str}>
                               ${data[id].nick}/>
                               小猪佩奇</td>
                             <td>13997467472</td>
-                            <td>8</td>
                             <td>男</td>
                             <td>
                                 <img src="images/img_01.jpg" alt="" class="qg_vx"/>
@@ -272,7 +270,6 @@
                             <td>深圳</td>
                             <td>未验证</td>
                             <td>1366706871</td>
-                            <td>--</td>
                             <td>185</td>
                             <td>185</td>
                             <td>1815</td>
@@ -284,7 +281,7 @@
                                 <a href="#" class="lk">登录信息</a>
                             </td>
                         </tr>
-                    <tr>
+                     <tr>
                             <td>
                                 <input type="checkbox" name="" lay-skin="primary" lay-filter="itemChoose">
                             </td>
@@ -427,7 +424,6 @@
     </div>
 
     <!--修改昵称-->
-    <div class="pop_bg"></div>
     <div class="pop pop_zh pop_hy_addtag pop_hy_addtag1 pop_hy_addtagnc">
       <em class="close">&times;</em>
       <div class="t_tit">修改昵称</div>
@@ -485,13 +481,13 @@
       </div>
     </div>
 
-    <!--修改标签-->
+    <!--点击修改标签出来的标签-->
     <div class="pop_bg"></div>
     <div class="pop pop_zh pop_hy_edittag pop_hy_edittag1" style="display: none">
       <em class="close">&times;</em>
       <div class="t_tit">修改标签</div>
       <div class="detail layui-form">
-        <div class="box box10">
+        <div class="box boxedit">
         </div>
         <span class="addbq">+新建标签 </span>
         <div class="btns clearfix">
@@ -502,15 +498,14 @@
       </div>
     </div>
 
-     <!--选择标签-->
-     <div class="pop_bg"></div>
+     <!--点击上传文件出来的标签-->
      <div class="pop pop_zh pop_hy_edittag pop_hy_edittag2" style="display: none">
        <em class="close">&times;</em>
        <div class="t_tit">选择标签</div>
        <div class="detail layui-form">
-         <div class="box box10">
+         <div class="box boxchoose">
          </div>
-         <span class="addbq">+新建标签 </span>
+         <!-- <span class="addbq">+新建标签 </span> -->
          <div class="btns clearfix">
            <button class="button this fl quedingf2" style="position: relative">
              <input
@@ -536,7 +531,7 @@
           </li>
         </div>
         <div class="btns clearfix">
-          <button class="button this fl fl1s">确定</button>
+          <button class="button this fl quedingend">确定</button>
           <button class="button fr cancel">取消</button>
         </div>
       </div>
@@ -546,8 +541,8 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="layui/layui.js" charset="utf-8"></script>
     <script src="js/common.js" charset="utf-8"></script>
-    <script src="js/addcount.js"></script>
-    <script src="js/accountmanage.js"></script>
+    <script src="js/addcount.js?a="+new Date().getTime()></script>
+    <script src="js/accountmanage.js?a="+new Date().getTime()></script>
     <script src="js/loginout.js"></script>
     <script src="js/norepeat.js"></script>
     <script>
@@ -569,7 +564,10 @@
         </li>
         `
       }
-      $('.box10').append(str)
+      $('.boxedit').append(str)
+      $(".boxchoose").append(str)
+
+      
 
       //点击添加选择分组
       $('.add').click(function() {

@@ -42,7 +42,7 @@
             <li class="item account haschild">
               <a href="#">账号</a>
               <div class="drop">
-                <a href="账号-会员管理.html">会员管理</a>
+                <a href="账号-会员管理.html">分组管理</a>
                 <a href="账号-账号管理.html">账号管理</a>
                 <a href="账号-账号设置.html">账号设置</a>
               </div>
@@ -202,9 +202,17 @@
         </div>
         <div class="box clearfix">
           <div class="box_l fl">
-            <div class="topbar"><em class="fz fl">全选</em>全部账号</div>
-            <div class="bottom">
-              <li>
+            <div class="topbar">
+              <em class="fz fl selectaddcolunt"
+                ><input
+                  type="checkbox"
+                  name=""
+                  lay-skin="primary"
+                  lay-filter="allChooses"/></em
+              >全部账号
+            </div>
+            <div class="bottom showlable">
+              <!-- <li>
                 <input
                   type="checkbox"
                   name="like1[write]"
@@ -227,7 +235,7 @@
                   lay-skin="primary"
                   title=""
                 />7.12-(83)
-              </li>
+              </li> -->
             </div>
           </div>
           <div class="box_r fr">
@@ -288,6 +296,77 @@
           wxid_raw = JSON.parse(localStorage.getItem('wxid_raw'))
           //获取好友微信列表
           friend_wxid = JSON.parse(localStorage.getItem('friend_wxid'))
+
+          //1.点击添加分组设置获取所有分组
+          var alllabelgoup = JSON.parse(localStorage.getItem('alllabelgoup'))
+          console.log(alllabelgoup)
+          var str = ''
+          for (var i in alllabelgoup) {
+            str += `
+      <li>
+              <input
+                type="checkbox"
+                name="${alllabelgoup[i].name}"
+                lay-skin="primary"
+                title="${alllabelgoup[i].name}"
+                value="${alllabelgoup[i].name}"
+                lay-filter="messagesetl"
+              />(${alllabelgoup[i].count})
+            </li>
+      `
+          }
+          $('.showlable').append(str)
+          form.render()
+
+          //2.在添加账号分组的时候点击全选
+
+          form.on('checkbox(allChooses)', function(data) {
+            var imgArr = []
+
+            var child = $(data.elem)
+              .parents('.box_l')
+              .find(".showlable input[type='checkbox']")
+            //所有的子元素数量
+            child.each(function(index, item) {
+              console.log(item)
+              //console.log(item.checked)
+              console.log(data.elem.checked)
+              item.checked = data.elem.checked
+            })
+            form.render('checkbox')
+          })
+
+          //3.在添加账号分组的时候单选
+          var labelone = []
+          form.on('checkbox(messagesetl)', function(data) {
+            categorys = data.value
+            labelone.push(categorys)
+            console.log(labelone)
+            form.render('select')
+
+            var sib = $(data.elem)
+              .parents('.box_l')
+              .find('.showlable input[type="checkbox"]:checked').length
+
+            //总共的数量
+            var total = $(data.elem)
+              .parents('.box_l')
+              .find('.showlable input[type="checkbox"]').length
+
+            if (sib == total) {
+              $(data.elem)
+                .parents('.box_l')
+                .find('.selectaddcolunt input[type="checkbox"]')
+                .prop('checked', true)
+              form.render()
+            } else {
+              $(data.elem)
+                .parents('.box_l')
+                .find('.selectaddcolunt input[type="checkbox"]')
+                .prop('checked', false)
+              form.render()
+            }
+          })
 
           //添加图片
           for (let i = 0; i < friend_wxid.length; i++) {

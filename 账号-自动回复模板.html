@@ -41,7 +41,7 @@
             <li class="item account haschild cur">
               <a href="#">账号</a>
               <div class="drop">
-                <a href="账号-会员管理.html">会员管理</a>
+                <a href="账号-会员管理.html">分组管理</a>
                 <a href="账号-账号管理.html">账号管理</a>
                 <a href="账号-账号设置.html">账号设置</a>
               </div>
@@ -101,6 +101,7 @@
                   type="text"
                   class="ipt ipt_txt searchkj"
                   placeholder="请输入关键字（最多20字）"
+                  required
                 />
               </div>
             </li>
@@ -184,7 +185,7 @@
               <li>2</li>
             </ul>
           </div>
-          <div class="bar clearfix">
+          <div class="bar clearfix addwenzi">
             <em class="bq"></em>
             <span class="fz fr frs">还可输入300字，按Enter键换行</span>
           </div>
@@ -234,12 +235,6 @@
 
         //选择消息设置
         form.on('radio(firstcall)', function(data) {
-          //选中的dom元素
-          //console.log(data.elem);
-          // alert(data.value);//判断单选框的选中值
-          //alert(data.othis);
-          // layer.tips('开关checked：' + (this.checked ? 'true' : 'false'), data.othis);
-          //选中的value值
           console.log(data.value)
           localStorage.setItem('messagecallback', data.value)
         })
@@ -260,63 +255,63 @@
         friend_wxid = JSON.parse(localStorage.getItem('friend_wxid'))
 
         //添加图片
-        for (var j in wxid_raw) {
-          for (let i = 0; i < friend_wxid.length; i++) {
-            $('.dialog_box input').change(function() {
-              var preview = document.getElementsByClassName('image')
-              var file = document.querySelector('input[type=file]').files[0]
-              var reader = new FileReader()
+        // for (var j in wxid_raw) {
+        //   for (let i = 0; i < friend_wxid.length; i++) {
+        //     $('.dialog_box input').change(function() {
+        //       var preview = document.getElementsByClassName('image')
+        //       var file = document.querySelector('input[type=file]').files[0]
+        //       var reader = new FileReader()
 
-              reader.addEventListener(
-                'load',
-                function() {
-                  preview.src = reader.result
-                  var baseimg = reader.result
-                  var data =
-                    '{"type":' +
-                    '"send_img",' +
-                    '"wxid":' +
-                    '"' +
-                    wxid_raw[j] +
-                    '",' +
-                    '"to_wxid":' +
-                    '"' +
-                    friend_wxid[i] +
-                    '",' +
-                    '"img":' +
-                    '"' +
-                    baseimg +
-                    '",' +
-                    '"ticket":' +
-                    '"' +
-                    token +
-                    '"' +
-                    '}'
-                  //console.log(data)
-                  $('.pop_chart_msg2').hide()
-                  $('.pop_bg').hide()
-                  // $.ajax({
-                  //   type: 'post',
-                  //   url: 'http://192.168.10.177/api.esp',
-                  //   data: data,
-                  //   async: false,
-                  //   dataType: 'json',
-                  //   success: function(msg) {
-                  //     console.log(msg)
-                  //   },
-                  //   error: function(err) {
-                  //     console.log(err)
-                  //   }
-                  // })
-                },
-                false
-              )
-              if (file) {
-                reader.readAsDataURL(file)
-              }
-            })
-          }
-        }
+        //       reader.addEventListener(
+        //         'load',
+        //         function() {
+        //           preview.src = reader.result
+        //           var baseimg = reader.result
+        //           var data =
+        //             '{"type":' +
+        //             '"send_img",' +
+        //             '"wxid":' +
+        //             '"' +
+        //             wxid_raw[j] +
+        //             '",' +
+        //             '"to_wxid":' +
+        //             '"' +
+        //             friend_wxid[i] +
+        //             '",' +
+        //             '"img":' +
+        //             '"' +
+        //             baseimg +
+        //             '",' +
+        //             '"ticket":' +
+        //             '"' +
+        //             token +
+        //             '"' +
+        //             '}'
+        //           //console.log(data)
+        //           $('.pop_chart_msg2').hide()
+        //           $('.pop_bg').hide()
+        //           // $.ajax({
+        //           //   type: 'post',
+        //           //   url: 'http://192.168.10.177/api.esp',
+        //           //   data: data,
+        //           //   async: false,
+        //           //   dataType: 'json',
+        //           //   success: function(msg) {
+        //           //     console.log(msg)
+        //           //   },
+        //           //   error: function(err) {
+        //           //     console.log(err)
+        //           //   }
+        //           // })
+        //         },
+        //         false
+        //       )
+        //       if (file) {
+        //         reader.readAsDataURL(file)
+        //       }
+        //     })
+        //   }
+        // }
 
         //添加文字
         $('.txts').click(function() {
@@ -355,7 +350,8 @@
             .unbind('click')
             .bind('click', function() {
               //点击确定后在把输入的内容在页面中展示
-              str = `
+              if ($('.textarea').val().length > 0) {
+                str = `
                <li>
                        <div class="num">
                          <span></span>
@@ -364,6 +360,7 @@
                          <div class="text">${$('.textarea').val()}</div>
                      </li>
                `
+              }
               $('.msg-list').append(str)
               $('.pop_chart_msg1').hide()
               $('.pop_bg').hide()
@@ -373,96 +370,79 @@
 
         //点击确定的时候
         $('.template_btn').click(function() {
-          //var messagecallback = localStorage.getItem('messagecallback')
-          //if (messagecallback == 1) {
-
+          console.log($('.msg-list').children('li').length)
           //1.输入内容
           var $mubanname = $('.searchmuban').val()
           var $searchkj = $('.searchkj').val()
           console.log($mubanname)
-          var mes = $('.msg-list')
+          var mes = $('.msg-list li:nth-child(1)')
             .find('.text')
             .html()
-          console.log(mes)
+          //判断是否存在输入内容
 
-          //2.获取是否第一次回复
-          var $num = localStorage.getItem('messagecallback')
-          console.log($num)
+          if (
+            $searchkj.length <= 0 &&
+            $('.msg-list').children('li').length == 0
+          ) {
+            layer.msg('请输入关键字')
+            //输入了关键字和内容
+          } else if ($searchkj && $('.msg-list').children('li').length == 0) {
+            layer.msg('请输入内容')
+            $('.template_btn').prop('disabled', true)
+            //判断是够输入多条
+          } else if ($searchkj && $('.msg-list').children('li').length > 1) {
+            layer.msg('只能输入一条')
+            //判断是否输入关键字
+          } else if (
+            $searchkj.length <= 0 &&
+            $('.msg-list').children('li').length == 0
+          ) {
+            layer.msg('请输入关键字')
+            //输入了关键字和内容
+          } else {
+            //2.获取是否第一次回复
+            var $num = localStorage.getItem('messagecallback')
+            console.log($num)
 
-          var data =
-            '{"type":' +
-            '"add_auto_send_template",' +
-            '"keywords":' +
-            '"' +
-            $searchkj +
-            '",' +
-            '"content":' +
-            '"' +
-            mes +
-            '",' +
-            '"ticket":' +
-            '"' +
-            token +
-            '"' +
-            '}'
-          //console.log(data)
-          $.ajax({
-            type: 'post',
-            url: 'http://192.168.10.177/api.esp',
-            data: data,
-            dataType: 'json',
-            success: function(msg) {
-              console.log(msg)
-              if (msg.err_code == 0) {
-                layer.msg('添加成功')
-                location.reload()
-              } else {
-                layer.msg('添加成功')
-                location.reload()
+            var data =
+              '{"type":' +
+              '"add_auto_send_template",' +
+              '"keywords":' +
+              '"' +
+              $searchkj +
+              '",' +
+              '"content":' +
+              '"' +
+              mes +
+              '",' +
+              '"ticket":' +
+              '"' +
+              token +
+              '"' +
+              '}'
+            //console.log(data)
+            $.ajax({
+              type: 'post',
+              url: 'http://192.168.10.177/api.esp',
+              data: data,
+              dataType: 'json',
+              success: function(msg) {
+                console.log(msg)
+                if (msg.err_code == 0) {
+                  layer.msg('添加成功')
+                  $('.searchkj').val('')
+                  $('.msg-list').empty()
+                } else {
+                  layer.msg('添加失败')
+                  $('.searchkj').val('')
+                  $('.msg-list').empty()
+                }
+              },
+              error: function(err) {
+                console.log(err)
               }
-            },
-            error: function(err) {
-              console.log(err)
-            }
-          })
-
-          // for (var i in wxid_raw) {
-          //   var data =
-          //     '{"type":' +
-          //     '"auto_send",' +
-          //     '"wxid":' +
-          //     '"' +
-          //     wxid_raw[i] +
-          //     '",' +
-          //     '"keywords":' +
-          //     '"' +
-          //     $('.searchkj').val() +
-          //     '",' +
-          //     '"ticket":' +
-          //     '"' +
-          //     token +
-          //     '"' +
-          //     '}'
-          //   console.log(data)
-
-          //   // $.ajax({
-          //   //   type: 'post',
-          //   //   url: 'http://192.168.10.177/api.esp',
-          //   //   data: data,
-          //   //   dataType: 'json',
-          //   //   success: function(msg) {
-          //   //     console.log(msg)
-          //   //     if (msg.err_code == 0) {
-          //   //       layer.msg('添加成功')
-          //   //     } else {
-          //   //       layer.msg('添加失败')
-          //   //     }
-          //   //   },
-          //   //   error: function(err) {
-          //   //     console.log(err)
-          //   //   }
-          //   // })
-          // }
+            })
+          }
         })
       })
 
@@ -481,6 +461,25 @@
           .addClass('one')
           .siblings()
           .removeClass('one')
+      })
+
+      //控制输入的文字数量
+      $('body').delegate('.textarea', 'propertychange input', function() {
+        if ($(this).length > 0) {
+          var $len = $(this).val().length
+          var $inputlen = 300 - $len
+          $('.addwenzi .frs').html('还可输入' + $inputlen + '字，按Enter键换行')
+          if ($len >= 300) {
+            $(this).val(
+              $(this)
+                .val()
+                .substring(0, 300)
+            )
+            $('.words').html(0)
+          }
+        } else {
+          console.log('未输入')
+        }
       })
 
       //点击文字的删除按钮

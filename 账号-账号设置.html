@@ -83,7 +83,7 @@
     <div class="layui-body">
         <div class="friend_bar clearfix layui-form friend_bar2">
             <a href="javascript:;" class="anniu adduserBtn">+添加账号分组</a>
-            <div class="searchbox fl">
+            <div class="searchbox fl ">
                 <input type="text" class="ipt ipt_txt" placeholder="请输入账号昵称"/>
             </div>
             <div class="fr">
@@ -110,7 +110,7 @@
                         <th width="5%">
                             <input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose">
                         </th>
-                        <th width="10%">分组名称</th>
+                        <th width="10%">账号</th>
                         <th width="18%">自动通过好友设置</th>
                         <th width="18%">新加好友自动打招呼</th>
                         <th width="18%">自动通过群聊邀请</th>
@@ -373,9 +373,9 @@
       </div>
       <div class="box clearfix">
         <div class="box_l fl">
-          <div class="topbar"><em class="fz fl">全选</em>全部账号</div>
-          <div class="bottom">
-            <li>
+          <div class="topbar"><em class="fz fl selectaddcolunt"><input type="checkbox" name="" lay-skin="primary" lay-filter="allChooses"></em>全部账号</div>
+          <div class="bottom showlable">
+            <!-- <li>
               <input
                 type="checkbox"
                 name="like1[write]"
@@ -398,7 +398,7 @@
                 lay-skin="primary"
                 title=""
               />7.12-(83)
-            </li>
+            </li> -->
           </div>
         </div>
         <div class="box_r fr">
@@ -422,15 +422,15 @@
     </div>
   </div>
 
-  <!-- 选择模板 -->
+  <!-- 选择自动打招呼内容 -->
   <div class="pop pop_zh pop_hy_addtag pop_hy_addtag2">
       <em class="close">&times;</em>
-      <div class="t_tit">修改基本信息</div>
+      <div class="t_tit">选择自动打招呼内容</div>
       <div class="detail layui-form">
         <div class="box box2 layui-form-item">
           <li class="layui-input-block" style="margin-left: 0">
             <select
-              class="form-control input-sm"
+              class="form-control input-sm inputselectone"
               name="categorymb"
               lay-filter="categorymb"
               aria-invalid="false"
@@ -449,6 +449,43 @@
       </div>
     </div>
 
+    <!-- 选择自动回复模板 -->
+  <div class="pop pop_zh pop_hy_addtag pop_hy_addtagauto">
+    <em class="close">&times;</em>
+    <div class="t_tit">选择自动回复模板</div>
+    <div class="detail layui-form">
+      <div class="box box10">
+         <!--   <li class="grp" style="display:block">
+             <input
+                type="checkbox"
+                name="tag"
+                value="${alllabelgoup[i].name}"
+                title="${alllabelgoup[i].name}"
+                name="${alllabelgoup[i].name}"
+                lay-filter="messagesetcheck"
+                data-key='${alllabelgoup[i].keywo}'
+              />
+            </li>
+            <li class="grp" style="display:block">
+                <input
+                  type="checkbox"
+                  name="tag"
+                  value="${alllabelgoup[i].hshshsh}"
+                  title="${alllabelgoup[i].name}"
+                  name="${alllabelgoup[i].hshshsh}"
+                  lay-filter="messagesetcheck"
+                  data-key='${alllabelgoup[i].keywos}'
+                />
+              </li> -->
+      </div>
+      <div class="btns clearfix">
+        <button class="button this fl quedingf2">确定
+        </button>
+        <button class="button fr cancel cancels">取消</button>
+      </div>
+    </div>
+  </div>
+
 
 
 
@@ -466,6 +503,70 @@ var form = layui.form
 
 token = localStorage.getItem('token')
     wxid_raw = JSON.parse(localStorage.getItem('wxid_raw'))
+
+    //获取所有分组
+    var alllabelgoup = JSON.parse(localStorage.getItem('alllabelgoup'))
+    console.log(alllabelgoup)
+    var str = ""
+    for(var i in alllabelgoup){
+      str += `
+      <li>
+              <input
+                type="checkbox"
+                name="${alllabelgoup[i].name}"
+                lay-skin="primary"
+                title="${alllabelgoup[i].name}"
+                value="${alllabelgoup[i].name}"
+                lay-filter="messagesetl"
+              />(${alllabelgoup[i].count})
+            </li>
+      `
+    }
+    $(".showlable").append(str)
+    form.render()
+
+
+    //在添加账号分组的时候点击全选
+    
+    form.on('checkbox(allChooses)', function(data){
+    
+      var imgArr = []
+        
+    var child = $(data.elem).parents(".box_l").find(".showlable input[type='checkbox']")
+    //所有的子元素数量
+    child.each(function(index, item){
+      console.log(item)
+      //console.log(item.checked)
+      console.log(data.elem.checked)
+        item.checked = data.elem.checked;
+    });
+    form.render('checkbox');
+
+    })
+    
+
+    //选中某个分组的时候
+    var labelone = []
+    form.on('checkbox(messagesetl)', function (data) {
+        categorys = data.value;
+        labelone.push(categorys)
+      form.render('select');
+
+      var sib = $(data.elem).parents(".box_l").find('.showlable input[type="checkbox"]:checked').length;
+            
+            $(".qg_topbar span:first-child").find("em").text(sib)
+            //总共的数量
+            var total = $(data.elem).parents(".box_l").find('.showlable input[type="checkbox"]').length;
+            if(sib == total){
+                $(data.elem).parents(".box_l").find('.selectaddcolunt input[type="checkbox"]').prop("checked",true);
+                form.render();
+            }else{
+                $(data.elem).parents(".box_l").find('.selectaddcolunt input[type="checkbox"]').prop("checked",false);
+                form.render();
+            }
+    });
+
+   
 
 //全部会员
 form.on('select(categorys)', function (data) {
@@ -533,22 +634,73 @@ var data =
           dataType: 'json',
           success: function(msg) {
             console.log(msg)
-            if (msg.err_code == 0) {
-              var data = msg.data
-              var str = ""
-              for(var i in data){
+            if(msg.err_code == 0){
+              if(msg.data){
+                var data = msg.data
+                var str = ""
+                for(var i in data){
                 str += `
                 <option value="${data[i].content}">${data[i].content}</option>
                 `
               }
-              $(".input-sm").append(str)
-              form.render()
-            } else {
-              layer.msg('添加成功')
-              location.reload()
+            $(".inputselectone").append(str)
+            form.render()
+              }             
             }
           },
           error: function(err) {
+            console.log(err)
+          }
+        })
+
+
+        //获取多有关键词的模板
+        var data =
+          '{"type":' +
+          '"get_auto_send_template",' +
+          '"ticket":' +
+          '"' +
+          token +
+          '"' +
+          '}'
+        //传入参数
+        //console.log(data)
+        $.ajax({
+          type: 'post',
+          url: 'http://192.168.10.177/api.esp',
+          data: data,
+          dataType: 'json',
+          success: function(msg) {
+            console.log(msg)
+            if(msg.err_code == 0){
+              if(msg.data){
+                var data = msg.data
+              var str = ''
+              var ind = 0
+              for (var i in data) {
+                ind++
+                ind = ind < 10 ? '0' + ind : ind
+                str += `
+                <li class="grp" style="display:block">
+             <input
+                type="checkbox"
+                name="tag"
+                value="${data[i].content}"
+                title="${data[i].content}"
+                name="${data[i].content}"
+                lay-filter="messagesetcheck"
+                data-key='${data[i].keywords}'
+              />
+            </li>`
+              }
+              $('.box10').append(str)
+              form.render()
+              }else{
+                layer.msg("暂无数据")
+              }
+            }
+          },
+          error:function(err){
             console.log(err)
           }
         })
@@ -587,8 +739,6 @@ form.on('checkbox(allChoose)', function(data){
         imgArr.push(item)
 
     });
-    console.log(imgArr)
-
     for(let i = 0; i < imgArr.length; i++){
       
       //打招呼内容设置
@@ -598,6 +748,9 @@ form.on('checkbox(allChoose)', function(data){
          var sayhi = data.value
          $(".fl2").click(function(){
            if(sayhi == 1){
+            $(".pop_hy_addtag2").show();
+                $('.pop_bg').show();
+                $(".pop_zh_hi").hide()
              //群发对象
             form.on('select(categorymb)', function(data) {
               category = data.value
@@ -605,7 +758,7 @@ form.on('checkbox(allChoose)', function(data){
               console.log(categoryName)
               form.render('select')
               $(".fl6").click(function(){
-                console.log(categoryName)
+                
                 for(var i in wxid_raw){
                     var data =
                            '{"type":' +
@@ -617,29 +770,30 @@ form.on('checkbox(allChoose)', function(data){
                            '"ticket":' +
                            '"'+token+'"' +
                            '}'
-                           //console.log(data)
-                           $.ajax({
-                             type: 'post',
-                               url: 'http://192.168.10.177/api.esp',
-                               data:data,
-                               dataType: 'json',
-                               success:function(msg){
-                                 //console.log(msg)
-                                 if(msg.err_code == 0){
-                                   layer.msg("设置成功")
-                                 }else{
-                                   layer.msg("设置失败")
-                                 }
-                               },
-                               error:function(err){
-                                 console.log(err)
-                               }
-                           })
+                           console.log(data)
+                          //  $.ajax({
+                          //    type: 'post',
+                          //      url: 'http://192.168.10.177/api.esp',
+                          //      data:data,
+                          //      dataType: 'json',
+                          //      success:function(msg){
+                          //        //console.log(msg)
+                          //        if(msg.err_code == 0){
+                          //          layer.msg("设置成功")
+                          //        }else{
+                          //          layer.msg("设置失败")
+                          //        }
+                          //      },
+                          //      error:function(err){
+                          //        console.log(err)
+                          //      }
+                          //  })
               }
               })
             })
 
           }else{
+
             for(var i in wxid_raw){
             var data =
                         '{"type":' +
@@ -651,24 +805,26 @@ form.on('checkbox(allChoose)', function(data){
                         '"ticket":' +
                         '"'+token+'"' +
                         '}'
-                        //console.log(data)
-                        $.ajax({
-                          type: 'post',
-                            url: 'http://192.168.10.177/api.esp',
-                            data:data,
-                            dataType: 'json',
-                            success:function(msg){
-                              console.log(msg)
-                              if(msg.err_code == 0){
-                                layer.msg("设置成功")
-                              }else{
-                                layer.msg("设置失败")
-                              }
-                            },
-                            error:function(err){
-                              console.log(err)
-                            }
-                        })
+                        console.log(data)
+                        // $.ajax({
+                        //   type: 'post',
+                        //     url: 'http://192.168.10.177/api.esp',
+                        //     data:data,
+                        //     dataType: 'json',
+                        //     success:function(msg){
+                        //       console.log(msg)
+                        //       if(msg.err_code == 0){
+                        //         layer.msg("设置成功")
+                                    // $('.pop_bg').hide();
+                                    // $(".pop_zh_hi").hide()
+                        //       }else{
+                        //         layer.msg("设置失败")
+                        //       }
+                        //     },
+                        //     error:function(err){
+                        //       console.log(err)
+                        //     }
+                        // })
           }
         }
          })
@@ -676,55 +832,68 @@ form.on('checkbox(allChoose)', function(data){
     
     
      //自动回复内容
+
+      var selectone = []
      form.on('radio(messageset4)', function(data) {
       console.log(data.value)
       var autosend = data.value
       $(".fl5").click(function(){
         if(autosend == 1){
-          location.href="账号-自动回复模板2.html"
-          localStorage.getItem("arrOne")
+          $(".pop_hy_addtagauto").show();
+                $('.pop_bg').show();
+                $(".pop_zh_apply").hide()
+                form.on('checkbox(messagesetcheck)', function (data) {
+                  var number = $('input[name="tag"]')
+                  selectone.push({
+                    muban: data.value,
+                    keywords:number.get(0).getAttribute("data-key")
+                  })
 
-          var zidong = JSON.parse(localStorage.getItem("arrOne"))
-          if(zidong){
-            var str = ""
-            for(var i in zidong){
-              str += zidong[i].keywords + "#" + zidong[i].muban + "|"
+                  var str = ""
+            for(var i in selectone){
+              str += selectone[i].keywords + "#" + selectone[i].muban + "|"
+              localStorage.setItem("autosend",JSON.stringify(str))
             }
-            console.log(str)
-            for(var j in wxid_raw){
-                  var data =
-                             '{"type":' +
-                             '"auto_send",' +
-                             '"wxid":' +
-                             '"'+wxid_raw[j]+'",' +
-                             '"keywords":' +
-                             '"'+str+'",' +
-                             '"ticket":' +
-                             '"'+token+'"' +
-                             '}'
-                             //console.log(data)
-                             $.ajax({
-                              type: 'post',
-                              url: 'http://192.168.10.177/api.esp',
-                              data:data,
-                              dataType: 'json',
-                              success:function(msg){
-                                console.log(msg)
-                                if(msg.err_code == 0){
-                                  layer.msg("设置成功")
-                                  localStorage.removeItem("arrOne")
-                                  $(".pop_zh_apply").hide()
-                                  $('.pop_bg').hide();
-                                }else{
-                                  layer.msg("设置失败")
-                                }
-                              },
-                              error:function(err){
-                                console.log(err)
+            $(".quedingf2").click(function(){
+              var getautosend = JSON.parse(localStorage.getItem("autosend"))
+              console.log(getautosend)
+
+              for(var j in wxid_raw){
+                    var data =
+                               '{"type":' +
+                               '"auto_send",' +
+                               '"wxid":' +
+                               '"'+wxid_raw[j]+'",' +
+                               '"keywords":' +
+                               '"'+getautosend+'",' +
+                               '"ticket":' +
+                               '"'+token+'"' +
+                               '}'
+                               console.log(data)
+                              //  $.ajax({
+                              //   type: 'post',
+                              //   url: 'http://192.168.10.177/api.esp',
+                              //   data:data,
+                              //   dataType: 'json',
+                              //   success:function(msg){
+                              //     console.log(msg)
+                              //     if(msg.err_code == 0){
+                              //       layer.msg("设置成功")
+                              //       localStorage.removeItem("arrOne")
+                              //       $(".pop_zh_apply").hide()
+                              //       $('.pop_bg').hide();
+                              //     }else{
+                              //       layer.msg("设置失败")
+                              //     }
+                              //   },
+                              //   error:function(err){
+                              //     console.log(err)
+                              //   }
+                              //  })
                               }
-                             })
-                            }
-          }
+            })
+
+                          })
 
         }else{
           for(var j in wxid_raw){
@@ -738,24 +907,24 @@ form.on('checkbox(allChoose)', function(data){
                            '"ticket":' +
                            '"'+token+'"' +
                            '}'
-                           //console.log(data)
-                           $.ajax({
-                            type: 'post',
-                            url: 'http://192.168.10.177/api.esp',
-                            data:data,
-                            dataType: 'json',
-                            success:function(msg){
-                              //console.log(msg)
-                              if(msg.err_code == 0){
-                                layer.msg("设置成功")
-                              }else{
-                                layer.msg("设置失败")
-                              }
-                            },
-                            error:function(err){
-                              console.log(err)
-                            }
-                           })
+                           console.log(data)
+                          //  $.ajax({
+                          //   type: 'post',
+                          //   url: 'http://192.168.10.177/api.esp',
+                          //   data:data,
+                          //   dataType: 'json',
+                          //   success:function(msg){
+                          //     //console.log(msg)
+                          //     if(msg.err_code == 0){
+                          //       layer.msg("设置成功")
+                          //     }else{
+                          //       layer.msg("设置失败")
+                          //     }
+                          //   },
+                          //   error:function(err){
+                          //     console.log(err)
+                          //   }
+                          //  })
                           }
 
         }
@@ -765,14 +934,33 @@ form.on('checkbox(allChoose)', function(data){
 
     }
 
-    
-
-    
-    
-    
     form.render('checkbox');
 });
+
+//判断本地是否存储数据
+if (localStorage.getItem('zidionghuifu')) {
+  zidionghuifu = JSON.parse(localStorage.getItem('zidionghuifu'))
+        } else {
+          zidionghuifu = {}
+        }
+        
+//选中页面中获取到的值单选
 form.on('checkbox(itemChoose)',function(data){
+  var arrOne = []
+  var imgOneAll = $(data.elem).parents('table').find('tbody input[type="checkbox"]:checked')
+
+  imgOneAll.each(function(index,item){
+      arrOne.push($(item).parents("tr").find("td:nth-of-type(2)").text())
+    })
+    var str = []
+    for(var i in arrOne){
+      str.push({
+        "name":arrOne[i]
+      })
+      localStorage.setItem("zidionghuifu",JSON.stringify(str))
+    }
+
+
     var sib = $(data.elem).parents('table').find('tbody input[type="checkbox"]:checked').length;
     var total = $(data.elem).parents('table').find('tbody input[type="checkbox"]').length;
     $(".qg_topbar span:first-child").find("em").text(sib)
@@ -784,6 +972,106 @@ form.on('checkbox(itemChoose)',function(data){
         form.render();
     }
 }); 
+
+
+//打招呼内容设置
+$(".hiBtn").click(function(){
+  //console.log(JSON.parse(localStorage.getItem('zidionghuifu')))
+  for(var i in zidionghuifu){
+    form.on('radio(messageset1)', function(data) {
+      
+      console.log(data.value)
+      var sayhi = data.value
+      $(".fl2").click(function(){
+        if(sayhi == 1){
+         $(".pop_hy_addtag2").show();
+             $('.pop_bg').show();
+             $(".pop_zh_hi").hide()
+          //群发对象
+         form.on('select(categorymb)', function(data) {
+           category = data.value
+           categoryName = data.elem[data.elem.selectedIndex].text
+           console.log(categoryName)
+           form.render('select')
+           $(".fl6").click(function(){
+             
+             for(var i in wxid_raw){
+                 var data =
+                        '{"type":' +
+                        '"add_auto_send",' +
+                        '"wxid":' +
+                        '"'+wxid_raw[i]+'",' +
+                        '"content":' +
+                        '"'+categoryName+'",' +
+                        '"ticket":' +
+                        '"'+token+'"' +
+                        '}'
+                        console.log(data)
+                        // $.ajax({
+                        //   type: 'post',
+                        //     url: 'http://192.168.10.177/api.esp',
+                        //     data:data,
+                        //     dataType: 'json',
+                        //     success:function(msg){
+                        //       //console.log(msg)
+                        //       if(msg.err_code == 0){
+                          //localStorage.removeItem("zidionghuifu")
+                        //         layer.msg("设置成功")
+                        //       }else{
+                          //localStorage.removeItem("zidionghuifu")
+                        //         layer.msg("设置失败")
+                        //       }
+                        //     },
+                        //     error:function(err){
+                        //       console.log(err)
+                        //     }
+                        // })
+           }
+           })
+         })
+
+       }else{
+
+         for(var i in wxid_raw){
+         var data =
+                     '{"type":' +
+                     '"add_auto_send",' +
+                     '"wxid":' +
+                     '"'+wxid_raw[i]+'",' +
+                     '"content":' +
+                     '" ",' +
+                     '"ticket":' +
+                     '"'+token+'"' +
+                     '}'
+                     console.log(data)
+                    //  $.ajax({
+                    //    type: 'post',
+                    //      url: 'http://192.168.10.177/api.esp',
+                    //      data:data,
+                    //      dataType: 'json',
+                    //      success:function(msg){
+                    //        console.log(msg)
+                    //        if(msg.err_code == 0){
+                    //         localStorage.removeItem("zidionghuifu")
+                    //          layer.msg("设置成功")
+                    //        }else{
+                    //         localStorage.removeItem("zidionghuifu")
+                    //          layer.msg("设置失败")
+                    //        }
+                    //      },
+                    //      error:function(err){
+                    //        console.log(err)
+                    //      }
+                    //  })
+       }
+     }
+      })
+  })
+    
+  }
+})
+
+
 
 
 $(".button1").click(function(){
@@ -822,14 +1110,23 @@ $('.motionBtn').click(function(){
     $('.pop_bg').show();
 });
 
-$(".fl2").click(function(){
-  $(".pop_hy_addtag2").show();
-  $('.pop_bg').show();
-  $(".pop_zh_hi").hide()
-})
+// $(".fl2").click(function(){
+//   $(".pop_hy_addtag2").show();
+//   $('.pop_bg').show();
+//   $(".pop_zh_hi").hide()
+// })
 
 $(".fl6").click(function(){
   $(".pop_hy_addtag2").hide()
+  $('.pop_bg').hide();
+})
+
+
+
+//点击确定按钮
+$(".quedingf2").click(function(){
+  $(".pop_hy_addtagauto").hide()
+  $('.pop_bg').hide();
 })
  
 });

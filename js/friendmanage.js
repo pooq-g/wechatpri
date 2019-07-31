@@ -27,8 +27,38 @@ $(function() {
       console.log($(this).val())
     })
 
+    // if (localStorage.getItem('wxfrom')) {
+    //   wxfrom = JSON.parse(localStorage.getItem('wxfrom'))
+    // } else {
+    //   wxfrom = {}
+    // }
+
+    //添加微信账号
+    if (localStorage.getItem('wx_rawnick')) {
+      wx_rawnick = JSON.parse(localStorage.getItem('wx_rawnick'))
+    } else {
+      wx_rawnick = {}
+    }
+
+    var str = ''
+    var count = 0
+    for (var i in wx_rawnick) {
+      count++
+      str += `
+      <option value="${count}">${wx_rawnick[i]}</option>
+      `
+    }
+    $('.accountwx').append(str)
+    form.render()
+
+    if (localStorage.getItem('wxid_raw')) {
+      wxid_raw = JSON.parse(localStorage.getItem('wxid_raw'))
+    } else {
+      wxid_raw = {}
+    }
+
     token = localStorage.getItem('token')
-    wxid_raw = JSON.parse(localStorage.getItem('wxid_raw'))
+    var wxfrom = []
     for (var id in wxid_raw) {
       var data =
         '{"type":' +
@@ -69,12 +99,12 @@ $(function() {
             totalcount += msg.friend_count
             $('.item_1 .num').text(totalcount)
             var data = msg.data
-            console.log(data)
             var str = ''
             var ind = 0
             let msglist = []
-            var wxfrom = []
+
             var count = 0
+            var datalist = []
             for (var id in data) {
               console.log(data[id])
               //存储本人账号对应以及对应的好友账号
@@ -82,8 +112,6 @@ $(function() {
                 selfwx: data[id].from_wxid,
                 fronwx: data[id].friend_wxid
               })
-              wxfrom = norepeat(wxfrom)
-              //console.log(wxfrom)
               localStorage.setItem('wxfrom', JSON.stringify(wxfrom))
               msglist.push(data[id].friend_wxid)
               msglist = norepeat(msglist)
@@ -131,6 +159,7 @@ $(function() {
       })
     }
 
+    //点击全选
     form.on('checkbox(allChoose)', function(data) {
       var arr = []
       var child = $(data.elem)
@@ -146,12 +175,13 @@ $(function() {
             .getAttribute('data-id')
         )
       })
+      console.log(arr)
       form.render('checkbox')
-      //console.log(arr)
       //点击修改标签
-      $('.edittagBtn').click(function() {
-        $('.queding3').click(function() {
-          //console.log($('.edittxt').val())
+
+      $('.queding3').click(function() {
+        //console.log($('.edittxt').val())
+        if ($('.edittxt').val()) {
           for (let i = 0; i < arr.length; i++) {
             var data =
               '{"type":' +
@@ -169,7 +199,7 @@ $(function() {
               token +
               '"' +
               '}'
-            //console.log(data)
+            console.log(data)
             $.ajax({
               type: 'post',
               url: 'http://192.168.10.177/api.esp',
@@ -185,9 +215,13 @@ $(function() {
               }
             })
           }
-        })
+        } else {
+          layer.msg('请输入标签')
+        }
       })
     })
+
+    //单选
     form.on('checkbox(itemChoose)', function(data) {
       var arr = []
       var imgOneAll = $(data.elem)
@@ -202,43 +236,8 @@ $(function() {
             .get(0)
             .getAttribute('data-id')
         )
-      })
-
-      $('.queding3').click(function() {
-        console.log($('.edittxt').val())
-        for (let i = 0; i < arr.length; i++) {
-          var data =
-            '{"type":' +
-            '"change_friend_lable",' +
-            '"id":' +
-            '"' +
-            arr[i] +
-            '",' +
-            '"lable":' +
-            '"' +
-            $('.edittxt').val() +
-            '",' +
-            '"ticket":' +
-            '"' +
-            token +
-            '"' +
-            '}'
-          //console.log(data)
-          $.ajax({
-            type: 'post',
-            url: 'http://192.168.10.177/api.esp',
-            data: data,
-            dataType: 'json',
-            success: function(msg) {
-              console.log(msg)
-              if (msg.err_code == 0) {
-                layer.msg('修改成功')
-              } else {
-                layer.msg('修改失败')
-              }
-            }
-          })
-        }
+        console.log(arr)
+        localStorage.setItem('savefriendlable', JSON.stringify(arr))
       })
 
       var sib = $(data.elem)
@@ -262,10 +261,53 @@ $(function() {
       }
     })
 
-    $('.addtagBtn').click(function() {
-      $('.pop_hy_addtag').show()
-      $('.pop_bg').show()
+    //单选修改标签
+    $('.queding3').click(function() {
+      var savefriendlable = JSON.parse(localStorage.getItem('savefriendlable'))
+      if ($('.edittxt').val()) {
+        for (let i = 0; i < savefriendlable.length; i++) {
+          var data =
+            '{"type":' +
+            '"change_friend_lable",' +
+            '"id":' +
+            '"' +
+            savefriendlable[i] +
+            '",' +
+            '"lable":' +
+            '"' +
+            $('.edittxt').val() +
+            '",' +
+            '"ticket":' +
+            '"' +
+            token +
+            '"' +
+            '}'
+          console.log(data)
+          $.ajax({
+            type: 'post',
+            url: 'http://192.168.10.177/api.esp',
+            data: data,
+            dataType: 'json',
+            success: function(msg) {
+              console.log(msg)
+              if (msg.err_code == 0) {
+                layer.msg('修改成功')
+                $('.queding3').hide()
+              } else {
+                layer.msg('修改失败')
+              }
+            }
+          })
+        }
+      } else {
+        layer.msg('请输入标签')
+      }
     })
+
+    // $('.addtagBtn').click(function() {
+    //   $('.pop_hy_addtag').show()
+    //   $('.pop_bg').show()
+    // })
 
     //去聊天
     $('body').delegate('.msgBtn', 'click', function() {

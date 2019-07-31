@@ -40,7 +40,7 @@
             <li class="item account haschild cur">
               <a href="#">账号</a>
               <div class="drop">
-                <a href="账号-会员管理.html">会员管理</a>
+                <a href="账号-会员管理.html">分组管理</a>
                 <a href="账号-账号管理.html">账号管理</a>
                 <a href="账号-账号设置.html">账号设置</a>
               </div>
@@ -91,7 +91,6 @@
               />
             </div>
             <button class="button_ico add fr">添加自动回复模板</button>
-            <button class="button_ico addover fr">添加完毕</button>
           </div>
           <div class="friend_tablewrap">
             <table class="friend_table layui-form">
@@ -337,10 +336,8 @@
           console.log($(this).val())
         })
 
-        $('.add').click(function() {
-          if (localStorage.getItem('arrOne')) {
-            location.href = '账号-自动回复模板.html'
-          }
+        $('.add ').click(function() {
+          location.href = '账号-自动回复模板.html'
         })
 
         //返回上一级

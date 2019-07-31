@@ -96,7 +96,7 @@
               <input
                 type="text"
                 class="ipt ipt_txt searchname"
-                placeholder="请输入会员名称"
+                placeholder="请输入分组名称"
               />
             </div>
             <button class="button_ico add fr">添加账号分组</button>
@@ -345,7 +345,7 @@
     <script src="js/jquery-1.8.3.min.js"></script>
     <script src="layui/layui.js" charset="utf-8"></script>
     <script src="js/common.js" charset="utf-8"></script>
-    <script src="js/loginout.js"></script>
+    <!-- <script src="js/loginout.js"></script> -->
     <script>
       layui.use(['form', 'upload', 'laydate'], function() {
         var form = layui.form,
@@ -361,13 +361,16 @@
         // var result = {
         //   a: {
         //     name: 12,
-        //     psw: 12
+        //     psw: 12,
+        //     count: 0
         //   },
         //   v: {
         //     name: 45,
-        //     psw: 54
+        //     psw: 54,
+        //     count: 0
         //   }
         // }
+
         // localStorage.setItem('alllabelgoup', JSON.stringify(result))
 
         //判断是否存在
@@ -377,10 +380,11 @@
         } else {
           alllabelgoup = {}
         }
-        console.log(alllabelgoup)
-        var str = ''
-        for (var i in alllabelgoup) {
-          str += `
+        ajaxalllabelgoup()
+        function ajaxalllabelgoup() {
+          var str = ''
+          for (var i in alllabelgoup) {
+            str += `
                         <tr>
                             <td>
                                 <input type="checkbox" name="" lay-skin="primary" lay-filter="itemChoose">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -398,7 +402,9 @@
                                 </div>
                             </td>
                             <td>
-                                10/${100} <span class="online_btn">一键上线</span>
+                                ${
+                                  alllabelgoup[i].count
+                                }/${100} <span class="online_btn">一键上线</span>
                             </td>
                             <td>
                                 <a href="javascript:;" class="lk_ico editname" data-id=${i}>修改名称</a>
@@ -407,9 +413,10 @@
                             </td>
                         </tr>
                         `
+          }
+          $('tbody').append(str)
+          form.render()
         }
-        $('tbody').append(str)
-        form.render()
 
         //点击修改分组和密码
         $('body').delegate('.editname', 'click', function() {
@@ -503,6 +510,7 @@
                 }
                 alllabelgoup[id].name = id
                 alllabelgoup[id].psw = ''
+                alllabelgoup[id].count = data[i].count
                 localStorage.setItem(
                   'alllabelgoup',
                   JSON.stringify(alllabelgoup)
@@ -568,16 +576,24 @@
         //点击添加分组，存入本地
 
         $('.queding1').click(function() {
-          console.log($('.ipt_txt1').val())
-          console.log($('.ipt_txt2').val())
           var $id = $('.ipt_txt1').val()
-          console.log(alllabelgoup)
-          if (!alllabelgoup[$id]) {
-            alllabelgoup[$id] = {}
+          var $psw = $('.ipt_txt2').val()
+          if ($id.length >= 1 && $psw.length >= 1) {
+            console.log(alllabelgoup)
+            if (!alllabelgoup[$id]) {
+              alllabelgoup[$id] = {}
+            }
+            alllabelgoup[$id].name = $('.ipt_txt1').val()
+            alllabelgoup[$id].psw = $('.ipt_txt2').val()
+            alllabelgoup[$id].count = 0
+            localStorage.setItem('alllabelgoup', JSON.stringify(alllabelgoup))
+            $('.ipt_txt1').val('')
+            $('.ipt_txt2').val('')
+            $('.pop_hy_addtag1').hide()
+            $('.pop_bg').hide()
+          } else {
+            alert('请输入分组名称或密码')
           }
-          alllabelgoup[$id].name = $('.ipt_txt1').val()
-          alllabelgoup[$id].psw = $('.ipt_txt2').val()
-          localStorage.setItem('alllabelgoup', JSON.stringify(alllabelgoup))
         })
       })
     </script>

@@ -6,10 +6,21 @@ $(function() {
       laydate = layui.laydate,
       upload = layui.upload
 
+    var alllabelgoup = JSON.parse(localStorage.getItem('alllabelgoup'))
+
+    var str1 = ''
+    var count = 0
+    for (var i in alllabelgoup) {
+      count++
+      str1 += `
+      <option value="${count}">${alllabelgoup[i].name}</option>
+        `
+    }
+    $('.addlabel').append(str1)
+    form.render()
+
     var alllabelgoup = localStorage.getItem('alllabelgoup')
-    console.log(alllabelgoup)
     var token = localStorage.getItem('token')
-    console.log(token)
 
     $('.addtagBtns')
       .unbind()
@@ -19,27 +30,29 @@ $(function() {
         form.render('radio')
       })
 
+    if (localStorage.getItem('alllabelgoup')) {
+      alllabelgoup = JSON.parse(localStorage.getItem('alllabelgoup'))
+    } else {
+      alllabelgoup = {}
+    }
     //新建标签
-    // $('.fl1s')
-    //   .unbind()
-    //   .bind('click', function() {
-    //     //console.log($('.ipt_txts').val())
-    //     $('.pop_hy_edittag').show()
-    //     $('.box10').append(`
-    //       <li class="grp" style="display:block">
-    //         <input
-    //           type="radio"
-    //           name="tag"
-    //           value="${$('.ipt_txts').val()}"
-    //           title="${$('.ipt_txts').val()}"
-    //           lay-filter="messageset"
-    //         />
-    //       </li>
-    //       `)
-    //     $('.pop_bg').show()
-    //     $('.pop_hy_addtag1s').hide()
-    //     form.render('radio')
-    //   })
+    $('.quedingend').bind('click', function() {
+      var id = $('.ipt_txts').val()
+      if (id.length >= 1) {
+        if (!alllabelgoup[id]) {
+          alllabelgoup[id] = {}
+        }
+        alllabelgoup[id].name = id
+        alllabelgoup[id].psw = ''
+        alllabelgoup[id].count = 0
+        localStorage.setItem('alllabelgoup', JSON.stringify(alllabelgoup))
+        $('.pop_hy_addtag1s').hide()
+        $('.pop_hy_edittag1').show()
+        $('.ipt_txts').val('')
+      } else {
+        alert('请输入标签')
+      }
+    })
 
     //单选
     form.on('radio(messageset)', function(data) {
@@ -56,10 +69,10 @@ $(function() {
             // console.log(reader.result)
             var str = reader.result
             //读取到的文档数据
-            console.log(str)
+            //console.log(str)
             var nstr = str.split('\n')
             //对数据进行换行符分割
-            console.log(nstr)
+            //console.log(nstr)
             var newArr = []
             for (var i = 0; i < nstr.length; i++) {
               // console.log(nstr[i])
@@ -94,24 +107,24 @@ $(function() {
                 '"' +
                 '}'
               //拿到的传入的参数
-              //console.log(data)
-              $.ajax({
-                type: 'post',
-                url: 'http://192.168.10.177/api.esp',
-                data: data,
-                dataType: 'json',
-                success: function(msg) {
-                  console.log(msg)
-                  if (msg.err_code == 0) {
-                    layer.msg('上传成功')
-                  } else {
-                    layer.msg('上传失败')
-                  }
-                },
-                error: function(err) {
-                  console.log(err)
-                }
-              })
+              console.log(data)
+              // $.ajax({
+              //   type: 'post',
+              //   url: 'http://192.168.10.177/api.esp',
+              //   data: data,
+              //   dataType: 'json',
+              //   success: function(msg) {
+              //     console.log(msg)
+              //     if (msg.err_code == 0) {
+              //       layer.msg('上传成功')
+              //     } else {
+              //       layer.msg('上传失败')
+              //     }
+              //   },
+              //   error: function(err) {
+              //     console.log(err)
+              //   }
+              // })
             }
           }
         }

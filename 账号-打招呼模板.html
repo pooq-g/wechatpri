@@ -41,7 +41,7 @@
             <li class="item account haschild cur">
               <a href="#">账号</a>
               <div class="drop">
-                <a href="账号-会员管理.html">会员管理</a>
+                <a href="账号-会员管理.html">分组管理</a>
                 <a href="账号-账号管理.html">账号管理</a>
                 <a href="账号-账号设置.html">账号设置</a>
               </div>
@@ -247,14 +247,13 @@
           })
         })
         //点击确定
-        var str = ''
+
         $('.queding1')
           .unbind('click')
           .bind('click', function() {
-            //用于获取编辑器内容
-            //var layuicontent = layedit.getContent(index)
-            //console.log(layuicontent)
-            str = `
+            var str = ''
+            if ($('.textarea').val().length >= 1) {
+              str = `
              <li>
                      <div class="num">
                        <span></span>
@@ -267,93 +266,66 @@
                      </div>
                    </li>
              `
-            $('.msg-list').append(str)
-            $('.pop_chart_msg1').hide()
-            $('.pop_bg').hide()
-            $('.textarea').val('')
+              $('.msg-list').append(str)
+              $('.pop_chart_msg1').hide()
+              $('.pop_bg').hide()
+              $('.textarea').val('')
+            } else {
+              layer.msg('请输入内容')
+            }
           })
       })
 
       //点击确定发送文字模板
       $('.template_btn').click(function() {
-        var mes = $('.msg-list')
-          .find('.text')
-          .html()
-        console.log(mes)
+        if ($('.msg-list').children('li').length == 1) {
+          var mes = $('.msg-list li:nth-child(1)')
+            .find('.text')
+            .html()
+          console.log(mes)
 
-        var $mubanname = $('.searchkj').val()
-        console.log($mubanname)
+          //模板名称
+          var $mubanname = $('.searchkj').val()
+          console.log($mubanname)
 
-        var data =
-          '{"type":' +
-          '"add_add_auto_send_template",' +
-          '"content":' +
-          '"' +
-          mes +
-          '",' +
-          '"ticket":' +
-          '"' +
-          token +
-          '"' +
-          '}'
-        //console.log(data)
-        $.ajax({
-          type: 'post',
-          url: 'http://192.168.10.177/api.esp',
-          data: data,
-          dataType: 'json',
-          success: function(msg) {
-            console.log(msg)
-            if (msg.err_code == 0) {
-              layer.msg('添加成功')
-              location.reload()
-            } else {
-              layer.msg('添加成功')
-              location.reload()
+          var data =
+            '{"type":' +
+            '"add_add_auto_send_template",' +
+            '"content":' +
+            '"' +
+            mes +
+            '",' +
+            '"ticket":' +
+            '"' +
+            token +
+            '"' +
+            '}'
+          console.log(data)
+          $.ajax({
+            type: 'post',
+            url: 'http://192.168.10.177/api.esp',
+            data: data,
+            dataType: 'json',
+            success: function(msg) {
+              console.log(msg)
+              if (msg.err_code == 0) {
+                layer.msg('添加成功')
+                location.reload()
+              } else {
+                layer.msg('添加成功')
+                location.reload()
+              }
+            },
+            error: function(err) {
+              console.log(err)
             }
-          },
-          error: function(err) {
-            console.log(err)
-          }
-        })
-        // for (var i in wxid_raw) {
-        //   //通过好友自动回复内容
-        //   var data =
-        //     '{"type":' +
-        //     '"add_auto_send",' +
-        //     '"wxid":' +
-        //     '"' +
-        //     wxid_raw[i] +
-        //     '",' +
-        //     '"content":' +
-        //     '"' +
-        //     mes +
-        //     '",' +
-        //     '"ticket":' +
-        //     '"' +
-        //     token +
-        //     '"' +
-        //     '}'
-        //   console.log(data)
-
-        //   // $.ajax({
-        //   //   type: 'post',
-        //   //   url: 'http://192.168.10.177/api.esp',
-        //   //   data: data,
-        //   //   dataType: 'json',
-        //   //   success: function(msg) {
-        //   //     console.log(msg)
-        //   //     if (msg.err_code == 0) {
-        //   //       layer.msg('添加成功')
-        //   //     } else {
-        //   //       layer.msg('添加失败')
-        //   //     }
-        //   //   },
-        //   //   error: function(err) {
-        //   //     console.log(err)
-        //   //   }
-        //   // })
-        // }
+          })
+        } else if ($('.msg-list').children('li').length == 0) {
+          layer.msg('请输入内容')
+          $('.template_btn').prop('disabled', true)
+        } else {
+          layer.msg('只能发送一条')
+        }
       })
 
       //添加图片

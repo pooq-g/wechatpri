@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" href="layui/css/layui.css" media="all" />
     <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/ullist.css">
+    <link rel="stylesheet" href="css/ullist.css" />
     <title>群管-新建朋友圈</title>
     <style>
       .upload-pick {
@@ -53,7 +53,7 @@
             <li class="item account haschild">
               <a href="#">账号</a>
               <div class="drop">
-                <a href="账号-会员管理.html">会员管理</a>
+                <a href="账号-会员管理.html">分组管理</a>
                 <a href="账号-账号管理.html">账号管理</a>
                 <a href="账号-账号设置.html">账号设置</a>
               </div>
@@ -214,9 +214,17 @@
         </div>
         <div class="box clearfix">
           <div class="box_l fl">
-            <div class="topbar"><em class="fz fl">全选</em>全部账号</div>
-            <div class="bottom">
-              <li>
+            <div class="topbar">
+              <em class="fz fl selectaddcolunt"
+                ><input
+                  type="checkbox"
+                  name=""
+                  lay-skin="primary"
+                  lay-filter="allChooses"/></em
+              >全部账号
+            </div>
+            <div class="bottom showlable">
+              <!-- <li>
                 <input
                   type="checkbox"
                   name="like1[write]"
@@ -239,7 +247,7 @@
                   lay-skin="primary"
                   title=""
                 />7.12-(83)
-              </li>
+              </li> -->
             </div>
           </div>
           <div class="box_r fr">
@@ -299,7 +307,11 @@
       <div class="detail layui-form">
         <div class="box box3">
           <li>
-            <input type="text" class="ipt ipt_txt ipt_txtlink" placeholder="请输入链接" />
+            <input
+              type="text"
+              class="ipt ipt_txt ipt_txtlink"
+              placeholder="请输入链接"
+            />
           </li>
         </div>
         <div class="btns clearfix">
@@ -324,6 +336,77 @@
 
         token = localStorage.getItem('token')
         wxid_raw = JSON.parse(localStorage.getItem('wxid_raw'))
+
+        //1.点击添加分组设置获取所有分组
+        var alllabelgoup = JSON.parse(localStorage.getItem('alllabelgoup'))
+        console.log(alllabelgoup)
+        var str = ''
+        for (var i in alllabelgoup) {
+          str += `
+      <li>
+              <input
+                type="checkbox"
+                name="${alllabelgoup[i].name}"
+                lay-skin="primary"
+                title="${alllabelgoup[i].name}"
+                value="${alllabelgoup[i].name}"
+                lay-filter="messagesetl"
+              />(${alllabelgoup[i].count})
+            </li>
+      `
+        }
+        $('.showlable').append(str)
+        form.render()
+
+        //2.在添加账号分组的时候点击全选
+
+        form.on('checkbox(allChooses)', function(data) {
+          var imgArr = []
+
+          var child = $(data.elem)
+            .parents('.box_l')
+            .find(".showlable input[type='checkbox']")
+          //所有的子元素数量
+          child.each(function(index, item) {
+            console.log(item)
+            //console.log(item.checked)
+            console.log(data.elem.checked)
+            item.checked = data.elem.checked
+          })
+          form.render('checkbox')
+        })
+
+        //3.在添加账号分组的时候单选
+        var labelone = []
+        form.on('checkbox(messagesetl)', function(data) {
+          categorys = data.value
+          labelone.push(categorys)
+          console.log(labelone)
+          form.render('select')
+
+          var sib = $(data.elem)
+            .parents('.box_l')
+            .find('.showlable input[type="checkbox"]:checked').length
+
+          //总共的数量
+          var total = $(data.elem)
+            .parents('.box_l')
+            .find('.showlable input[type="checkbox"]').length
+
+          if (sib == total) {
+            $(data.elem)
+              .parents('.box_l')
+              .find('.selectaddcolunt input[type="checkbox"]')
+              .prop('checked', true)
+            form.render()
+          } else {
+            $(data.elem)
+              .parents('.box_l')
+              .find('.selectaddcolunt input[type="checkbox"]')
+              .prop('checked', false)
+            form.render()
+          }
+        })
 
         //1.选择要发布的类型
         form.on('select(categorys)', function(data) {
@@ -390,73 +473,73 @@
             reader.onload = function() {
               baseimg = reader.result
               //console.log(baseimg)
-              localStorage.setItem("baseimg",baseimg)
-            //   for (var i in wxid_raw) {
-            //     var data =
-            //       '{"type":' +
-            //       '"mm_post",' +
-            //       '"wxid":' +
-            //       '"' +
-            //       wxid_raw[i] +
-            //       '",' +
-            //       '"content":' +
-            //       '"' +
-            //       $('.textarea1').val() +
-            //       '",' +
-            //       '"img":' +
-            //       '"' +
-            //       baseimg +
-            //       '",' +
-            //       '"ticket":' +
-            //       '"' +
-            //       token +
-            //       '"' +
-            //       '}'
-            //     console.log(data)
-            //     $.ajax({
-            //       type: 'post',
-            //       url: 'http://192.168.10.177/api.esp',
-            //       data: data,
-            //       dataType: 'json',
-            //       success: function(msg) {
-            //         console.log(msg)
-            //         if (msg.err_code == 0) {
-            //           layer.msg('发布成功')
-            //         } else {
-            //           layer.msg('发布成功')
-            //         }
-            //       },
-            //       error: function(err) {
-            //         console.log(err)
-            //       }
-            //     })
-            //   }
-             }
+              localStorage.setItem('baseimg', baseimg)
+              //   for (var i in wxid_raw) {
+              //     var data =
+              //       '{"type":' +
+              //       '"mm_post",' +
+              //       '"wxid":' +
+              //       '"' +
+              //       wxid_raw[i] +
+              //       '",' +
+              //       '"content":' +
+              //       '"' +
+              //       $('.textarea1').val() +
+              //       '",' +
+              //       '"img":' +
+              //       '"' +
+              //       baseimg +
+              //       '",' +
+              //       '"ticket":' +
+              //       '"' +
+              //       token +
+              //       '"' +
+              //       '}'
+              //     console.log(data)
+              //     $.ajax({
+              //       type: 'post',
+              //       url: 'http://192.168.10.177/api.esp',
+              //       data: data,
+              //       dataType: 'json',
+              //       success: function(msg) {
+              //         console.log(msg)
+              //         if (msg.err_code == 0) {
+              //           layer.msg('发布成功')
+              //         } else {
+              //           layer.msg('发布成功')
+              //         }
+              //       },
+              //       error: function(err) {
+              //         console.log(err)
+              //       }
+              //     })
+              //   }
+            }
           }
         })
 
         //选择发送的类型是图片还是链接
         form.on('radio(pic)', function(data) {
           console.log(data.value)
-          if(data.value == "链接"){
+          if (data.value == '链接') {
             $('.pop_hy_addtag3').show()
             $('.pop_bg').show()
           }
         })
 
         //把要添加的链接添加在页面上
-        var str = ""
-        $(".fl2").click(function(){
-          var $link = $(".ipt_txtlink").val()
+        var str = ''
+        $('.fl2').click(function() {
+          var $link = $('.ipt_txtlink').val()
           str = `
              <li>
                      <div class="details" data-msgtype="text">
                        <div class="text">${$link}</div>
                    </li>
              `
-             $(".friend_type").append(str)
-             $('.pop_hy_addtag3').hide()
-              $('.pop_bg').hide()
+          $('.friend_type').append(str)
+          $('.pop_hy_addtag3').hide()
+          $('.pop_bg').hide()
         })
 
         //选择发品论提醒设置
@@ -464,212 +547,212 @@
           console.log(data.value)
         })
 
-  
-
-       $(".fastsend").click(function(){
-        var mm_post = localStorage.getItem("mm_post")
-        var baseimg = localStorage.getItem("baseimg")
-        console.log(mm_post)
-        console.log($('.textarea1').val())
-        console.log($(".friend_type").find('.text')
-          .html())
-          var $link = $(".friend_type").find('.text')
-          .html()
+        $('.fastsend').click(function() {
+          var mm_post = localStorage.getItem('mm_post')
+          var baseimg = localStorage.getItem('baseimg')
+          console.log(mm_post)
+          console.log($('.textarea1').val())
+          console.log(
+            $('.friend_type')
+              .find('.text')
+              .html()
+          )
+          var $link = $('.friend_type')
+            .find('.text')
+            .html()
 
           //判断发送的类型
-          if(mm_post == 1){
+          if (mm_post == 1) {
             for (var i in wxid_raw) {
-            var data =
-                  '{"type":' +
-                  '"mm_post",' +
-                  '"wxid":' +
-                  '"' +
-                  wxid_raw[i] +
-                  '",' +
-                  '"content_style":' +
-                  '"' +
-                  mm_post +
-                  '",' +
-                  '"img":' +
-                  '"' +
-                  baseimg +
-                  '",' +
-                  '"content":' +
-                  '"' +
-                  $('.textarea1').val() +
-                  '",' +
-                  '"ticket":' +
-                  '"' +
-                  token +
-                  '"' +
-                  '}'
-                console.log(data)
-                $.ajax({
-                  type: 'post',
-                  url: 'http://192.168.10.177/api.esp',
-                  data: data,
-                  dataType: 'json',
-                  success: function(msg) {
-                    console.log(msg)
-                    if (msg.err_code == 0) {
-                      layer.msg('上传成功')
-                    } else {
-                      layer.msg('上传失败')
-                    }
-                  },
-                  error: function(err) {
-                    console.log(err)
+              var data =
+                '{"type":' +
+                '"mm_post",' +
+                '"wxid":' +
+                '"' +
+                wxid_raw[i] +
+                '",' +
+                '"content_style":' +
+                '"' +
+                mm_post +
+                '",' +
+                '"img":' +
+                '"' +
+                baseimg +
+                '",' +
+                '"content":' +
+                '"' +
+                $('.textarea1').val() +
+                '",' +
+                '"ticket":' +
+                '"' +
+                token +
+                '"' +
+                '}'
+              console.log(data)
+              $.ajax({
+                type: 'post',
+                url: 'http://192.168.10.177/api.esp',
+                data: data,
+                dataType: 'json',
+                success: function(msg) {
+                  console.log(msg)
+                  if (msg.err_code == 0) {
+                    layer.msg('上传成功')
+                  } else {
+                    layer.msg('上传失败')
                   }
-                })
+                },
+                error: function(err) {
+                  console.log(err)
+                }
+              })
             }
-          }else if(mm_post == 2){
+          } else if (mm_post == 2) {
             //文字
             for (var i in wxid_raw) {
-            var data =
-                  '{"type":' +
-                  '"mm_post",' +
-                  '"wxid":' +
-                  '"' +
-                  wxid_raw[i] +
-                  '",' +
-                  '"content_style":' +
-                  '"' +
-                  mm_post +
-                  '",' +
-                  '"content":' +
-                  '"' +
-                  $('.textarea1').val() +
-                  '",' +
-                  '"ticket":' +
-                  '"' +
-                  token +
-                  '"' +
-                  '}'
-                console.log(data)
-                $.ajax({
-                  type: 'post',
-                  url: 'http://192.168.10.177/api.esp',
-                  data: data,
-                  dataType: 'json',
-                  success: function(msg) {
-                    console.log(msg)
-                    if (msg.err_code == 0) {
-                      layer.msg('上传成功')
-                    } else {
-                      layer.msg('上传失败')
-                    }
-                  },
-                  error: function(err) {
-                    console.log(err)
+              var data =
+                '{"type":' +
+                '"mm_post",' +
+                '"wxid":' +
+                '"' +
+                wxid_raw[i] +
+                '",' +
+                '"content_style":' +
+                '"' +
+                mm_post +
+                '",' +
+                '"content":' +
+                '"' +
+                $('.textarea1').val() +
+                '",' +
+                '"ticket":' +
+                '"' +
+                token +
+                '"' +
+                '}'
+              console.log(data)
+              $.ajax({
+                type: 'post',
+                url: 'http://192.168.10.177/api.esp',
+                data: data,
+                dataType: 'json',
+                success: function(msg) {
+                  console.log(msg)
+                  if (msg.err_code == 0) {
+                    layer.msg('上传成功')
+                  } else {
+                    layer.msg('上传失败')
                   }
-                })
+                },
+                error: function(err) {
+                  console.log(err)
+                }
+              })
             }
-          }else if(mm_post == 3){
-            console.log("转发文章")
-          }else if(mm_post == 7){
+          } else if (mm_post == 3) {
+            console.log('转发文章')
+          } else if (mm_post == 7) {
             //更换背景图
             for (var i in wxid_raw) {
-            var data =
-                  '{"type":' +
-                  '"mm_post",' +
-                  '"wxid":' +
-                  '"' +
-                  wxid_raw[i] +
-                  '",' +
-                  '"content_style":' +
-                  '"' +
-                  mm_post +
-                  '",' +
-                  '"img":' +
-                  '"' +
-                  baseimg +
-                  '",' +
-                  '"content":' +
-                  '"' +
-                  $('.textarea1').val() +
-                  '",' +
-                  '"ticket":' +
-                  '"' +
-                  token +
-                  '"' +
-                  '}'
-                console.log(data)
-                $.ajax({
-                  type: 'post',
-                  url: 'http://192.168.10.177/api.esp',
-                  data: data,
-                  dataType: 'json',
-                  success: function(msg) {
-                    console.log(msg)
-                    if (msg.err_code == 0) {
-                      layer.msg('上传成功')
-                    } else {
-                      layer.msg('上传失败')
-                    }
-                  },
-                  error: function(err) {
-                    console.log(err)
+              var data =
+                '{"type":' +
+                '"mm_post",' +
+                '"wxid":' +
+                '"' +
+                wxid_raw[i] +
+                '",' +
+                '"content_style":' +
+                '"' +
+                mm_post +
+                '",' +
+                '"img":' +
+                '"' +
+                baseimg +
+                '",' +
+                '"content":' +
+                '"' +
+                $('.textarea1').val() +
+                '",' +
+                '"ticket":' +
+                '"' +
+                token +
+                '"' +
+                '}'
+              console.log(data)
+              $.ajax({
+                type: 'post',
+                url: 'http://192.168.10.177/api.esp',
+                data: data,
+                dataType: 'json',
+                success: function(msg) {
+                  console.log(msg)
+                  if (msg.err_code == 0) {
+                    layer.msg('上传成功')
+                  } else {
+                    layer.msg('上传失败')
                   }
-                })
+                },
+                error: function(err) {
+                  console.log(err)
+                }
+              })
             }
-          }else if(mm_post == 15){
+          } else if (mm_post == 15) {
             for (var i in wxid_raw) {
-            var data =
-                  '{"type":' +
-                  '"mm_post",' +
-                  '"wxid":' +
-                  '"' +
-                  wxid_raw[i] +
-                  '",' +
-                  '"content_style":' +
-                  '"' +
-                  mm_post +
-                  '",' +
-                  '"img":' +
-                  '"' +
-                  baseimg +
-                  '",' +
-                  '"videourl":' +
-                  '"' +
-                  $link +
-                  '",' +
-                  '"content":' +
-                  '"' +
-                  $('.textarea1').val() +
-                  '",' +
-                  '"ticket":' +
-                  '"' +
-                  token +
-                  '"' +
-                  '}'
-                console.log(data)
-                $.ajax({
-                  type: 'post',
-                  url: 'http://192.168.10.177/api.esp',
-                  data: data,
-                  dataType: 'json',
-                  success: function(msg) {
-                    console.log(msg)
-                    if (msg.err_code == 0) {
-                      layer.msg('上传成功')
-                    } else {
-                      layer.msg('上传失败')
-                    }
-                  },
-                  error: function(err) {
-                    console.log(err)
+              var data =
+                '{"type":' +
+                '"mm_post",' +
+                '"wxid":' +
+                '"' +
+                wxid_raw[i] +
+                '",' +
+                '"content_style":' +
+                '"' +
+                mm_post +
+                '",' +
+                '"img":' +
+                '"' +
+                baseimg +
+                '",' +
+                '"videourl":' +
+                '"' +
+                $link +
+                '",' +
+                '"content":' +
+                '"' +
+                $('.textarea1').val() +
+                '",' +
+                '"ticket":' +
+                '"' +
+                token +
+                '"' +
+                '}'
+              console.log(data)
+              $.ajax({
+                type: 'post',
+                url: 'http://192.168.10.177/api.esp',
+                data: data,
+                dataType: 'json',
+                success: function(msg) {
+                  console.log(msg)
+                  if (msg.err_code == 0) {
+                    layer.msg('上传成功')
+                  } else {
+                    layer.msg('上传失败')
                   }
-                })
+                },
+                error: function(err) {
+                  console.log(err)
+                }
+              })
             }
           }
-       })
+        })
       })
     </script>
     <script src="js/webuploader.min.js"></script>
     <script src="js/diyUpload.js"></script>
     <script>
-    
-
       //控制输入的文字数量
       $('body').delegate('.ipt', 'propertychange input', function() {
         if ($(this).length > 0) {
@@ -702,7 +785,7 @@
       })
 
       //点击选择发布的类型关闭
-      $(".fl21").click(function(){
+      $('.fl21').click(function() {
         $('.pop_hy_addtag2').hide()
         $('.pop_bg').hide()
       })

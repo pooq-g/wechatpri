@@ -38,7 +38,7 @@
                 <li class="item account haschild">
                     <a href="#">账号</a>
                     <div class="drop">
-                        <a href="账号-会员管理.html">会员管理</a>
+                        <a href="账号-会员管理.html">分组管理</a>
                         <a href="账号-账号管理.html">账号管理</a>
                         <a href="账号-账号设置.html">账号设置</a>
                     </div>
@@ -114,13 +114,14 @@
             <div class="friend_bar clearfix layui-form">
                 <div class="selectbox fl">
                     <select 
+                    class="accountwx"
                     name="category1"
                 lay-filter="category1"
                 aria-invalid="false"
                 id="">
-                        <option value="1">账号</option>
-                        <option value="2">账号</option>
-                        <option value="3">账号</option>
+                        <option value="">全部账号</option>
+                        <!-- <option value="2">账号</option>
+                        <option value="3">账号</option> -->
                     </select>
                 </div>
                 <div class="selectbox fl">
@@ -155,15 +156,14 @@
                         <th width="30%">操作</th>
                     </thead>
                     <tbody>
-                      <!--    <tr>
+                     <!--   <tr>
                             <td>
                                 <input type="checkbox" name="" lay-skin="primary" lay-filter="itemChoose">
                             </td>
                             <td>A1037937287</td>
                             <td>小猪佩琪</td>
-                            <td>安德镇</td>
                             <td>
-                                <em class="c_blue">同学家庭</em>
+                                <em class="c_blue" data-id=${data[id].id}>同学家庭</em>
                             </td>
                             <td>赵辽源</td>
                             <td>
@@ -180,9 +180,8 @@
                             </td>
                             <td>A1037937287</td>
                             <td>小猪佩琪</td>
-                            <td>安德镇</td>
                             <td>
-                                <em class="c_green">同学家庭</em>
+                                <em class="c_green" data-id=${data[id].d}>同学家庭</em>
                             </td>
                             <td>赵辽源</td>
                             <td>
@@ -193,7 +192,7 @@
                                 <a href="javascript:;" class="lk_ico quan chartquanBtn">朋友圈</a>
                             </td>
                         </tr>
-                        <tr>
+                          <tr>
                             <td>
                                 <input type="checkbox" name="" lay-skin="primary" lay-filter="itemChoose">
                             </td>
@@ -395,15 +394,33 @@
 <script type="text/javascript" src="js/mypage.js"></script>
 
 <script type="text/javascript">
-//点击修改标签
-$(".edittagBtn").click(function(){
-  $(".pop_hy_edittag").show()
+
+// var  totalnum = localStorage.getItem("totalnum")
+//  $(".item_1").find(".num").html(totalnum)
+//点击新建标签
+$(".addtagBtns").click(function(){
+  $(".pop_hy_addtag").show()
   $(".pop_bg").show()
 })
-// $(".canceledit").click(function(){
-//   $(".pop_hy_edittag").hide()
-//   $(".pop_bg").hide()
-// })
+
+//点击创建标签
+$(".queding1").click(function(){
+  $(".pop_hy_addtag").hide()
+  $(".pop_bg").hide()
+})
+//点击修改标签
+$(".queding3").click(function(){
+  $(".pop_hy_edittag").hide()
+  $(".pop_bg").hide()
+})
+
+//点击修改取消
+$(".canceledit").click(function(){
+  $(".pop_hy_edittag").hide()
+  $(".pop_bg").hide()
+  $(".pop_hy_addtag").hide()
+})
+
     P.initMathod({
         params: {elemId: '#Page',total:'123'},
         requestFunction: function () {

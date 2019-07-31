@@ -267,14 +267,15 @@
               </tbody>
             </table>
             <div class="pagelist_wrap">
-              <span class="fz">共144条记录，每页显示</span>
+              <!-- <span class="fz">共144条记录，每页显示</span>
               <select name="" id="" class="num_box">
                 <option value="">10</option>
                 <option value="">20</option>
                 <option value="">30</option>
                 <option value="">40</option>
               </select>
-              <div class="pagelist" id="Page"></div>
+              <div class="pagelist" id="Page"></div> -->
+              <div id="demo20"></div>
             </div>
           </div>
         </div>
@@ -347,12 +348,67 @@
     <script src="js/common.js" charset="utf-8"></script>
     <!-- <script src="js/loginout.js"></script> -->
     <script>
-      layui.use(['form', 'upload', 'laydate'], function() {
+      layui.use(['form', 'upload', 'laydate','laypage'], function() {
         var form = layui.form,
           layer = layui.layer,
           layedit = layui.layedit,
           laydate = layui.laydate,
-          upload = layui.upload
+          upload = layui.upload,
+          laypage = layui.laypage
+
+        var count = localStorage.getItem("count")
+          var alllabelgoup =JSON.parse(localStorage.getItem("alllabelgoup"))
+          var duixiang = []
+          for(var i in alllabelgoup){
+            duixiang.push(alllabelgoup[i])
+          }
+          laypage.render({
+          elem: 'demo20'
+          ,count: count
+          ,jump: function(obj){
+           document.getElementsByName("tbody").innerHTML = function(){
+            var arr = []
+            thisData = duixiang.splice(obj.curr*obj.limit - obj.limit, obj.limit)
+            console.log(thisData)
+            layui.each(thisData, function(index, item){
+              console.log(item)
+              arr.push(
+                `
+                <tr>
+                            <td>
+                                <input type="checkbox" name="" lay-skin="primary" lay-filter="itemChoose">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            </td>
+                            <td>${item.name}</td>
+                            <td>${item.psw}</td>
+                            <td>2019-07-15 15:31:26</td>
+                            <td>
+                                <div class="select_wrap">
+                                    <select name="" id="">
+                                        <option value="1">请选择</option>
+                                        <option value="2">请选择</option>
+                                        <option value="3">请选择</option>
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                ${
+                                  item.count
+                                }/${100} <span class="online_btn">一键上线</span>
+                            </td>
+                            <td>
+                                <a href="javascript:;" class="lk_ico editname" data-id=${item.name}>修改名称</a>
+                                <a href="javascript:;" class="lk_ico quit quitdel" data-id=${item.name}
+          }>注销</a>
+                            </td>
+                        </tr>
+                `
+              );
+            })
+            return arr.join("")
+           }()
+            
+          }
+  });
 
         //搜索会员
         $('body').delegate('.searchname', 'propertychange input', function() {
@@ -383,7 +439,9 @@
         ajaxalllabelgoup()
         function ajaxalllabelgoup() {
           var str = ''
+          var count = 0
           for (var i in alllabelgoup) {
+            count++
             str += `
                         <tr>
                             <td>
@@ -415,6 +473,7 @@
                         `
           }
           $('tbody').append(str)
+          localStorage.setItem("count",count)
           form.render()
         }
 
@@ -437,7 +496,8 @@
             localStorage.setItem('alllabelgoup', JSON.stringify(alllabelgoup))
             $('.pop_hy_addtag2').hide()
             $('.pop_bg').show()
-            location.reload()
+            $("tbody").html("")
+            ajaxalllabelgoup()
           })
         })
 
@@ -449,7 +509,8 @@
           console.log($id)
           delete alllabelgoup[$id]
           localStorage.setItem('alllabelgoup', JSON.stringify(alllabelgoup))
-          location.reload()
+          $("tbody").html("")
+            ajaxalllabelgoup()
         })
 
         //全选
@@ -511,6 +572,8 @@
                 alllabelgoup[id].name = id
                 alllabelgoup[id].psw = ''
                 alllabelgoup[id].count = data[i].count
+                $("tbody").html("")
+            ajaxalllabelgoup()
                 localStorage.setItem(
                   'alllabelgoup',
                   JSON.stringify(alllabelgoup)
@@ -552,6 +615,8 @@
               //console.log(msg)
               if (msg.err_code == 0) {
                 layer.msg('删除成功')
+                $("tbody").html("")
+                ajaxalllabelgoup()
               } else {
                 layer.msg('删除失败')
               }
@@ -591,6 +656,8 @@
             $('.ipt_txt2').val('')
             $('.pop_hy_addtag1').hide()
             $('.pop_bg').hide()
+            $("tbody").html("")
+            ajaxalllabelgoup()
           } else {
             alert('请输入分组名称或密码')
           }
@@ -599,18 +666,35 @@
     </script>
     <script type="text/javascript" src="js/mypage.js"></script>
     <script type="text/javascript">
-      P.initMathod({
-        params: { elemId: '#Page', total: '123' },
-        requestFunction: function() {
-          // P.config.total = parseInt(Math.random() * 10 + 85);//此处模拟总记录变化
+    // var count = localStorage.getItem("count")
+    // var alllabelgoup = localStorage.getItem("alllabelgoup")
+    //       var duixiang = []
+    //       for(var i in alllabelgoup){
+    //         duixiang.push(alllabelgoup[i])
+    //       }
+    // $(".pagelist_wrap").find(".fz").text("共"+count+"条记录，每页显示")
+    //   P.initMathod({
+    //     params: { elemId: '#Page', total: count },
+    //     requestFunction: function() {
 
-          //TODO ajax异步请求过程,异步获取到的数据总条数赋值给 P.config.total
+    //       // document.getElementsByName("tbody").innerHTML = function(){
+    //       //   var arr = []
+    //       //   thisData = duixiang.splice(obj.curr*obj.limit - obj.limit, obj.limit)
+    //       //   console.log(thisData)
+    //       //   // layui.each(thisData, function(index, item){
+    //       //   //   arr.push('<li>'+ item +'</li>');
+    //       //   // })
+    //       //   return arr.join("")
+    //       //  }()
+    //       P.config.total = count;//此处模拟总记录变化
 
-          //列表渲染自行处理
+    //       //TODO ajax异步请求过程,异步获取到的数据总条数赋值给 P.config.total
 
-          console.log(JSON.stringify(P.config))
-        }
-      })
+    //       //列表渲染自行处理
+
+    //       //console.log(JSON.stringify(P.config))
+    //     }
+    //   })
     </script>
   </body>
 </html>

@@ -46,6 +46,7 @@ $(function() {
         alllabelgoup[id].psw = ''
         alllabelgoup[id].count = 0
         localStorage.setItem('alllabelgoup', JSON.stringify(alllabelgoup))
+        ajaxalllabelgoup()
         $('.pop_hy_addtag1s').hide()
         $('.pop_hy_edittag1').show()
         $('.ipt_txts').val('')

@@ -156,7 +156,7 @@
                         <th width="30%">操作</th>
                     </thead>
                     <tbody>
-                     <!--   <tr>
+                       <tr>
                             <td>
                                 <input type="checkbox" name="" lay-skin="primary" lay-filter="itemChoose">
                             </td>
@@ -192,7 +192,7 @@
                                 <a href="javascript:;" class="lk_ico quan chartquanBtn">朋友圈</a>
                             </td>
                         </tr>
-                          <tr>
+                      <!--     <tr>
                             <td>
                                 <input type="checkbox" name="" lay-skin="primary" lay-filter="itemChoose">
                             </td>
@@ -257,7 +257,7 @@
     <div class="detail layui-form">
         <div class="box">
             <li>
-               <input type="text" class="ipt ipt_txt"/>
+               <input type="text" class="ipt ipt_txt xinjainlable "/>
             </li>
         </div>
         <div class="btns clearfix">
@@ -365,10 +365,8 @@
     <em class="close">&times;</em>
     <div class="t_tit">修改标签</div>
     <div class="detail layui-form">
-        <div class="box">
-            <li>
-                <input type="text" class="ipt ipt_txt edittxt"/>
-             </li>
+        <div class="box editbox">
+            
         </div>
         <div class="btns clearfix">
             <button class="button this fl queding3">确定</button>
@@ -398,21 +396,41 @@
 // var  totalnum = localStorage.getItem("totalnum")
 //  $(".item_1").find(".num").html(totalnum)
 //点击新建标签
-$(".addtagBtns").click(function(){
-  $(".pop_hy_addtag").show()
-  $(".pop_bg").show()
-})
 
+if (localStorage.getItem('friendlable')) {
+    friendlable = JSON.parse(localStorage.getItem('friendlable'))
+        } else {
+    friendlable = {}
+        }
+        console.log(friendlable)
 //点击创建标签
 $(".queding1").click(function(){
-  $(".pop_hy_addtag").hide()
-  $(".pop_bg").hide()
+    if($(".xinjainlable").val().length >= 1){
+        var $id = $(".xinjainlable").val()
+        if (!friendlable[$id]) {
+            friendlable[$id] = {}
+            }
+            friendlable[$id].name = $(".xinjainlable").val()
+            localStorage.setItem('friendlable', JSON.stringify(friendlable))
+        $(".pop_hy_addtag").hide()
+        $(".pop_bg").hide()
+        $(".xinjainlable").val("")
+    }else{
+        layer.msg("请输入标签")
+    }
+
+   
 })
 //点击修改标签
-$(".queding3").click(function(){
-  $(".pop_hy_edittag").hide()
-  $(".pop_bg").hide()
-})
+// $(".queding3").click(function(){
+//     if($(".edittxt").val().length >= 1){
+//         $(".pop_hy_edittag").hide()
+//         $(".pop_bg").hide()
+//         $(".edittxt").val("")
+//     }else{
+//         layer.msg("请输入标签")
+//     }
+// })
 
 //点击修改取消
 $(".canceledit").click(function(){

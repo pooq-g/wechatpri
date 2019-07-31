@@ -213,39 +213,41 @@ $(function(){
               form.on('radio(messageset)', function(data) {
                 var $nickAllchange = data.value
                 $(".quedingfl").click(function(){
-                  for(var i in imgArr){
-                    let id = imgArr[i].getAttribute("data-id")
-                    var data =
-                      '{"type":' +
-                      '"change_lable",' +
-                      '"id":' +
-                      '"'+id+'",' +
-                      '"lable":' +
-                      '"'+$nickAllchange+'",' +
-                      '"ticket":' +
-                      '"'+token+'"' +
-                      '}'
-                      console.log(data)
-                        $.ajax({
-                          type: 'post',
-                          url: 'http://192.168.10.177/api.esp',
-                          data:data,
-                          dataType: 'json',
-                          success:function(msg){
-                              console.log(msg)
-                              if(msg.err_code == 0){
-                                  $('.pop_hy_addtag2').hide();
-                                  $('.pop_bg').hide();
-                                  layer.msg("修改成功")
-                              }else{
-                                  layer.msg("修改失败")
-                              }
-                          },
-                          error:function(err){
-                              console.log(err)
-                          }
-                      })
-                  }
+                
+                    for(var i in imgArr){
+                      let id = imgArr[i].getAttribute("data-id")
+                      var data =
+                        '{"type":' +
+                        '"change_lable",' +
+                        '"id":' +
+                        '"'+id+'",' +
+                        '"lable":' +
+                        '"'+$nickAllchange+'",' +
+                        '"ticket":' +
+                        '"'+token+'"' +
+                        '}'
+                        console.log(data)
+                          $.ajax({
+                            type: 'post',
+                            url: 'http://192.168.10.177/api.esp',
+                            data:data,
+                            dataType: 'json',
+                            success:function(msg){
+                                console.log(msg)
+                                if(msg.err_code == 0){
+                                    $('.pop_hy_addtag2').hide();
+                                    $('.pop_bg').hide();
+                                    layer.msg("修改成功")
+                                }else{
+                                    layer.msg("修改失败")
+                                }
+                            },
+                            error:function(err){
+                                console.log(err)
+                            }
+                        })
+                    }
+                  
                 })
               })
 
@@ -286,7 +288,7 @@ $(function(){
                         '"ticket":' +
                         '"'+token+'"' +
                         '}'
-                        //console.log(data)
+                        console.log(data)
                         $.ajax({
                             type: 'post',
                             url: 'http://192.168.10.177/api.esp',
@@ -377,6 +379,9 @@ $(function(){
                 //全选修改昵称
                 $(".btns .fl1nc").click(function(){
                     var $nick = $(".box1 .ipt_txt").val()
+                    if($nick.length == 0){
+                      layer.msg("请输入昵称")
+                    }else{
                     var data =
                     '{"type":' +
                     '"change_nick",' +
@@ -398,15 +403,18 @@ $(function(){
                             if(msg.err_code == 0){
                                 $('.pop_hy_addtag1').hide();
                                 $('.pop_bg').hide();
+                                $(".box1 .ipt_txt").val("")
                                 layer.msg("修改成功")
                             }else{
                                 layer.msg("修改失败")
+                                $(".box1 .ipt_txt").val("")
                             }
                         },
                         error:function(err){
                             console.log(err)
                         }
                     })
+                  }
                 })
            
                    //全选修改个人信息
@@ -416,7 +424,9 @@ $(function(){
                     var $cityAll = $(".box4 .ipt_txt").val()
                     var $signAll = $(".box5 .ipt_txt").val()
                     $sexAll = categoryNames == "男" ? 1 : 2
-                    //console.log($cityOneAll,$signOneAll,$sexOneAll)
+                    if($province.length == 0 || $cityAll.length == 0 || $signAll.length == 0){
+                      layer.msg("请输入省份、市区以及个性签名")
+                    }else{
                     var data =
                     '{"type":' +
                     '"change_info",' +
@@ -445,15 +455,21 @@ $(function(){
                                 $('.pop_hy_addtag2').hide();
                                 $('.pop_bg').hide();
                                 layer.msg("修改成功")
-                                //location.reload()
+                                $(".box3 .ipt_txt").val("")
+                                $(".box4 .ipt_txt").val("")
+                                $(".box5 .ipt_txt").val("")
                             }else{
                                 layer.msg("修改失败")
+                                $(".box3 .ipt_txt").val("")
+                                $(".box4 .ipt_txt").val("")
+                                $(".box5 .ipt_txt").val("")
                             }
                         },
                         error:function(err){
                             console.log(err)
                         }
                     })
+                 }
                 })
 
                 
@@ -639,10 +655,13 @@ $(function(){
          //修改个人信息
                 $(".btns .fl2").click(function(){
                     //console.log(categoryNames)
-                    for(var i in arrOnemsg){
                     var $province = $(".box3 .ipt_txt").val()
                     var $cityOneAll = $(".box4 .ipt_txt").val()
                     var $signOneAll = $(".box5 .ipt_txt").val()
+                    if($province.length == 0 || $cityOneAll.length == 0 || $signOneAll.length == 0){
+                      layer.msg("请输入省份、市区以及个性签名")
+                    }  else{
+                    for(var i in arrOnemsg){
                     $sexOneAll = categoryNames == "男" ? 1 : 2
                     var data =
                     '{"type":' +
@@ -650,13 +669,13 @@ $(function(){
                     '"id":' +
                     '"'+arrOnemsg[i].idOneAll+'",' +
                     '"sex":' +
-                    '"'+arrOnemsg[i].$sexOneAll+'",' +
+                    '"'+$sexOneAll+'",' +
                     '"province":' +
-                    '"'+arrOnemsg[i].$province+'",' +
+                    '"'+$province+'",' +
                     '"city":' +
-                    '"'+arrOnemsg[i].$cityOneAll+'",' +
+                    '"'+$cityOneAll+'",' +
                     '"sign_str":' +
-                    '"'+arrOnemsg[i].$signOneAll+'",' +
+                    '"'+$signOneAll+'",' +
                     '"ticket":' +
                     '"'+token+'"' +
                     '}'
@@ -672,9 +691,15 @@ $(function(){
                                 $('.pop_hy_addtag2').hide();
                                 $('.pop_bg').hide();
                                 layer.msg("修改成功")
+                                $(".box3 .ipt_txt").val("")
+                                $(".box4 .ipt_txt").val("")
+                                $(".box5 .ipt_txt").val("")
                                 
                             }else{
                               layer.msg("修改失败")
+                              $(".box3 .ipt_txt").val("")
+                                $(".box4 .ipt_txt").val("")
+                                $(".box5 .ipt_txt").val("")
                                 
                             }
                         },
@@ -682,6 +707,7 @@ $(function(){
                             console.log(err)
                         }
                     })
+                  }
                   }
                 })
 
@@ -697,25 +723,25 @@ $(function(){
                     '"'+token+'"' +
                     '}'
                     console.log(data)
-                    // $.ajax({
-                    //     type: 'post',
-                    //     url: 'http://192.168.10.177/api.esp',
-                    //     data:data,
-                    //     dataType: 'json',
-                    //     success:function(msg){
-                    //         console.log(msg)
-                    //         if(msg.err_code == 0){
-                    //             layer.msg("已提交登录")
+                    $.ajax({
+                        type: 'post',
+                        url: 'http://192.168.10.177/api.esp',
+                        data:data,
+                        dataType: 'json',
+                        success:function(msg){
+                            console.log(msg)
+                            if(msg.err_code == 0){
+                                layer.msg("已提交登录")
                                 
-                    //         }else{
+                            }else{
                               
-                    //           layer.msg("提交登录失败")
-                    //         }
-                    //     },
-                    //     error:function(err){
-                    //         console.log(err)
-                    //     }
-                    // })
+                              layer.msg("提交登录失败")
+                            }
+                        },
+                        error:function(err){
+                            console.log(err)
+                        }
+                    })
                   }
                 })
 
@@ -758,6 +784,9 @@ $(function(){
         //修改昵称
         $(".btns .fl1nc").click(function(){
           var $nick = $(".box1 .ipt_txt").val()
+          if($nick.length == 0){
+            layer.msg("请输入昵称")
+          }else{
           for(var i in arrOnemsg){
           var data =
           '{"type":' +
@@ -769,7 +798,7 @@ $(function(){
           '"ticket":' +
           '"'+token+'"' +
           '}'
-          //console.log(data)
+          console.log(data)
 
           $.ajax({
             type: 'post',
@@ -782,9 +811,10 @@ $(function(){
                     $('.pop_hy_addtag1').hide();
                     $('.pop_bg').hide();
                     layer.msg("修改成功")
+                    $(".box1 .ipt_txt").val("")
                     
                 }else{
-                  
+                  $(".box1 .ipt_txt").val("")
                   layer.msg("删除失败")
                 }
             },
@@ -792,6 +822,7 @@ $(function(){
                 console.log(err)
             }
         })
+      }
       }
       })  
 
@@ -808,7 +839,7 @@ $(function(){
                     '"ticket":' +
                     '"'+token+'"' +
                     '}'
-                   // console.log(data)
+                   console.log(data)
                     $.ajax({
                         type: 'post',
                         url: 'http://192.168.10.177/api.esp',
@@ -817,10 +848,10 @@ $(function(){
                         success:function(msg){
                             console.log(msg)
                             if(msg.err_code == 0){
-                              
+                              localStorage.removeItem("arrOnemsg")
                                 layer.msg("删除成功")
                             }else{
-                              
+                              localStorage.removeItem("arrOnemsg")
                                 layer.msg("删除失败")
                             }
                         },
@@ -862,9 +893,11 @@ $(function(){
                                       $('.pop_hy_addtag2').hide();
                                       $('.pop_bg').hide();
                                       layer.msg("修改成功")
+                                      localStorage.removeItem("arrOnemsg")
                                       
                                   }else{
                                       layer.msg("修改失败")
+                                      localStorage.removeItem("arrOnemsg")
                                       
                                   }
                               },

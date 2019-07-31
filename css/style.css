@@ -451,6 +451,7 @@ body{min-width:1200px;background: #f4f4fc;}
 .pop_hy_edittag .grp{display: inline-block;min-width:33.3%;vertical-align: middle;}
 .pop_hy_edittag .addbq{font-size: 14px;color: #333333;text-align: center;margin-top: 15px;display: block;cursor: pointer;}
 .pop_hy_edittag .addbq:hover{color: #5ba2f3;}
+.pop_hy_edittag .box{height:150px;overflow-y:auto}
 
 .friend_table .tag{display: inline-block;vertical-align: middle;background: #5ba2f3;padding:0 14px;line-height: 24px;    color: #fff;border-radius: 4px;cursor: pointer;}
 

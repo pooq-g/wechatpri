@@ -7,20 +7,6 @@
     <link rel="stylesheet" href="css/iconcss.css" />
     <title>账号-账号管理</title>
     <style>
-      /* .add{
-        position: relative;
-    }
-.add input{
-    display: inline-block;
-    width:125px;
-    height:47px;
-    position: absolute;
-    top:0;
-    left:0;
-    opacity: 0;
-    filter: Alpha(opacity=0);
-    -webkit-filter: Alpha(opacity=0);
-} */
       .qg_topbar span:nth-of-type(2) {
         position: relative;
       }
@@ -223,7 +209,7 @@
                 <th width="12%">操作</th>
               </thead>
               <tbody>
-              <!--     <tr>
+              <tr>
                             <td>
                                 <input type="checkbox" class="actives" name="" lay-skin="primary" lay-filter="itemChoose">
                             </td>
@@ -281,7 +267,7 @@
                                 <a href="#" class="lk">登录信息</a>
                             </td>
                         </tr>
-                     <tr>
+                  <!--        <tr>
                             <td>
                                 <input type="checkbox" name="" lay-skin="primary" lay-filter="itemChoose">
                             </td>
@@ -550,6 +536,8 @@
       var alllabelgoup = JSON.parse(localStorage.getItem('alllabelgoup'))
       console.log(alllabelgoup)
 
+      ajaxalllabelgoup()
+    function ajaxalllabelgoup(){
       var str = ''
       for (var i in alllabelgoup) {
         str += `
@@ -567,7 +555,7 @@
       $('.boxedit').append(str)
       $(".boxchoose").append(str)
 
-      
+    }
 
       //点击添加选择分组
       $('.add').click(function() {
@@ -599,8 +587,13 @@
         $('.pop_hy_addtag1s').show()
       })
 
-      $('.cancels').click(function() {
-        location.reload()
+      $('.cancel').click(function() {
+        $(".ipt_txt").val("")
+        $(".ipt_txt1").val("")
+        $(".ipt_txt2").val("")
+        $(".ipt_txt3").val("")
+        $(".ipt_txt4").val("")
+        $(".ipt_txt5").val("")
       })
     </script>
     <script type="text/javascript" src="js/mypage.js"></script>

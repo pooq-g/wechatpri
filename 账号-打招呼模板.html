@@ -278,7 +278,11 @@
 
       //点击确定发送文字模板
       $('.template_btn').click(function() {
-        if ($('.msg-list').children('li').length == 1) {
+        if($('.msg-list').children('li').length == 0){
+          layer.msg('请输入内容')
+        }else if($('.msg-list').children('li').length > 1){
+          layer.msg('只能发送一条')
+        }else{
           var mes = $('.msg-list li:nth-child(1)')
             .find('.text')
             .html()
@@ -320,12 +324,7 @@
               console.log(err)
             }
           })
-        } else if ($('.msg-list').children('li').length == 0) {
-          layer.msg('请输入内容')
-          $('.template_btn').prop('disabled', true)
-        } else {
-          layer.msg('只能发送一条')
-        }
+        } 
       })
 
       //添加图片

@@ -388,7 +388,6 @@
             //输入了关键字和内容
           } else if ($searchkj && $('.msg-list').children('li').length == 0) {
             layer.msg('请输入内容')
-            $('.template_btn').prop('disabled', true)
             //判断是够输入多条
           } else if ($searchkj && $('.msg-list').children('li').length > 1) {
             layer.msg('只能输入一条')

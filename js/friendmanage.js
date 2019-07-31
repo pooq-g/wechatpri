@@ -22,6 +22,31 @@ $(function() {
       form.render('select')
     })
 
+    //获取标签
+    if (localStorage.getItem('friendlable')) {
+      friendlable = JSON.parse(localStorage.getItem('friendlable'))
+    } else {
+      friendlable = {}
+    }
+    //再修改页面展示所有标签
+    var str = ""
+    for(var i in friendlable){
+      str += `
+      <li class="grp" style="display:block">
+        <input
+          type="radio"
+          name="tag"
+          value="${friendlable[i].name}"
+          title="${friendlable[i].name}"
+          lay-filter="messageset"
+        />
+      </li>
+      `
+    }
+    $(".editbox").append(str)
+
+    
+
     //搜索好友昵称
     $('body').delegate('.searchnick', 'propertychange input', function() {
       console.log($(this).val())
@@ -59,6 +84,10 @@ $(function() {
 
     token = localStorage.getItem('token')
     var wxfrom = []
+
+    //显示所有好友
+    showfriend()
+    function showfriend(){
     for (var id in wxid_raw) {
       var data =
         '{"type":' +
@@ -158,6 +187,7 @@ $(function() {
         }
       })
     }
+  }
 
     //点击全选
     form.on('checkbox(allChoose)', function(data) {
@@ -175,13 +205,13 @@ $(function() {
             .getAttribute('data-id')
         )
       })
-      console.log(arr)
       form.render('checkbox')
       //点击修改标签
 
+      form.on('radio(messageset)', function(data) {
+        var choosefriendlable = data.value
+     
       $('.queding3').click(function() {
-        //console.log($('.edittxt').val())
-        if ($('.edittxt').val()) {
           for (let i = 0; i < arr.length; i++) {
             var data =
               '{"type":' +
@@ -192,7 +222,7 @@ $(function() {
               '",' +
               '"lable":' +
               '"' +
-              $('.edittxt').val() +
+              choosefriendlable +
               '",' +
               '"ticket":' +
               '"' +
@@ -209,16 +239,19 @@ $(function() {
                 console.log(msg)
                 if (msg.err_code == 0) {
                   layer.msg('修改成功')
+                  $('.edittxt').val("")
                 } else {
                   layer.msg('修改失败')
+                  $('.edittxt').val("")
                 }
+              },
+              error:function(err){
+                console.log(err)
               }
             })
           }
-        } else {
-          layer.msg('请输入标签')
-        }
       })
+    })
     })
 
     //单选
@@ -292,9 +325,11 @@ $(function() {
               console.log(msg)
               if (msg.err_code == 0) {
                 layer.msg('修改成功')
+                localStorage.removeItem("savefriendlable")
                 $('.queding3').hide()
               } else {
                 layer.msg('修改失败')
+                localStorage.removeItem("savefriendlable")
               }
             }
           })
@@ -304,10 +339,10 @@ $(function() {
       }
     })
 
-    // $('.addtagBtn').click(function() {
-    //   $('.pop_hy_addtag').show()
-    //   $('.pop_bg').show()
-    // })
+    $('.addtagBtn').click(function() {
+      $('.pop_hy_addtag').hide()
+      $('.pop_bg').hide()
+    })
 
     //去聊天
     $('body').delegate('.msgBtn', 'click', function() {
@@ -418,6 +453,11 @@ $(function() {
     $('.edittagBtn').click(function() {
       $('.pop_hy_edittag').show()
       $('.pop_bg').show()
+    })
+
+    $(".addtagBtns").click(function(){
+      $(".pop_hy_addtag").show()
+      $(".pop_bg").show()
     })
   })
 

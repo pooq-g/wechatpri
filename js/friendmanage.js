@@ -295,9 +295,11 @@ $(function() {
     })
 
     //单选修改标签
+    form.on('radio(messageset)', function(data) {
+      var choosefriendlable = data.value
     $('.queding3').click(function() {
       var savefriendlable = JSON.parse(localStorage.getItem('savefriendlable'))
-      if ($('.edittxt').val()) {
+   
         for (let i = 0; i < savefriendlable.length; i++) {
           var data =
             '{"type":' +
@@ -308,7 +310,7 @@ $(function() {
             '",' +
             '"lable":' +
             '"' +
-            $('.edittxt').val() +
+            choosefriendlable +
             '",' +
             '"ticket":' +
             '"' +
@@ -334,10 +336,8 @@ $(function() {
             }
           })
         }
-      } else {
-        layer.msg('请输入标签')
-      }
     })
+  })
 
     $('.addtagBtn').click(function() {
       $('.pop_hy_addtag').hide()
